@@ -46,6 +46,14 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             job.add(jobTitle.text!, forKey: "title")
             job.add(userId, forKey: "requesterId")
             job.add(facebookId, forKey: "requesterFid")
+            
+            // add job location (latitude & longitude) with PFGeoPoint
+            PFGeoPoint.geoPointForCurrentLocation(inBackground: { (geoPoint, error) in
+                if let geoPoint = geoPoint {
+                    job["location"] = geoPoint
+                    
+                }
+            })
 
             // saveInBackground is an asychronous call that does not wait to execute before continuing so save it with block if you need data that is returned from the async call
             job.saveInBackground(block: { (success, error) in

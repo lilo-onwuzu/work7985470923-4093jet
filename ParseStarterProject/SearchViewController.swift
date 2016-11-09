@@ -6,11 +6,12 @@
 //  Copyright © 2016 Parse. All rights reserved.
 //
 
-// location aware
 
 import UIKit
 
 class SearchViewController: UIViewController {
+
+	var viewedJobId = ""
 
     @IBOutlet weak var requesterName: UILabel!
     @IBOutlet weak var jobTitle: UILabel!
@@ -21,30 +22,76 @@ class SearchViewController: UIViewController {
 	@IBOutlet weak var requesterImage: UIImageView!
     @IBOutlet weak var wheelbarrow: UIImageView!
 	
-	var viewedJobId = ""
-
-    @IBAction func home(_ sender: AnyObject) {
-        performSegue(withIdentifier: "toHome", sender: self)
-        
-    }
+	func drag(_ gesture: UIPanGestureRecognizer) {
+		// translation measures the distance of a pan. It can be positive or negative
+		let translation = gesture.translation(in: self.view)
+		// allows wheelbarrow center to move in x with pan. wheelbarrow.center.x decreases in x or moves left when pan is to the left
+		wheelbarrow.center.x = self.view.center.x + translation.x
+		// xFromCenter is +ve if pan is to the right and -ve is pan is to the left
+		let xFromCenter = wheelbarrow.center.x - self.view.bounds.width / 2
+		var rotation = CGAffineTransform(rotationAngle: xFromCenter / 200)
+		let scale = min(100 / abs(xFromCenter), 1)
+		var stretch = rotation.scaledBy(x: scale, y: scale)
+		wheelbarrow.transform = stretch
+		
+		// once panning ends, record swipe left or right action, filter viewed job from showing up later, reset swipe element to initial position then finally fetch a new job from database
+		if gesture.state == UIGestureRecognizerState.ended {
+			var acceptedOrRejected = ""
+			if xFromCenter > 100 {
+				acceptedOrRejected = "accepted"
+				
+			} else if xFromCenter < -100 {
+				acceptedOrRejected = "rejected"
+				
+			}
+			
+			if acceptedOrRejected != "" {
+				PFUser.current()?.addUniqueObjects(from: [viewedJobId], forKey:acceptedOrRejected)
+				PFUser.current()?.saveInBackground()
+				
+			}
+			
+			wheelbarrow.center.x = self.view.center.x
+			rotation = CGAffineTransform(rotationAngle: 0)
+			stretch = rotation.scaledBy(x: 1, y: 1)
+			wheelbarrow.transform = stretch
+			
+			getNewJob()
+			
+		}
+	}
 	
     func getNewJob() {
 		let query = PFQuery(className: "Job")
 		query.limit = 1
+		
+		// query with PFUser's location
+		let location = PFUser.current()?["location"] as? PFGeoPoint
+		if let latitude = location?.latitude {
+			if let longitude = location?.longitude {
+				query.whereKey("location", withinGeoBoxFromSouthwest: PFGeoPoint(latitude: latitude - 1, longitude: longitude - 1), toNortheast:PFGeoPoint(latitude:latitude + 1, longitude: longitude + 1))
+
+			}
+		}
+		
+		// query with already viewed jobs
 		var ignoredJobs = [""]
 		if let acceptedJobs = PFUser.current()?["accepted"] {
 			ignoredJobs += acceptedJobs as! Array
+			
 		}
 		if let rejectedJobs = PFUser.current()?["rejected"] {
 			ignoredJobs += rejectedJobs as! Array
+			
 		}
 		query.whereKey("objectId", notContainedIn: ignoredJobs)
-    
-//		query.whereKey("location", withinGeoBoxFromSouthwest:PFGeoPoint(latitude:0, longitude:0), toNortheast:PFGeoPoint(latitude:5, longitude:5))
 		
+		// perform query (get job details and job requester's details)
 		query.findObjectsInBackground { (jobs, error) in
 			if let jobs = jobs {
 				for job in jobs {
+					
+					// get job details
 					self.viewedJobId = job.objectId!
 					let title = job.object(forKey: "title") as! NSArray
 					let jobTitle = title[0] as! String
@@ -59,7 +106,7 @@ class SearchViewController: UIViewController {
 					let jobDetails = details[0] as! String
 					self.jobStory.text = jobDetails
 					
-					// get requester info
+					// get job requester name and photo
 					let userId = job.object(forKey: "requesterId") as! NSArray
 					let requesterId = userId[0] as! String
 					do {
@@ -82,51 +129,21 @@ class SearchViewController: UIViewController {
 			}
 		}
     }
-	
-	func drag(_ gesture: UIPanGestureRecognizer) {
-		let translation = gesture.translation(in: self.view)
-        wheelbarrow.center.x = self.view.center.x + translation.x
-        
-        let xFromCenter = wheelbarrow.center.x - self.view.bounds.width / 2
-        var rotation = CGAffineTransform(rotationAngle: xFromCenter / 200)
-        let scale = min(100 / abs(xFromCenter), 1)
-        var stretch = rotation.scaledBy(x: scale, y: scale)
-        wheelbarrow.transform = stretch
-        
-		if gesture.state == UIGestureRecognizerState.ended {
-			var acceptedOrRejected = ""
-
-			if wheelbarrow.center.x > 100 {
-				acceptedOrRejected = "rejected"
-				
-            } else if wheelbarrow.center.x < self.view.bounds.width - 100 {
-				acceptedOrRejected = "accepted"
-				
-            }
-			if acceptedOrRejected != "" {
-				PFUser.current()?.addUniqueObjects(from: [viewedJobId], forKey:acceptedOrRejected)
-				PFUser.current()?.saveInBackground()
-				
-			}
-			
-            wheelbarrow.center.x = self.view.center.x
-            rotation = CGAffineTransform(rotationAngle: 0)
-            stretch = rotation.scaledBy(x: 1, y: 1)
-            wheelbarrow.transform = stretch
-            getNewJob()
-			
-		}
-	}
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-		
+		// attach gestureRecognizer/listener to swiping element once view loads
 		let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag(_:)))
 		wheelbarrow.addGestureRecognizer(pan)
 		wheelbarrow.isUserInteractionEnabled = true
 		
+		// query first job once view loads
 		getNewJob()
+		
+	}
+	
+	@IBAction func home(_ sender: AnyObject) {
+		performSegue(withIdentifier: "toHome", sender: self)
 		
 	}
 
