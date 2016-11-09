@@ -6,6 +6,12 @@
 //  Copyright © 2016 Parse. All rights reserved.
 //
 
+// ApplePay
+// Change Password
+// Change Display Pic
+// Delete PFUser
+// Update FB Login
+
 import UIKit
 
 class SettingsViewController: UIViewController {

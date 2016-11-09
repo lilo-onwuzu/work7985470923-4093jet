@@ -48,12 +48,12 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
                             print(error)
                             
                         } else {
-                            self.performSegue(withIdentifier: "toConfirm", sender: self)
                         
                         }
                     })
                 }
             }
+            self.performSegue(withIdentifier: "toConfirm", sender: self)
             
         } else {
             errorAlert(title: "Invalid Form Entry", message: "Please add a job title")

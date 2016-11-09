@@ -8,8 +8,6 @@
 
 // ISSUES: print actual error
 // job title saves placeholder if not edited
-// Double screen issue on a create VCs
-// save userId
 
 import UIKit
 
@@ -56,10 +54,12 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                 
                 } else {
                     jobId = job.objectId!
-                    self.performSegue(withIdentifier: "toCreate2", sender: self)
                     
                 }
             })
+            
+            self.performSegue(withIdentifier: "toCreate2", sender: self)
+
             
         } else {
             errorAlert(title: "Invalid Form Entry", message: "Please add a job title")

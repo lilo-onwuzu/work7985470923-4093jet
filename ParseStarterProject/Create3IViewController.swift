@@ -66,19 +66,19 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
                     self.errorAlert(title: "Parse Fetch Error", message: "Please try again later")
                     
                 } else {
-                    job?.add(self.rateField.text! , forKey: "rate")
+                    job?.add(self.rateField.text!, forKey: "rate")
 
                     job?.saveInBackground(block: { (success, error) in
                         if error != nil {
                             self.errorAlert(title: "Parse Save Error", message: "Please try again later")
-                            print(error)
                         
                         } else {
-                            self.performSegue(withIdentifier: "toCreate4", sender: self)
+                            
                         }
                     })
                 }
             }
+            self.performSegue(withIdentifier: "toCreate4", sender: self)
             
         } else {
             errorAlert(title: "Invalid Entry Error", message: "Please enter a valid rate")

@@ -6,6 +6,10 @@
 //  Copyright © 2016 Parse. All rights reserved.
 //
 
+// See my posted jobs
+// See my received jobs
+// Message View
+
 import UIKit
 
 class ProfileViewController: UIViewController {

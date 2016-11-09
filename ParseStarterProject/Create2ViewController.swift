@@ -48,12 +48,13 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                         self.errorAlert(title: "Parse Save Error", message: "Please try again later")
                         
                     } else {
-                        self.performSegue(withIdentifier: "toCreate3", sender: self)
                     
                     }
                 })
             }
         }
+        self.performSegue(withIdentifier: "toCreate3", sender: self)
+        
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
