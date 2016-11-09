@@ -6,8 +6,7 @@
 //  Copyright © 2016 Parse. All rights reserved.
 //
 
-// swipe features
-// add touchbar 
+// location aware
 
 import UIKit
 
@@ -20,52 +19,49 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var jobStory: UILabel!
     @IBOutlet weak var jobRate: UILabel!
 	@IBOutlet weak var requesterImage: UIImageView!
+    @IBOutlet weak var wheelbarrow: UIImageView!
+	
+	var viewedJobId = ""
 
     @IBAction func home(_ sender: AnyObject) {
         performSegue(withIdentifier: "toHome", sender: self)
         
     }
 	
-	func drag(_ gesture: UIPanGestureRecognizer) {
-		let translation = gesture.translation(in: self.view)
-		print(translation)
-		
-		if gesture.state == UIGestureRecognizerState.ended {
-			print(jobStory.center.x)
-//			print(jobStory.center.y)
+    func getNewJob() {
+		let query = PFQuery(className: "Job")
+		query.limit = 1
+		var ignoredJobs = [""]
+		if let acceptedJobs = PFUser.current()?["accepted"] {
+			ignoredJobs += acceptedJobs as! Array
 		}
-		
-	}
+		if let rejectedJobs = PFUser.current()?["rejected"] {
+			ignoredJobs += rejectedJobs as! Array
+		}
+		query.whereKey("objectId", notContainedIn: ignoredJobs)
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+//		query.whereKey("location", withinGeoBoxFromSouthwest:PFGeoPoint(latitude:0, longitude:0), toNortheast:PFGeoPoint(latitude:5, longitude:5))
 		
-		let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag(_:)))
-		jobStory.addGestureRecognizer(pan)
-		jobStory.isUserInteractionEnabled = true
-		
-        let query = PFQuery(className: "Job")
-        query.limit = 1
-        query.findObjectsInBackground {(jobs, error) in
-            if let jobs = jobs {
-                for job in jobs {
-                    let title = job.object(forKey: "title") as! NSArray
-                    let jobTitle = title[0] as! String
-                    self.jobTitle.text = jobTitle
-                    let rate = job.object(forKey: "rate") as! NSArray
-                    let jobRate = rate[0] as! String
-                    self.jobRate.text = "$" + jobRate
-                    let cycle = job.object(forKey: "cycle") as! NSArray
-                    let jobCycle = cycle[0] as! String
-                    self.jobCycle.text = jobCycle
-                    let details = job.object(forKey: "details") as! NSArray
-                    let jobDetails = details[0] as! String
-                    self.jobStory.text = jobDetails
-
-                    // get requester info
-                    let userId = job.object(forKey: "requesterId") as! NSArray
-                    let requesterId = userId[0] as! String
+		query.findObjectsInBackground { (jobs, error) in
+			if let jobs = jobs {
+				for job in jobs {
+					self.viewedJobId = job.objectId!
+					let title = job.object(forKey: "title") as! NSArray
+					let jobTitle = title[0] as! String
+					self.jobTitle.text = jobTitle
+					let rate = job.object(forKey: "rate") as! NSArray
+					let jobRate = rate[0] as! String
+					self.jobRate.text = "$" + jobRate
+					let cycle = job.object(forKey: "cycle") as! NSArray
+					let jobCycle = cycle[0] as! String
+					self.jobCycle.text = jobCycle
+					let details = job.object(forKey: "details") as! NSArray
+					let jobDetails = details[0] as! String
+					self.jobStory.text = jobDetails
 					
+					// get requester info
+					let userId = job.object(forKey: "requesterId") as! NSArray
+					let requesterId = userId[0] as! String
 					do {
 						let user = try PFQuery.getUserObject(withId: requesterId)
 						let firstName = user.object(forKey: "first_name") as? String
@@ -82,25 +78,61 @@ class SearchViewController: UIViewController {
 						
 					}
 					
-                }
-            }
-        }
+				}
+			}
+		}
     }
+	
+	func drag(_ gesture: UIPanGestureRecognizer) {
+		let translation = gesture.translation(in: self.view)
+        wheelbarrow.center.x = self.view.center.x + translation.x
+        
+        let xFromCenter = wheelbarrow.center.x - self.view.bounds.width / 2
+        var rotation = CGAffineTransform(rotationAngle: xFromCenter / 200)
+        let scale = min(100 / abs(xFromCenter), 1)
+        var stretch = rotation.scaledBy(x: scale, y: scale)
+        wheelbarrow.transform = stretch
+        
+		if gesture.state == UIGestureRecognizerState.ended {
+			var acceptedOrRejected = ""
+
+			if wheelbarrow.center.x > 100 {
+				acceptedOrRejected = "rejected"
+				
+            } else if wheelbarrow.center.x < self.view.bounds.width - 100 {
+				acceptedOrRejected = "accepted"
+				
+            }
+			if acceptedOrRejected != "" {
+				PFUser.current()?.addUniqueObjects(from: [viewedJobId], forKey:acceptedOrRejected)
+				PFUser.current()?.saveInBackground()
+				
+			}
+			
+            wheelbarrow.center.x = self.view.center.x
+            rotation = CGAffineTransform(rotationAngle: 0)
+            stretch = rotation.scaledBy(x: 1, y: 1)
+            wheelbarrow.transform = stretch
+            getNewJob()
+			
+		}
+	}
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+		
+		let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag(_:)))
+		wheelbarrow.addGestureRecognizer(pan)
+		wheelbarrow.isUserInteractionEnabled = true
+		
+		getNewJob()
+		
+	}
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

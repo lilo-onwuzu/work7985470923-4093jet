@@ -22,6 +22,15 @@ class ProfileViewController: UIViewController {
     
     let user = PFUser.current()!
     
+    func errorAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -52,11 +61,17 @@ class ProfileViewController: UIViewController {
         user.saveInBackground(block: { (success, error) in
             if error != nil {
                 print(error)
-                // show Parse Save Error Alert and terminate function
+                self.errorAlert(title: "Parse Database Error", message: "Please try again later")
+                
             } else {
-                print(success)
+
             }
         })
+    }
+    
+    @IBAction func message(_ sender: AnyObject) {
+        performSegue(withIdentifier: "toConnect", sender: self)
+        
     }
     
     @IBAction func home(_ sender: AnyObject) {
@@ -68,16 +83,5 @@ class ProfileViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

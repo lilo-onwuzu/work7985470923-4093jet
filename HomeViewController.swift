@@ -32,8 +32,16 @@ class HomeViewController: UIViewController {
     
     }
     @IBAction func logOut(_ sender: AnyObject) {
-        PFUser.logOut()
-        performSegue(withIdentifier: "toMain", sender: self)
+        let empty = [""]
+        PFUser.current()!["accepted"] = empty
+        PFUser.current()!["rejected"] = empty
+        PFUser.current()?.saveInBackground(block: { (success, error) in
+            if success {
+                PFUser.logOut()
+                self.performSegue(withIdentifier: "toMain", sender: self)
+
+            }
+        })
         
     }
     
