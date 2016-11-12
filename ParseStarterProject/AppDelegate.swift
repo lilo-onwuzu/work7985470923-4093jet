@@ -1,14 +1,14 @@
 //
 //  AppDelegate.swift
-//  FacebookTest
+//  ParseStarterProject
 //
 //  Created by mac on 10/21/16.
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
+
 import UIKit
 import ParseFacebookUtilsV4
-
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,19 +16,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
+        PFUser.registerSubclass()
         let parseConfiguration = ParseClientConfiguration(block: { (ParseMutableClientConfiguration) -> Void in
             ParseMutableClientConfiguration.applicationId = "workjet8943032pfdlksj"
             ParseMutableClientConfiguration.clientKey = "rtkjjtreopiwerui948034"
             ParseMutableClientConfiguration.server = "http://workjet.herokuapp.com/parse"
+        
         })
-        
         Parse.initialize(with: parseConfiguration)
-        
         PFUser.enableAutomaticUser()
-        
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        
+
         // Override point for customization after application launch.
         return true
     }

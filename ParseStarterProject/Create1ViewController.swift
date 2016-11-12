@@ -37,9 +37,9 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     @IBAction func addJobTitle(_ sender: UIButton) {
     
         if jobTitle.text != "" {
-            let user = PFUser.current()
-            let userId = (user?.objectId)!
-            let facebookId = (user?.object(forKey: "facebookId"))!
+            let user = PFUser.current()!
+            let userId = (user.objectId)!
+            let facebookId = (user.object(forKey: "facebookId"))!
             
             // save to Parse as PFObject attribute
             let job = PFObject(className: "Job")
@@ -93,16 +93,5 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
         
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

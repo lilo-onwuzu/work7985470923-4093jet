@@ -16,15 +16,16 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-
     @IBAction func home(_ sender: AnyObject) {
         performSegue(withIdentifier: "toHome", sender: self)
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("hello")
 
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {

@@ -1,14 +1,10 @@
 //
 //  LoginViewController.swift
-//  ParseStarterProject
 //
 //  Created by mac on 10/27/16.
-//  Copyright © 2016 Parse. All rights reserved.
+//  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// ISSUES: Show actual errors
-// Text Fields not visible in Main Storyboard
-// Press "enter" to "login"
 
 import UIKit
 
@@ -16,19 +12,21 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     func activity() {
         let rect: CGRect = CGRect(x: 0, y: 0, width: 50, height: 50)
         activityIndicator = UIActivityIndicatorView(frame: rect)
-        activityIndicator.center = self.view.center
+        activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         UIApplication.shared.beginIgnoringInteractionEvents()
-        
+      
     }
     
     func restore(){
@@ -41,51 +39,67 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
+        
         }))
         present(alert, animated: true, completion: nil)
         
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
-    @IBAction func login(_ sender: AnyObject) {
-        
+    func logInAction() {
+        // do not accept empty login parameters
         if username.text != "" {
-            
             if password.text != "" {
-                
                 activity()
-                
-                PFUser.logInWithUsername(inBackground: username.text!, password: password.text!, block: { (user, error) in
+                let username_decap = username.text!.lowercased()
+                PFUser.logInWithUsername(inBackground: username_decap, password: password.text!, block: { (user, error) in
                     self.restore()
+                    // show error alerts only after restore() function to allow interactivity
                     if error != nil {
-                        self.errorAlert(title: "Failed Log In", message: "An error occcured during log in")
+                        self.errorAlert(title: "Failed Log In", message: "You entered an invalid email or password")
+                        
                     } else {
                         self.performSegue(withIdentifier: "toHome", sender: self)
+                        
                     }
                 })
-                
             } else {
-                errorAlert(title: "Invalid Passrord", message: "Please enter a valid password")
+                errorAlert(title: "Invalid Password", message: "Enter a valid password")
+                
             }
-            
         } else {
-            errorAlert(title: "Invalid Username", message: "Please enter a valid username")
+            errorAlert(title: "Invalid Email", message: "Enter the email address associated with your Facebook account")
+            
         }
     }
     
-    // tap anywhere to escape keyboard
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.password.delegate = self
+        loginButton.layer.cornerRadius = 5.0
+        signUpButton.layer.cornerRadius = 5.0
+
+    }
+    
+    @IBAction func login(_ sender: AnyObject) {
+        logInAction()
+        
+    }
+    
+    @IBAction func signUp(_ sender: AnyObject) {
+        performSegue(withIdentifier: "backToSignUp", sender: self)
+        
+    }
+    
+    // tap anywhere on the screen to escape keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
         
     }
     
-    // hit return to escape keyboard
+    // hit return to escape keyboard and login simultaneously
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        logInAction()
         return true
         
     }
@@ -94,16 +108,5 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

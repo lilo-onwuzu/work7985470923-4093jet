@@ -75,7 +75,7 @@ class SearchViewController: UIViewController {
 		}
 		
 		// query with already viewed jobs
-		var ignoredJobs = [""]
+		var ignoredJobs = [String]()
 		if let acceptedJobs = PFUser.current()?["accepted"] {
 			ignoredJobs += acceptedJobs as! Array
 			
