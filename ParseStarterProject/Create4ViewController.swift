@@ -1,13 +1,9 @@
 //
 //  Create4ViewController.swift
-//  ParseStarterProject
 //
-//  Created by mac on 10/14/16.
-//  Copyright © 2016 Parse. All rights reserved.
+//  Created by mac on 10/27/16.
+//  Copyright © 2016 iponwuzu. All rights reserved.
 //
-
-// ISSUES: Show actual error
-// job details saves placeholder if not edited
 
 
 import UIKit
@@ -20,20 +16,14 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
+       
         }))
         present(alert, animated: true, completion: nil)
         
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        self.jobDetails.delegate = self
-        
-    }
-    
-    @IBAction func confirmCreate(_ sender: AnyObject) {
-        if jobDetails.text != "" {
+    func addDetails() {
+        if jobDetails.text != "" || jobDetails.text != "Include more information here..." {
             let query = PFQuery(className: "Job")
             query.getObjectInBackground(withId: jobId) { (job, error) in
                 if error != nil {
@@ -48,17 +38,27 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
                             print(error)
                             
                         } else {
-                        
+                            
                         }
                     })
                 }
             }
             self.performSegue(withIdentifier: "toConfirm", sender: self)
-            
         } else {
-            errorAlert(title: "Invalid Form Entry", message: "Please add a job title")
+            errorAlert(title: "Invalid Form Entry", message: "Please add some more details")
             
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.jobDetails.delegate = self
+        
+    }
+    
+    @IBAction func confirmCreate(_ sender: AnyObject) {
+        addDetails()
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -68,6 +68,7 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         jobDetails.resignFirstResponder()
+        addDetails()
         return true
 
     }
@@ -77,16 +78,5 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
         
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

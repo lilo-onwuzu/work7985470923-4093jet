@@ -13,7 +13,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var signUpButton: UIButton!
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
@@ -54,8 +53,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 PFUser.logInWithUsername(inBackground: username_decap, password: password.text!, block: { (user, error) in
                     self.restore()
                     // show error alerts only after restore() function to allow interactivity
-                    if error != nil {
-                        self.errorAlert(title: "Failed Log In", message: "You entered an invalid email or password")
+                    if let error = error?.localizedDescription {
+                        self.errorAlert(title: "Failed Log In", message: error)
                         
                     } else {
                         self.performSegue(withIdentifier: "toHome", sender: self)
@@ -75,19 +74,18 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.password.delegate = self
-        loginButton.layer.cornerRadius = 5.0
-        signUpButton.layer.cornerRadius = 5.0
+        loginButton.layer.cornerRadius = 15.0
 
     }
     
     @IBAction func login(_ sender: AnyObject) {
         logInAction()
-        
+
     }
     
-    @IBAction func signUp(_ sender: AnyObject) {
+    @IBAction func backToSignUp(_ sender: UIButton) {
         performSegue(withIdentifier: "backToSignUp", sender: self)
-        
+    
     }
     
     // tap anywhere on the screen to escape keyboard

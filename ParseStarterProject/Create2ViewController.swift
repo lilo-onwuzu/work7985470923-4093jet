@@ -1,12 +1,10 @@
 //
 //  Create2ViewController.swift
-//  ParseStarterProject
 //
-//  Created by mac on 10/14/16.
-//  Copyright © 2016 Parse. All rights reserved.
+//  Created by mac on 10/27/16.
+//  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// ISSUES: show actual errors
 
 import UIKit
 
@@ -21,39 +19,49 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
+        
         }))
         present(alert, animated: true, completion: nil)
         
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-                
-        self.cyclePicker.delegate = self
-        self.cyclePicker.dataSource = self
+    func segue() {
+        performSegue(withIdentifier: "toCreate3", sender: self)
         
     }
     
-    @IBAction func createButton(_ sender: AnyObject) {
+    func addCycle() {
         // save to Parse as PFObject attribute
         let query = PFQuery(className: "Job")
         query.getObjectInBackground(withId: jobId) { (job, error) in
             if error != nil {
-                self.errorAlert(title: "Parse Fetch Error", message: "Please try again later")
+                self.errorAlert(title: "Database Error", message: "Please try again later")
                 
             } else {
                 job?.add(self.cycleValue, forKey: "cycle")
                 job?.saveInBackground(block: { (success, error) in
                     if error != nil {
-                        self.errorAlert(title: "Parse Save Error", message: "Please try again later")
+                        self.errorAlert(title: "Database Error", message: "Please try again later")
                         
                     } else {
-                    
+                        self.segue()
+                        
                     }
                 })
             }
         }
-        self.performSegue(withIdentifier: "toCreate3", sender: self)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.cyclePicker.delegate = self
+        self.cyclePicker.dataSource = self
+        cyclePicker.setValue(UIColor.white, forKey: "textColor")
+        
+    }
+    
+    @IBAction func createButton(_ sender: AnyObject) {
+        addCycle()
         
     }
     
@@ -77,16 +85,5 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

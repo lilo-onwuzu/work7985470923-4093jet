@@ -1,13 +1,9 @@
 //
 //  SignUpViewController.swift
-//  ParseStarterProject
 //
-//  Created by mac on 10/24/16.
-//  Copyright © 2016 Parse. All rights reserved.
+//  Created by mac on 10/27/16.
+//  Copyright © 2016 iponwuzu. All rights reserved.
 //
-
-// ISSUES: remove facebook logOut access in signup page
-// automatic FB log in?
 
 
 import UIKit
@@ -58,9 +54,7 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
         self.password.delegate = self
         // display Facebook login button
         let signUpButton = LoginButton(readPermissions: [ .publicProfile ])
-        let origin = CGPoint(x:145, y:600)
-        let size = CGSize(width: 150, height: 25)
-        signUpButton.frame = CGRect(origin: origin, size: size)
+        signUpButton.frame = CGRect(x: (self.view.bounds.width / 2) - 100, y: (self.view.bounds.height / 2) - 25 , width: 200, height: 25)
         view.addSubview(signUpButton)
         signUpButton.delegate = self
         
@@ -69,57 +63,49 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     // FBSDKLoginDelegate method
     // add facebook login details before sign up
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
+        activity()
         let parameters = ["fields": "email, first_name, last_name"]
-       
         FBSDKGraphRequest(graphPath: "me", parameters: parameters).start { (connection, result, error) in
             // be careful with "let" statement. Only use them for certainly controllable events
             // when communicating with an external SDK, try to use the "if let" block where necessary so app does not crash if SDK changes and requests are unsuccessful
-            // "if let" conditional prevents crash if graph request is unsuccessful
-            if let result = result {
-                self.activity()
-                // collect FB info through a FB graph request
-                // if let conditionals prevents crash incase for instance, FBSDK changes and you cannot cast result as NSDictionary
-                if let result = result as? NSDictionary {
-                    // FB account must have email and name so no need for "if let" conditional
-                    let email = result.object(forKey: "email") as! String
-                    let firstName = result.object(forKey: "first_name") as! String
-                    let lastName = result.object(forKey: "last_name") as! String
-                    let facebookId = result.object(forKey: "id") as! String
-    
-                    // save user to Parse and display in text field
-                    self.user.username = email
-                    self.user.email = email
-                    self.user["first_name"] = firstName
-                    self.user["last_name"] = lastName
-                    self.user["facebookId"] = facebookId
-                    self.name.text = "Welcome, " + firstName + " " + lastName + " !"
-                    self.loggedIn = true
-                    
-                    // import FB photo if possible
-                    let url = "https://graph.facebook.com/" + facebookId + "/picture?type=large"
-                    let imageUrl = NSURL(string: url)!
-                    let imageData = NSData(contentsOf: imageUrl as URL)
-                    if let imageData = imageData {
-                        self.image.image = UIImage(data: imageData as Data)!
-                        let imageFile: PFFile = PFFile(data: imageData as Data)!
-                        self.user["image"] = imageFile
-                        self.restore()
-                        
-                    } else {
-                        self.restore()
-                        self.errorAlert(title: "Facebook Photo Import Error", message: "Please try again later")
-                    
+            // try ("as?") to cast the result of the graph request as a dictionary, if successful, continue with the product as a new variable "result", if that fails for any reason, result does not exist because it was never initialized, function terminates with no crash
+            if let result = result as? NSDictionary {
+                if let email = result.object(forKey: "email") as? String {
+                    if let firstName = result.object(forKey: "first_name") as? String {
+                        if let lastName = result.object(forKey: "last_name") as? String {
+                            if let facebookId = result.object(forKey: "id") as? String {
+                                // add user attributes to PFUser object first
+                                self.user.username = email
+                                self.user.email = email
+                                self.user["first_name"] = firstName
+                                self.user["last_name"] = lastName
+                                self.user["facebookId"] = facebookId
+                                // hide facebook login button
+                                loginButton.isHidden = true
+                                // display welcome message and restore app interactivity
+                                self.name.text = "Welcome, " + firstName + " " + lastName + " !"
+                                self.restore()
+                                self.loggedIn = true
+                                // import FB photo if possible
+                                let url = "https://graph.facebook.com/" + facebookId + "/picture?type=large"
+                                let imageUrl = NSURL(string: url)!
+                                // try to make imageData object  but do not force cast with "!". This result is an optional NSData object
+                                let imageData = NSData(contentsOf: imageUrl as URL)
+                                // use "if let" conditional to prevent crash if imageData object is not successully cast. The result of the  "if let" conditional below is "imageData": a non-optional NSData object
+                                if let imageData = imageData {
+                                    let imageFile: PFFile = PFFile(data: imageData as Data)!
+                                    self.user["image"] = imageFile
+                                    
+                                }
+                            }
+                        }
                     }
                 }
-            // else show Facebook Request Error Alert and terminate function
-            } else {
-                self.errorAlert(title: "Facebook Login Error", message: "Please try again later")
-                
             }
         }
     }
     
-    // FBSDKLoginDelegate method
+    // FBSDKLoginDelegate method. Not needed, login button is hidded after successful login activity
     func loginButtonDidLogOut(_ loginButton: LoginButton) {
         
     }
@@ -132,14 +118,17 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
             user.password = password.text
             // check if facebook login was successful and details retrieved
             if self.loggedIn {
+                // save PFUser object to Parse. Save will happen only if all the keys are present
                 user.signUpInBackground(block: { (success, error) in
                     self.restore()
                     if success {
                         self.performSegue(withIdentifier: "toMain", sender: self)
                         
                     } else {
-                        self.errorAlert(title: "Failed Sign Up", message: "An error occured during sign up. Please try again")
-                        
+                        if let error = error?.localizedDescription {
+                            // display sign up error message
+                            self.errorAlert(title: "Failed Sign Up", message: error)
+                        }
                     }
                 })
             } else {
@@ -151,6 +140,11 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
             errorAlert(title: "Invalid Password", message: "Please enter a valid password")
             
         }
+    }
+    
+    @IBAction func back(_ sender: Any) {
+        performSegue(withIdentifier: "toMain", sender: self)
+        
     }
     
     // tap anywhere to escape keyboard
