@@ -13,14 +13,15 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var createButton: UIButton!
     @IBOutlet weak var profileButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var logo: UILabel!
  
     @IBOutlet weak var backImage: UIImageView!
     
     @IBAction func search(_ sender: UIButton) {
         performSegue(withIdentifier: "toSearch", sender: self)
-        
+
     }
-    
+
     @IBAction func profile(_ sender: AnyObject) {
         performSegue(withIdentifier: "toProfile", sender: self)
     
@@ -43,10 +44,11 @@ class HomeViewController: UIViewController {
         PFUser.current()?.saveInBackground(block: { (success, error) in
             if success {
                 PFUser.logOut()
-                self.performSegue(withIdentifier: "toMain", sender: self)
 
             }
         })
+        performSegue(withIdentifier: "toMain", sender: self)
+
     }
     
     override func viewDidLoad() {
@@ -55,6 +57,8 @@ class HomeViewController: UIViewController {
         createButton.layer.cornerRadius = 10
         profileButton.layer.cornerRadius = 10
         settingsButton.layer.cornerRadius = 10
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
         
     }
 

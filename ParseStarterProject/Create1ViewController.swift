@@ -13,6 +13,7 @@ var createJob: PFObject = PFObject(className: "Job")
 class CreateViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var jobTitle: UITextField!
+    @IBOutlet weak var logo: UILabel!
     
     var finish: Bool = false
     
@@ -65,7 +66,9 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         // allows view controller to control the keyboard using a text field delegate
         self.jobTitle.delegate = self
-
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
+        
     }
     
     @IBAction func addJobTitle(_ sender: UIButton) {

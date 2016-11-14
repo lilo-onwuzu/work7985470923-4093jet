@@ -13,6 +13,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var logo: UILabel!
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
@@ -75,6 +76,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         self.password.delegate = self
         loginButton.layer.cornerRadius = 15.0
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
 
     }
     

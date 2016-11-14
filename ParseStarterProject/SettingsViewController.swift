@@ -16,6 +16,8 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
+    @IBOutlet weak var logo: UILabel!
+    
     @IBAction func home(_ sender: AnyObject) {
         performSegue(withIdentifier: "toHome", sender: self)
         
@@ -23,7 +25,9 @@ class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
+        
     }
 
     override func didReceiveMemoryWarning() {

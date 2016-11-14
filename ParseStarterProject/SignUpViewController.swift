@@ -15,6 +15,7 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var name: UILabel!
+    @IBOutlet weak var logo: UILabel!
     
     // initialize new empty PFUser object
     let user: PFUser = PFUser()
@@ -57,6 +58,8 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
         signUpButton.frame = CGRect(x: (self.view.bounds.width / 2) - 100, y: (self.view.bounds.height / 2) - 25 , width: 200, height: 25)
         view.addSubview(signUpButton)
         signUpButton.delegate = self
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
         
     }
     

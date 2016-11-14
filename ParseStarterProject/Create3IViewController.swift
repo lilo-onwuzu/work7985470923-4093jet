@@ -12,6 +12,7 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var rateField: UITextField!
     @IBOutlet weak var rateStepper: UIImageView!
+    @IBOutlet weak var logo: UILabel!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -25,7 +26,9 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
+        
     }
 
     // if the argument "entry" is successfully converted to an optionalDouble return the optionalDouble, else, the function terminates and isNumber() has no value (no default value)

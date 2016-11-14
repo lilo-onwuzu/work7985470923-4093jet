@@ -11,6 +11,7 @@ import UIKit
 class Create4ViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var jobDetails: UITextField!
+    @IBOutlet weak var logo: UILabel!
     
     var finish: Bool = false
     
@@ -52,7 +53,9 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.jobDetails.delegate = self
-    
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
+        
     }
     
     @IBAction func confirmCreate(_ sender: AnyObject) {

@@ -21,6 +21,7 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var jobRate: UILabel!
 	@IBOutlet weak var requesterImage: UIImageView!
     @IBOutlet weak var wheelbarrow: UIImageView!
+	@IBOutlet weak var logo: UILabel!
 	
 	func drag(_ gesture: UIPanGestureRecognizer) {
 		// translation measures the distance of a pan. It can be positive or negative
@@ -136,6 +137,8 @@ class SearchViewController: UIViewController {
 		let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag(_:)))
 		wheelbarrow.addGestureRecognizer(pan)
 		wheelbarrow.isUserInteractionEnabled = true
+		logo.layer.masksToBounds = true
+		logo.layer.cornerRadius = 3
 		
 		// query first job once view loads
 		getNewJob()

@@ -15,6 +15,7 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     var cycle = ["Flat", "Hourly", "Weekly", "Monthly", "Annually"]
 
     @IBOutlet weak var cyclePicker: UIPickerView!
+    @IBOutlet weak var logo: UILabel!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -36,6 +37,8 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         super.viewDidLoad()
         self.cyclePicker.delegate = self
         self.cyclePicker.dataSource = self
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
         
     }
     

@@ -11,8 +11,12 @@ import UIKit
 
 class ConnectViewController: UIViewController {
     
+    @IBOutlet weak var logo: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
         
     }
 
