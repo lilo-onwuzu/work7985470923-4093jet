@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="pdX-gC-01V">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -369,24 +369,27 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F5A-0o-KYm">
-                                <rect key="frame" x="16" y="366" width="343" height="35"/>
+                                <rect key="frame" x="16" y="363.5" width="343" height="40"/>
+                                <color key="backgroundColor" red="0.5833128698787311" green="0.81820571073776049" blue="0.86112090214507775" alpha="0.59817891725352113" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="5kt-yj-Bju"/>
+                                    <constraint firstAttribute="height" constant="40" id="5kt-yj-Bju"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Dosis-Regular" family="Dosis" pointSize="35"/>
+                                <fontDescription key="fontDescription" name="Dosis-SemiBold" family="Dosis" pointSize="35"/>
                                 <state key="normal" title="Settings">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="settings:" destination="Z3h-TX-yqK" eventType="touchUpInside" id="Ozi-qn-ura"/>
+                                    <segue destination="pSc-Da-aeP" kind="show" identifier="toSettings" id="SgS-Rg-F3l"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h8A-wQ-8uh">
-                                <rect key="frame" x="16" y="290" width="343" height="38"/>
+                                <rect key="frame" x="16" y="289" width="343" height="40"/>
+                                <color key="backgroundColor" red="0.083863558185060277" green="0.58566821268667046" blue="0.64337860893212429" alpha="0.71577904929577463" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="38" id="37O-DZ-lDD"/>
+                                    <constraint firstAttribute="height" constant="40" id="37O-DZ-lDD"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Dosis-Regular" family="Dosis" pointSize="35"/>
+                                <fontDescription key="fontDescription" name="Dosis-SemiBold" family="Dosis" pointSize="35"/>
                                 <state key="normal" title="Profile">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -396,29 +399,34 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NXY-d7-DU8">
-                                <rect key="frame" x="16" y="214" width="343" height="39"/>
+                                <rect key="frame" x="16" y="213.5" width="343" height="40"/>
+                                <color key="backgroundColor" red="0.86112090214507775" green="0.42613077278021866" blue="0.47873636275730064" alpha="0.59817891725352113" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="39" id="456-GI-zfE"/>
+                                    <constraint firstAttribute="height" constant="40" id="456-GI-zfE"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Dosis-Regular" family="Dosis" pointSize="35"/>
+                                <fontDescription key="fontDescription" name="Dosis-SemiBold" family="Dosis" pointSize="35"/>
                                 <state key="normal" title="Create A Posting">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="create:" destination="Z3h-TX-yqK" eventType="touchUpInside" id="IvM-Bb-EbS"/>
+                                    <action selector="create:" destination="Z3h-TX-yqK" eventType="touchUpInside" id="yTa-7T-4Yb"/>
+                                    <segue destination="4aq-nf-voc" kind="show" identifier="toCreate" id="dgv-La-K3z"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TTf-Wi-VO5">
-                                <rect key="frame" x="16" y="133" width="343" height="52"/>
+                                <rect key="frame" x="16" y="139" width="343" height="40"/>
+                                <color key="backgroundColor" red="0.48778284013892559" green="0.5049493425196192" blue="0.57998704663212441" alpha="0.59914172535211263" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="52" id="Q5X-Hw-yTA"/>
+                                    <constraint firstAttribute="height" constant="40" id="Q5X-Hw-yTA"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Dosis-Regular" family="Dosis" pointSize="35"/>
+                                <fontDescription key="fontDescription" name="Dosis-SemiBold" family="Dosis" pointSize="35"/>
                                 <state key="normal" title="Search Postings">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="create:" destination="Z3h-TX-yqK" eventType="touchUpInside" id="5dD-ku-tDD"/>
+                                    <action selector="search:" destination="Z3h-TX-yqK" eventType="touchUpInside" id="ZYR-qC-EBF"/>
+                                    <segue destination="87v-cw-FcC" kind="show" identifier="toSearch" id="OtK-ZR-xBx"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WORKJET" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q9r-9f-WS1">
@@ -444,6 +452,7 @@
                                 </state>
                                 <connections>
                                     <action selector="logOut:" destination="Z3h-TX-yqK" eventType="touchUpInside" id="g1c-rk-FqB"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="toMain" id="gK5-uA-jJS"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -477,6 +486,10 @@
                     </view>
                     <connections>
                         <outlet property="backImage" destination="3ck-92-0cr" id="qQp-mT-DFz"/>
+                        <outlet property="createButton" destination="NXY-d7-DU8" id="Qug-4Y-CH5"/>
+                        <outlet property="profileButton" destination="h8A-wQ-8uh" id="RNo-Yd-8I1"/>
+                        <outlet property="searchButton" destination="TTf-Wi-VO5" id="bO7-jH-QWt"/>
+                        <outlet property="settingsButton" destination="F5A-0o-KYm" id="dea-RE-UN8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JQM-0o-KhE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -584,11 +597,12 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Dosis-Regular" family="Dosis" pointSize="23"/>
                                 <state key="normal" title="MY JOBS">
-                                    <color key="titleColor" red="0.095594655989999999" green="0.6694759294" blue="0.72745406229999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" red="0.82427501680000004" green="0.45414682693847358" blue="0.53094474926950441" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="home:" destination="7GK-ge-rXC" eventType="touchUpInside" id="tuJ-Bq-rZq"/>
-                                    <segue destination="miG-pI-pOd" kind="show" identifier="toConnect" id="SS4-U8-Mxl"/>
+                                    <action selector="toMyJobs:" destination="7GK-ge-rXC" eventType="touchUpInside" id="nqI-kI-h92"/>
+                                    <segue destination="miG-pI-pOd" kind="show" identifier="toMyJobs" id="SS4-U8-Mxl"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -812,7 +826,7 @@
                                 <connections>
                                     <action selector="home:" destination="7GK-ge-rXC" eventType="touchUpInside" id="uWu-ai-qab"/>
                                     <action selector="home:" destination="87v-cw-FcC" eventType="touchUpInside" id="zCE-Po-0LA"/>
-                                    <segue destination="Z3h-TX-yqK" kind="show" identifier="toHome" id="gig-sz-lgX"/>
+                                    <segue destination="Z3h-TX-yqK" kind="show" identifier="backHome" id="5KC-8d-gVP"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WORKJET" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c8S-d2-QfR">
@@ -915,7 +929,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W2x-PD-PUs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2556" y="443"/>
+            <point key="canvasLocation" x="-2794" y="26"/>
         </scene>
         <!--ConnectViewController-->
         <scene sceneID="RZf-ti-cVi">
@@ -970,8 +984,8 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="26" id="Dyb-dW-L7X"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Dosis-Medium" family="Dosis" pointSize="30"/>
-                                <state key="normal" title="POSTED JOBS">
+                                <fontDescription key="fontDescription" name="Dosis-Medium" family="Dosis" pointSize="32"/>
+                                <state key="normal" title="Posted Jobs">
                                     <color key="titleColor" red="0.092121156073524835" green="0.6433358421205454" blue="0.70672867369896375" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -985,8 +999,8 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="26" id="ojE-0P-EV7"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Dosis-Medium" family="Dosis" pointSize="30"/>
-                                <state key="normal" title="ACCEPTED JOBS">
+                                <fontDescription key="fontDescription" name="Dosis-Medium" family="Dosis" pointSize="32"/>
+                                <state key="normal" title="Accepted Jobs">
                                     <color key="titleColor" red="0.73691024800000005" green="0.24900662200000001" blue="0.44535157990000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -1425,7 +1439,7 @@
                                     <constraint firstAttribute="height" constant="30" id="8KZ-ao-cFr"/>
                                 </constraints>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="Dosis-Regular" family="Dosis" pointSize="19"/>
+                                <fontDescription key="fontDescription" name="Pompiere-Regular" family="Pompiere " pointSize="20"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m34-hj-Max">
@@ -1661,9 +1675,10 @@
         <image name="work.jpg" width="744" height="439"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="L1z-S7-yYL"/>
+        <segue reference="5KC-8d-gVP"/>
         <segue reference="lnR-wT-KdB"/>
+        <segue reference="gK5-uA-jJS"/>
         <segue reference="SS4-U8-Mxl"/>
-        <segue reference="4za-jv-lat"/>
+        <segue reference="m0d-7s-0Qj"/>
     </inferredMetricsTieBreakers>
 </document>

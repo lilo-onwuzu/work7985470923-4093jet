@@ -13,21 +13,22 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var createButton: UIButton!
     @IBOutlet weak var profileButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
+ 
     @IBOutlet weak var backImage: UIImageView!
+    
+    @IBAction func search(_ sender: UIButton) {
+        performSegue(withIdentifier: "toSearch", sender: self)
+        
+    }
     
     @IBAction func profile(_ sender: AnyObject) {
         performSegue(withIdentifier: "toProfile", sender: self)
     
     }
     
-    @IBAction func search(_ sender: AnyObject) {
-        performSegue(withIdentifier: "toSearch", sender: self)
-    
-    }
-    
-    @IBAction func create(_ sender: AnyObject) {
+    @IBAction func create(_ sender: UIButton) {
         performSegue(withIdentifier: "toCreate", sender: self)
-    
+
     }
     
     @IBAction func settings(_ sender: AnyObject) {
@@ -50,7 +51,11 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        searchButton.layer.cornerRadius = 10
+        createButton.layer.cornerRadius = 10
+        profileButton.layer.cornerRadius = 10
+        settingsButton.layer.cornerRadius = 10
+        
     }
 
     override func didReceiveMemoryWarning() {

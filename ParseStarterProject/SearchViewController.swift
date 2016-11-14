@@ -143,7 +143,7 @@ class SearchViewController: UIViewController {
 	}
 	
 	@IBAction func home(_ sender: AnyObject) {
-		performSegue(withIdentifier: "toHome", sender: self)
+		performSegue(withIdentifier: "backHome", sender: self)
 		
 	}
 

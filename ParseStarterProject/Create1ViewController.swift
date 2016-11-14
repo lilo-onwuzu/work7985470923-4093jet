@@ -14,6 +14,8 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var jobTitle: UITextField!
     
+    var finish: Bool = false
+    
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
@@ -41,7 +43,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                     createJob.add(self.jobTitle.text!, forKey: "title")
                     createJob.add(userId, forKey: "requesterId")
                     createJob.add(facebookId, forKey: "requesterFid")
-                    super.performSegue(withIdentifier: "toCreate2", sender: self)
+                    self.finish = true
                     
                 } else {
                     self.errorAlert(title: "Invalid Entry", message: "Please add a job title")
@@ -51,6 +53,11 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                     self.errorAlert(title: "Error Getting Location", message: error!.localizedDescription)
                     
             }
+        }
+        // wait till finish is true before segue
+        if finish {
+            performSegue(withIdentifier: "toCreate2", sender: self)
+            
         }
     }
     

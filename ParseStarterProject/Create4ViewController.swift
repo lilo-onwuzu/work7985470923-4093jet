@@ -12,6 +12,8 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var jobDetails: UITextField!
     
+    var finish: Bool = false
+    
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
@@ -29,15 +31,21 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
             // saveInBackground is an asychronous call that does not wait to execute before continuing so save it with block if you need data that is returned from the async call
             createJob.saveInBackground(block: { (success, error) in
                 if success {
-                    super.performSegue(withIdentifier: "toConfirm", sender: self)
+                    self.finish = true
                     
                 } else {
                     self.errorAlert(title: "Database Error", message: "Please try again later")
                 }
+
             })
         } else {
             errorAlert(title: "Invalid Form Entry", message: "Please add some more details")
             
+        }
+        // wait till finish is true or createJob object is saved in async call before segue
+        if finish {
+            performSegue(withIdentifier: "toConfirm", sender: self)
+        
         }
     }
     
