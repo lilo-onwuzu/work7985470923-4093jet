@@ -5,12 +5,10 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// location add unsuccessful
-// save job only at end 
 
 import UIKit
 
-var jobId: String = ""
+var createJob: PFObject = PFObject(className: "Job")
 
 class CreateViewController: UIViewController, UITextFieldDelegate {
 
@@ -27,44 +25,32 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     }
     
     func addTitle() {
-        if jobTitle.text != "" || jobTitle.text != "Describe your job in 1-3 words" {
-            // PFUser.current() must exist here because the login screen comes before this
-            let user = PFUser.current()!
-            let userId = (user.objectId)!
-            let facebookId = (user.object(forKey: "facebookId"))!
-            
-            // add attributes to PFObject first
-            let job = PFObject(className: "Job")
-            job.add(jobTitle.text!, forKey: "title")
-            job.add(userId, forKey: "requesterId")
-            job.add(facebookId, forKey: "requesterFid")
-            // add job location (latitude & longitude) with PFGeoPoint
-            PFGeoPoint.geoPointForCurrentLocation(inBackground: { (geoPoint, error) in
-                let point = geoPoint!
-                job.add(point, forKey: "location")
-
-//                if let geoPoint = geoPoint {
-//                    print(geoPoint)
-//                    job.add(geoPoint, forKey: "location")
-//                    
-//                }
-            })
-            
-            // now save PFObject to Parse
-            // saveInBackground is an asychronous call that does not wait to execute before continuing so save it with block if you need data that is returned from the async call
-            job.saveInBackground(block: { (success, error) in
-                if error != nil {
-                    self.errorAlert(title: "Database Error", message: "Please try again later")
+        // first add job location (latitude & longitude) with PFGeoPoint
+        // async call, use block
+        PFGeoPoint.geoPointForCurrentLocation { (location, error) in
+            if let location = location {
+                createJob.add(location, forKey: "location")
+                // start adding job info after location is gotten
+                if self.jobTitle.text != "" || self.jobTitle.text != "Describe your job in 1-3 words" {
+                    // PFUser.current() must exist here because the login screen comes before this
+                    let user = PFUser.current()!
+                    let userId = (user.objectId)!
+                    let facebookId = (user.object(forKey: "facebookId"))!
+                    
+                    // add attributes to createJob PFObject first
+                    createJob.add(self.jobTitle.text!, forKey: "title")
+                    createJob.add(userId, forKey: "requesterId")
+                    createJob.add(facebookId, forKey: "requesterFid")
+                    super.performSegue(withIdentifier: "toCreate2", sender: self)
                     
                 } else {
-                    jobId = job.objectId!
-                    self.performSegue(withIdentifier: "toCreate2", sender: self)
+                    self.errorAlert(title: "Invalid Entry", message: "Please add a job title")
                     
                 }
-            })
-        } else {
-            errorAlert(title: "Invalid Entry", message: "Please add a job title")
-            
+            } else {
+                    self.errorAlert(title: "Error Getting Location", message: error!.localizedDescription)
+                    
+            }
         }
     }
     
@@ -97,7 +83,6 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        
     }
 
 }

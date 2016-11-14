@@ -24,26 +24,17 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
     
     func addDetails() {
         if jobDetails.text != "" || jobDetails.text != "Include more information here..." {
-            let query = PFQuery(className: "Job")
-            query.getObjectInBackground(withId: jobId) { (job, error) in
-                if error != nil {
-                    self.errorAlert(title: "Parse Fetch Error", message: "Please try again later")
+            createJob.add(self.jobDetails.text! , forKey: "details")
+            // finally save createJob PFObject to Parse
+            // saveInBackground is an asychronous call that does not wait to execute before continuing so save it with block if you need data that is returned from the async call
+            createJob.saveInBackground(block: { (success, error) in
+                if success {
+                    super.performSegue(withIdentifier: "toConfirm", sender: self)
                     
                 } else {
-                    job?.add(self.jobDetails.text! , forKey: "details")
-                    
-                    job?.saveInBackground(block: { (success, error) in
-                        if error != nil {
-                            self.errorAlert(title: "Parse Save Error", message: "Please try again later")
-                            print(error)
-                            
-                        } else {
-                            
-                        }
-                    })
+                    self.errorAlert(title: "Database Error", message: "Please try again later")
                 }
-            }
-            self.performSegue(withIdentifier: "toConfirm", sender: self)
+            })
         } else {
             errorAlert(title: "Invalid Form Entry", message: "Please add some more details")
             
@@ -53,7 +44,7 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.jobDetails.delegate = self
-        
+    
     }
     
     @IBAction func confirmCreate(_ sender: AnyObject) {
@@ -76,7 +67,6 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        
     }
 
 }

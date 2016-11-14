@@ -1,23 +1,20 @@
 //
 //  ProfileViewController.swift
-//  ParseStarterProject
 //
 //  Created by mac on 10/13/16.
-//  Copyright © 2016 Parse. All rights reserved.
+//  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// See my posted jobs
-// See my received jobs
-// Message View
 
 import UIKit
 
 class ProfileViewController: UIViewController {
-
+    
+    @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var userImage: UIImageView!
-    @IBOutlet weak var displayName: UILabel!
-    @IBOutlet weak var displayLocation: UILabel!
-    @IBOutlet weak var displayStory: UILabel!
+    @IBOutlet weak var userName: UILabel!
+    @IBOutlet weak var userLocation: UILabel!
+    @IBOutlet weak var userStory: UILabel!
     @IBOutlet weak var editStory: UITextField!
     
     let user = PFUser.current()!
@@ -37,10 +34,10 @@ class ProfileViewController: UIViewController {
         let firstName = user.object(forKey: "first_name") as! String
         let lastName = user.object(forKey: "last_name") as! String
         if let story = user.object(forKey: "story") {
-            displayStory.text = String(describing: story)
+            userStory.text = String(describing: story)
         }
 
-        displayName.text = firstName + " " + lastName
+        userName.text = firstName + " " + lastName
         
         let imageFile = user.object(forKey: "image") as! PFFile
         imageFile.getDataInBackground { (data, error) in
@@ -51,17 +48,21 @@ class ProfileViewController: UIViewController {
                 print(error)
             }
         }
+        userStory.layer.masksToBounds = true
+        userStory.layer.cornerRadius = 10.0
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3.0
+        
     }
 
     @IBAction func edit(_ sender: AnyObject) {
         let editStory = self.editStory.text!
-        displayStory.text = editStory
+        userStory.text = editStory
         
         user["story"] = editStory
         user.saveInBackground(block: { (success, error) in
-            if error != nil {
-                print(error)
-                self.errorAlert(title: "Parse Database Error", message: "Please try again later")
+            if let error = error?.localizedDescription {
+                self.errorAlert(title: "Database Error", message: error)
                 
             } else {
 

@@ -13,6 +13,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var createButton: UIButton!
     @IBOutlet weak var profileButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var backImage: UIImageView!
     
     @IBAction func profile(_ sender: AnyObject) {
         performSegue(withIdentifier: "toProfile", sender: self)
@@ -49,10 +50,6 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchButton.layer.cornerRadius = 10.0
-        createButton.layer.cornerRadius = 10.0
-        profileButton.layer.cornerRadius = 10.0
-        settingsButton.layer.cornerRadius = 10.0
 
     }
 
