@@ -18,7 +18,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     func activity() {
-        let rect: CGRect = CGRect(x: 0, y: 0, width: 50, height: 50)
+        let rect: CGRect = CGRect(x: 0, y: 0, width: 500, height: 500)
         activityIndicator = UIActivityIndicatorView(frame: rect)
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true

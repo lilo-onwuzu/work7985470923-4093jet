@@ -6,6 +6,7 @@
 //
 
 
+// make page scrollable
 import UIKit
 
 class ProfileViewController: UIViewController, UITextFieldDelegate {
@@ -85,17 +86,17 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
         runEdit()
         
     }
+    
+    @IBAction func home(_ sender: UIButton) {
+        performSegue(withIdentifier: "toHome", sender: self)
+    
+    }
 
-    @IBAction func toMyJobs(_ sender: UIButton) {
+    @IBAction func myJobs(_ sender: UIButton) {
         performSegue(withIdentifier: "toMyJobs", sender: self)
         
     }
-    
-    @IBAction func home(_ sender: AnyObject) {
-        performSegue(withIdentifier: "toHome", sender: self)
-        
-    }
-    
+
     // tap anywhere to escape keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
@@ -105,7 +106,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
     // hit return to escape keyboard
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        runEdit()
         return true
         
     }

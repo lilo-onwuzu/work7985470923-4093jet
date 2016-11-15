@@ -5,12 +5,6 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// ApplePay
-// Change Password
-// Change Display Pic
-// Delete PFUser Account
-// Update FB Login
-
 
 import UIKit
 

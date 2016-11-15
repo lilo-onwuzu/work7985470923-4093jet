@@ -1,9 +1,8 @@
 //
 //  ConnectViewController.swift
-//  ParseStarterProject
 //
 //  Created by mac on 10/13/16.
-//  Copyright © 2016 Parse. All rights reserved.
+//  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
 
@@ -30,9 +29,9 @@ class ConnectViewController: UIViewController {
         
     }
     
-    @IBAction func backToProfile(_ sender: AnyObject) {
+    @IBAction func back(_ sender: UIButton) {
         performSegue(withIdentifier: "backToProfile", sender: self)
-        
+
     }
     
     override func didReceiveMemoryWarning() {

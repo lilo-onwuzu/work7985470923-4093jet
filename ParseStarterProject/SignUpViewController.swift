@@ -55,7 +55,7 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
         self.password.delegate = self
         // display Facebook login button
         let signUpButton = LoginButton(readPermissions: [ .publicProfile ])
-        signUpButton.frame = CGRect(x: (self.view.bounds.width / 2) - 100, y: (self.view.bounds.height / 2) - 25 , width: 200, height: 25)
+        signUpButton.frame = CGRect(x: (self.view.bounds.width / 2) - 100, y: 200, width: 200, height: 25)
         view.addSubview(signUpButton)
         signUpButton.delegate = self
         logo.layer.masksToBounds = true
@@ -144,10 +144,10 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
             
         }
     }
-    
-    @IBAction func back(_ sender: Any) {
+  
+    @IBAction func back(_ sender: UIButton) {
         performSegue(withIdentifier: "toMain", sender: self)
-        
+    
     }
     
     // tap anywhere to escape keyboard

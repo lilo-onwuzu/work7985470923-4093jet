@@ -1,11 +1,13 @@
 //
 //  SearchViewController.swift
-//  ParseStarterProject
 //
 //  Created by mac on 10/13/16.
-//  Copyright © 2016 Parse. All rights reserved.
+//  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
+// DB save issue: duplicates
+// errorAlert when no more jobs
+// location 
 
 import UIKit
 
@@ -13,13 +15,14 @@ class SearchViewController: UIViewController {
 
 	var viewedJobId = ""
 
-    @IBOutlet weak var requesterName: UILabel!
-    @IBOutlet weak var jobTitle: UILabel!
-    @IBOutlet weak var jobLocation: UILabel!
-    @IBOutlet weak var jobCycle: UILabel!
-    @IBOutlet weak var jobStory: UILabel!
-    @IBOutlet weak var jobRate: UILabel!
+	@IBOutlet weak var requesterName: UILabel!
+	@IBOutlet weak var jobTitle: UILabel!
+	@IBOutlet weak var jobCycle: UILabel!
+	@IBOutlet weak var jobRate: UILabel!
+	@IBOutlet weak var jobLocation: UILabel!
+	@IBOutlet weak var jobDetails: UILabel!
 	@IBOutlet weak var requesterImage: UIImageView!
+	
     @IBOutlet weak var wheelbarrow: UIImageView!
 	@IBOutlet weak var logo: UILabel!
 	
@@ -67,13 +70,13 @@ class SearchViewController: UIViewController {
 		query.limit = 1
 		
 		// query with PFUser's location
-		let location = PFUser.current()?["location"] as? PFGeoPoint
-		if let latitude = location?.latitude {
-			if let longitude = location?.longitude {
-				query.whereKey("location", withinGeoBoxFromSouthwest: PFGeoPoint(latitude: latitude - 1, longitude: longitude - 1), toNortheast:PFGeoPoint(latitude:latitude + 1, longitude: longitude + 1))
-
-			}
-		}
+//		let location = PFUser.current()?["location"] as? PFGeoPoint
+//		if let latitude = location?.latitude {
+//			if let longitude = location?.longitude {
+//				query.whereKey("location", withinGeoBoxFromSouthwest: PFGeoPoint(latitude: latitude - 1, longitude: longitude - 1), toNortheast:PFGeoPoint(latitude:latitude + 1, longitude: longitude + 1))
+//
+//			}
+//		}
 		
 		// query with already viewed jobs
 		var ignoredJobs = [String]()
@@ -105,7 +108,7 @@ class SearchViewController: UIViewController {
 					self.jobCycle.text = jobCycle
 					let details = job.object(forKey: "details") as! NSArray
 					let jobDetails = details[0] as! String
-					self.jobStory.text = jobDetails
+					self.jobDetails.text = jobDetails
 					
 					// get job requester name and photo
 					let userId = job.object(forKey: "requesterId") as! NSArray
@@ -139,6 +142,8 @@ class SearchViewController: UIViewController {
 		wheelbarrow.isUserInteractionEnabled = true
 		logo.layer.masksToBounds = true
 		logo.layer.cornerRadius = 3
+		requesterName.layer.masksToBounds = true
+		requesterName.layer.cornerRadius = 3
 		
 		// query first job once view loads
 		getNewJob()
@@ -146,7 +151,7 @@ class SearchViewController: UIViewController {
 	}
 	
 	@IBAction func home(_ sender: AnyObject) {
-		performSegue(withIdentifier: "backHome", sender: self)
+		performSegue(withIdentifier: "toHome", sender: self)
 		
 	}
 
