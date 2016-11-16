@@ -10,6 +10,7 @@ import UIKit
 
 class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
+    var createJob = PFObject(className: "Job")
     var cycleValue: String = ""
     // create an array of all the items in the picker
     var cycle = ["Flat", "Hourly", "Weekly", "Monthly", "Annually"]
@@ -28,7 +29,7 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
 
     func addCycle() {
-        createJob.add(self.cycleValue, forKey: "cycle")
+        createJob.setValue(self.cycleValue, forKey: "cycle")
         performSegue(withIdentifier: "toCreate3", sender: self)
         
     }
@@ -39,7 +40,7 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         self.cyclePicker.dataSource = self
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-        
+
     }
     
     @IBAction func createButton(_ sender: AnyObject) {
@@ -70,6 +71,14 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toCreate3" {
+            let nextVC = segue.destination as! Create3ViewController
+            nextVC.createJob = self.createJob
+            
+        }
     }
 
 }

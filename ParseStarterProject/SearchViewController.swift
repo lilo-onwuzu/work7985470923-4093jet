@@ -5,9 +5,8 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// DB save issue: duplicates
 // errorAlert when no more jobs
-// location 
+
 
 import UIKit
 
@@ -69,14 +68,14 @@ class SearchViewController: UIViewController {
 		let query = PFQuery(className: "Job")
 		query.limit = 1
 		
-		// query with PFUser's location
-//		let location = PFUser.current()?["location"] as? PFGeoPoint
-//		if let latitude = location?.latitude {
-//			if let longitude = location?.longitude {
-//				query.whereKey("location", withinGeoBoxFromSouthwest: PFGeoPoint(latitude: latitude - 1, longitude: longitude - 1), toNortheast:PFGeoPoint(latitude:latitude + 1, longitude: longitude + 1))
-//
-//			}
-//		}
+//		 query with PFUser's location
+		let location = PFUser.current()?["job_location"] as? PFGeoPoint
+		if let latitude = location?.latitude{
+			if let longitude = location?.longitude {
+				query.whereKey("location", withinGeoBoxFromSouthwest: PFGeoPoint(latitude: latitude - 1, longitude: longitude - 1), toNortheast:PFGeoPoint(latitude:latitude + 1, longitude: longitude + 1))
+
+			}
+		}
 		
 		// query with already viewed jobs
 		var ignoredJobs = [String]()

@@ -8,14 +8,15 @@
 
 import UIKit
 
-var createJob: PFObject = PFObject(className: "Job")
-
 class CreateViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var jobTitle: UITextField!
     @IBOutlet weak var logo: UILabel!
     
     var finish: Bool = false
+    
+    // new createJob object is initialized with VC
+    var createJob: PFObject = PFObject(className: "Job")
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -28,37 +29,26 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     }
     
     func addTitle() {
-        // first add job location (latitude & longitude) with PFGeoPoint
-        // async call, use block
-        PFGeoPoint.geoPointForCurrentLocation { (location, error) in
-            if let location = location {
-                createJob.add(location, forKey: "location")
-                // start adding job info after location is gotten
-                if self.jobTitle.text != "" || self.jobTitle.text != "Describe your job in 1-3 words" {
-                    // PFUser.current() must exist here because the login screen comes before this
-                    let user = PFUser.current()!
-                    let userId = (user.objectId)!
-                    let facebookId = (user.object(forKey: "facebookId"))!
-                    
-                    // add attributes to createJob PFObject first
-                    createJob.add(self.jobTitle.text!, forKey: "title")
-                    createJob.add(userId, forKey: "requesterId")
-                    createJob.add(facebookId, forKey: "requesterFid")
-                    self.finish = true
-                    
-                } else {
-                    self.errorAlert(title: "Invalid Entry", message: "Please add a job title")
-                    
-                }
-            } else {
-                    self.errorAlert(title: "Error Getting Location", message: error!.localizedDescription)
-                    
-            }
-        }
-        // wait till finish is true before segue
+        // wait till location is obtained and saved before adding job details
         if finish {
-            performSegue(withIdentifier: "toCreate2", sender: self)
-            
+            // add job info
+            if self.jobTitle.text != "" || self.jobTitle.text != "Describe your job in 1-3 words" {
+                // PFUser.current() must exist here because the login screen comes before this
+                let user = PFUser.current()!
+                let userId = (user.objectId)!
+                let facebookId = (user.object(forKey: "facebookId"))!
+                
+                // add attributes to createJob PFObject first
+                // .setValue() sets value of a type while .add() create an array type column and adds to it
+                createJob.setValue(self.jobTitle.text!, forKey: "title")
+                createJob.setValue(userId, forKey: "requesterId")
+                createJob.setValue(facebookId, forKey: "requesterFid")
+                performSegue(withIdentifier: "toCreate2", sender: self)
+                
+            } else {
+                self.errorAlert(title: "Invalid Entry", message: "Please add a job title")
+                
+            }
         }
     }
     
@@ -69,6 +59,18 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
         
+        // add job location (latitude & longitude) with PFGeoPoint
+        // async call, use block and handshake boolean "finish"
+        PFGeoPoint.geoPointForCurrentLocation { (coordinates, error) in
+            if let coordinates = coordinates {
+                self.createJob.setValue(coordinates, forKey: "location")
+                self.finish = true
+                
+            } else {
+                self.errorAlert(title: "Error Getting Location", message: error!.localizedDescription)
+                
+            }
+        }
     }
     
     @IBAction func addJobTitle(_ sender: UIButton) {
@@ -95,4 +97,12 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toCreate2" {
+            let nextVC = segue.destination as! Create2ViewController
+            nextVC.createJob = self.createJob
+            
+        }
+    }
+    
 }

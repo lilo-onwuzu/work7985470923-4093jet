@@ -16,7 +16,7 @@ class PostedTableViewController: UITableViewController {
 
     var user = PFUser.current()!
     var postedJobs = [PFObject]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // collect user's posted jobs from a query to "Job" class

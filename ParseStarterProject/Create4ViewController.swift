@@ -9,11 +9,12 @@
 import UIKit
 
 class Create4ViewController: UIViewController, UITextFieldDelegate {
+    
+    var createJob: PFObject = PFObject(className: "Job")
+    var finish: Bool = false
 
     @IBOutlet weak var jobDetails: UITextField!
     @IBOutlet weak var logo: UILabel!
-    
-    var finish: Bool = false
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -27,7 +28,7 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
     
     func addDetails() {
         if jobDetails.text != "" || jobDetails.text != "Include more information here..." {
-            createJob.add(self.jobDetails.text! , forKey: "details")
+            createJob.setValue(self.jobDetails.text! , forKey: "details")
             // finally save createJob PFObject to Parse
             // saveInBackground is an asychronous call that does not wait to execute before continuing so save it with block if you need data that is returned from the async call
             createJob.saveInBackground(block: { (success, error) in

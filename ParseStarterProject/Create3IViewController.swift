@@ -10,6 +10,8 @@ import UIKit
 
 class Create3ViewController: UIViewController, UITextFieldDelegate {
     
+    var createJob = PFObject(className: "Job")
+
     @IBOutlet weak var rateField: UITextField!
     @IBOutlet weak var rateStepper: UIImageView!
     @IBOutlet weak var logo: UILabel!
@@ -56,7 +58,7 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func createButton(_ sender: AnyObject) {
         // before redirecting, confirm that rate still has a valid number that is non-negative
         if isNumber(rateField.text) != nil && isNumber(rateField.text)! > 0.0 {
-            createJob.add(self.rateField.text!, forKey: "rate")
+            createJob.setValue(self.rateField.text!, forKey: "rate")
             performSegue(withIdentifier: "toCreate4", sender: self)
             
         } else {
@@ -81,6 +83,14 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toCreate4" {
+            let nextVC = segue.destination as! Create4ViewController
+            nextVC.createJob = self.createJob
+            
+        }
     }
 
 }
