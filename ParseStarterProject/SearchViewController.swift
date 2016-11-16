@@ -5,8 +5,6 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// errorAlert when no more jobs
-
 
 import UIKit
 
@@ -21,9 +19,18 @@ class SearchViewController: UIViewController {
 	@IBOutlet weak var jobLocation: UILabel!
 	@IBOutlet weak var jobDetails: UILabel!
 	@IBOutlet weak var requesterImage: UIImageView!
-	
     @IBOutlet weak var wheelbarrow: UIImageView!
 	@IBOutlet weak var logo: UILabel!
+	
+	func errorAlert(title: String, message: String) {
+		let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+			alert.dismiss(animated: true, completion: nil)
+			
+		}))
+		present(alert, animated: true, completion: nil)
+		
+	}
 	
 	func drag(_ gesture: UIPanGestureRecognizer) {
 		// translation measures the distance of a pan. It can be positive or negative
@@ -68,7 +75,7 @@ class SearchViewController: UIViewController {
 		let query = PFQuery(className: "Job")
 		query.limit = 1
 		
-//		 query with PFUser's location
+		// query with PFUser's location
 		let location = PFUser.current()?["job_location"] as? PFGeoPoint
 		if let latitude = location?.latitude{
 			if let longitude = location?.longitude {
@@ -92,41 +99,39 @@ class SearchViewController: UIViewController {
 		// perform query (get job details and job requester's details)
 		query.findObjectsInBackground { (jobs, error) in
 			if let jobs = jobs {
-				for job in jobs {
-					
-					// get job details
-					self.viewedJobId = job.objectId!
-					let title = job.object(forKey: "title") as! NSArray
-					let jobTitle = title[0] as! String
-					self.jobTitle.text = jobTitle
-					let rate = job.object(forKey: "rate") as! NSArray
-					let jobRate = rate[0] as! String
-					self.jobRate.text = "$" + jobRate
-					let cycle = job.object(forKey: "cycle") as! NSArray
-					let jobCycle = cycle[0] as! String
-					self.jobCycle.text = jobCycle
-					let details = job.object(forKey: "details") as! NSArray
-					let jobDetails = details[0] as! String
-					self.jobDetails.text = jobDetails
-					
-					// get job requester name and photo
-					let userId = job.object(forKey: "requesterId") as! NSArray
-					let requesterId = userId[0] as! String
-					do {
-						let user = try PFQuery.getUserObject(withId: requesterId)
-						let firstName = user.object(forKey: "first_name") as? String
-						let lastName = user.object(forKey: "last_name") as? String
-						self.requesterName.text = firstName! + " " + lastName!
-						let imageFile = user.object(forKey: "image") as! PFFile
-						imageFile.getDataInBackground { (data, error) in
-							if let data = data {
-								let imageData = NSData(data: data)
-								self.requesterImage.image = UIImage(data: imageData as Data)
-							}
-						}
-					} catch _ {
+				if jobs.count > 0 {
+					for job in jobs {
+						// get job details
+						self.viewedJobId = job.objectId!
+						let jobTitle = job.object(forKey: "title") as! String
+						self.jobTitle.text = jobTitle
+						let jobRate = job.object(forKey: "rate") as! String
+						self.jobRate.text = "$" + jobRate
+						let jobCycle = job.object(forKey: "cycle") as! String
+						self.jobCycle.text = jobCycle
+						let jobDetails = job.object(forKey: "details") as! String
+						self.jobDetails.text = jobDetails
 						
+						// get job requester name and photo
+						let requesterId = job.object(forKey: "requesterId") as! String
+						do {
+							let user = try PFQuery.getUserObject(withId: requesterId)
+							let firstName = user.object(forKey: "first_name") as? String
+							let lastName = user.object(forKey: "last_name") as? String
+							self.requesterName.text = firstName! + " " + lastName!
+							let imageFile = user.object(forKey: "image") as! PFFile
+							imageFile.getDataInBackground { (data, error) in
+								if let data = data {
+									let imageData = NSData(data: data)
+									self.requesterImage.image = UIImage(data: imageData as Data)
+								}
+							}
+						} catch _ {
+							
+						}
 					}
+				} else {
+					self.errorAlert(title: "There are no more jobs around your area", message: "Please check again later")
 					
 				}
 			}

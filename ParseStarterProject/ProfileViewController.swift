@@ -106,6 +106,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
     // hit return to escape keyboard
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        runEdit()
         return true
         
     }
