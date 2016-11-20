@@ -1,9 +1,8 @@
 //
 //  PostedTableViewController.swift
-//  ParseStarterProject
 //
 //  Created by mac on 11/10/16.
-//  Copyright © 2016 Parse. All rights reserved.
+//  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
 // swipe cell left to edit, delete
@@ -35,17 +34,17 @@ class PostedTableViewController: UITableViewController {
         }
         
         // preserve selection between presentations
-         self.clearsSelectionOnViewWillAppear = false
+         self.clearsSelectionOnViewWillAppear = true
         // display an Edit button in the navigation bar for this view controller.
          self.navigationItem.rightBarButtonItem = self.editButtonItem
 
     }
 
-    @IBAction func back(_ sender: UIButton) {
-        performSegue(withIdentifier: "fromPosted", sender: self)
-        
+    @IBAction func back(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
 
@@ -64,12 +63,9 @@ class PostedTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postedCell", for: indexPath) as! PostedTableViewCell
         let job = postedJobs[indexPath.row]
-        let titleArray = job.object(forKey: "title") as! NSArray
-        let jobTitle = titleArray[0] as! String
-        let cycleArray = job.object(forKey: "cycle") as! NSArray
-        let jobCycle = cycleArray[0] as! String
-        let rateArray = job.object(forKey: "rate") as! NSArray
-        let jobRate = rateArray[0] as! String
+        let jobTitle = job.object(forKey: "title") as! String
+        let jobCycle = job.object(forKey: "cycle") as! String
+        let jobRate = job.object(forKey: "rate") as! String
         cell.postedTitle?.text = jobTitle
         cell.postedCycle?.text = "Cycle : " + jobCycle
         cell.postedRate?.text = "Rate : " + jobRate

@@ -18,19 +18,9 @@ class ConnectViewController: UIViewController {
         logo.layer.cornerRadius = 3
         
     }
-
-    @IBAction func posted(_ sender: UIButton) {
-        performSegue(withIdentifier: "toPostedTable", sender: self)
-        
-    }
-    
-    @IBAction func accepted(_ sender: UIButton) {
-        performSegue(withIdentifier: "toAcceptedTable", sender: self)
-        
-    }
     
     @IBAction func back(_ sender: UIButton) {
-        performSegue(withIdentifier: "backToProfile", sender: self)
+        self.dismiss(animated: true, completion: nil)
 
     }
     

@@ -66,6 +66,11 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
             
         }
     }
+    
+    @IBAction func back(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+
+    }
  
     // tap anywhere to escape keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

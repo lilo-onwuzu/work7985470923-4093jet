@@ -38,7 +38,7 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func logOut(_ sender: AnyObject) {
-        let empty = [""]
+        let empty = [String]()
         PFUser.current()!["accepted"] = empty
         PFUser.current()!["rejected"] = empty
         PFUser.current()?.saveInBackground(block: { (success, error) in

@@ -63,6 +63,11 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
         addDetails()
         
     }
+
+    @IBAction func back(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)

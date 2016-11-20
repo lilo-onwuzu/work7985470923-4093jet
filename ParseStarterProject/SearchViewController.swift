@@ -10,7 +10,7 @@ import UIKit
 
 class SearchViewController: UIViewController {
 
-	var viewedJobId = ""
+	var viewedJobId = String()
 
 	@IBOutlet weak var requesterName: UILabel!
 	@IBOutlet weak var jobTitle: UILabel!
@@ -155,7 +155,7 @@ class SearchViewController: UIViewController {
 	}
 	
 	@IBAction func home(_ sender: AnyObject) {
-		performSegue(withIdentifier: "toHome", sender: self)
+		self.dismiss(animated: true, completion: nil)
 		
 	}
 

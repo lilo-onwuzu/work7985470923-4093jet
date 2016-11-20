@@ -48,6 +48,11 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
     }
     
+    @IBAction func back(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+        
+    }
+    
     // number of sections layed side by side in picker
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1

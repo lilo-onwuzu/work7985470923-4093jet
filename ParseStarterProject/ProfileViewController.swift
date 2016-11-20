@@ -6,15 +6,14 @@
 //
 
 
-// make page scrollable
 import UIKit
 
 class ProfileViewController: UIViewController, UITextFieldDelegate {
-    
-    @IBOutlet weak var logo: UILabel!
+
     @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var userLocation: UILabel!
+    @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var userStory: UILabel!
     @IBOutlet weak var editStory: UITextField!
     
@@ -87,8 +86,9 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    // dismiss current VC to go back instead of using segue to go back. Segue creates a new instance or reference of the VC which could cause controller build up and your app to run of memory when excessively used.
     @IBAction func home(_ sender: UIButton) {
-        performSegue(withIdentifier: "toHome", sender: self)
+        self.dismiss(animated: true, completion: nil)
     
     }
 
