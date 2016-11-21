@@ -11,6 +11,7 @@ class HomeViewController: UIViewController {
 
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var createButton: UIButton!
+    @IBOutlet weak var jobsButton: UIButton!
     @IBOutlet weak var profileButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var logo: UILabel!
@@ -37,6 +38,11 @@ class HomeViewController: UIViewController {
     
     }
     
+    @IBAction func myJobs(_ sender: Any) {
+        performSegue(withIdentifier: "toMyJobs", sender: self)
+
+    }
+    
     @IBAction func logOut(_ sender: AnyObject) {
         let empty = [String]()
         PFUser.current()!["accepted"] = empty
@@ -57,6 +63,7 @@ class HomeViewController: UIViewController {
         createButton.layer.cornerRadius = 10
         profileButton.layer.cornerRadius = 10
         settingsButton.layer.cornerRadius = 10
+        jobsButton.layer.cornerRadius = 10
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
         

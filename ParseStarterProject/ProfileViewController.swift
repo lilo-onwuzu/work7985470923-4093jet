@@ -96,11 +96,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
     
     }
 
-    @IBAction func myJobs(_ sender: UIButton) {
-        performSegue(withIdentifier: "toMyJobs", sender: self)
-        
-    }
-
     // tap anywhere to escape keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)

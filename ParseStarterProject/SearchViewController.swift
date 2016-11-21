@@ -18,9 +18,9 @@ class SearchViewController: UIViewController {
 	@IBOutlet weak var jobRate: UILabel!
 	@IBOutlet weak var jobLocation: UILabel!
 	@IBOutlet weak var jobDetails: UILabel!
-	@IBOutlet weak var requesterImage: UIImageView!
-    @IBOutlet weak var wheelbarrow: UIImageView!
 	@IBOutlet weak var logo: UILabel!
+	@IBOutlet weak var wheelbarrow: UIImageView!
+	@IBOutlet weak var viewProfile: UIButton!
 	
 	func errorAlert(title: String, message: String) {
 		let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -118,14 +118,8 @@ class SearchViewController: UIViewController {
 							let user = try PFQuery.getUserObject(withId: requesterId)
 							let firstName = user.object(forKey: "first_name") as? String
 							let lastName = user.object(forKey: "last_name") as? String
-							self.requesterName.text = firstName! + " " + lastName!
-							let imageFile = user.object(forKey: "image") as! PFFile
-							imageFile.getDataInBackground { (data, error) in
-								if let data = data {
-									let imageData = NSData(data: data)
-									self.requesterImage.image = UIImage(data: imageData as Data)
-								}
-							}
+							self.requesterName.text = "Requester: " + firstName! + " " + lastName!
+
 						} catch _ {
 							
 						}
@@ -136,6 +130,8 @@ class SearchViewController: UIViewController {
 				}
 			}
 		}
+		jobDetails.sizeToFit()
+		
     }
     
     override func viewDidLoad() {
@@ -148,6 +144,7 @@ class SearchViewController: UIViewController {
 		logo.layer.cornerRadius = 3
 		requesterName.layer.masksToBounds = true
 		requesterName.layer.cornerRadius = 3
+		viewProfile.layer.cornerRadius = 10
 		
 		// query first job once view loads
 		getNewJob()
