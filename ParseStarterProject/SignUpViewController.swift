@@ -13,7 +13,6 @@ import FacebookLogin
 class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var password: UITextField!
-    @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var logo: UILabel!
     
@@ -108,7 +107,7 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
         }
     }
     
-    // FBSDKLoginDelegate method. Not needed, login button is hidded after successful login activity
+    // FBSDKLoginDelegate method. Not needed, login button is hidden after successful login activity
     func loginButtonDidLogOut(_ loginButton: LoginButton) {
         
     }
@@ -146,8 +145,8 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     }
   
     @IBAction func back(_ sender: UIButton) {
-        performSegue(withIdentifier: "toMain", sender: self)
-    
+        self.dismiss(animated: true, completion: nil)
+        
     }
     
     // tap anywhere to escape keyboard

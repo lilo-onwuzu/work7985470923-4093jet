@@ -14,8 +14,9 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var userLocation: UILabel!
     @IBOutlet weak var logo: UILabel!
-    @IBOutlet weak var userStory: UILabel!
     @IBOutlet weak var editStory: UITextField!
+    @IBOutlet weak var userStoryBack: UILabel!
+    @IBOutlet weak var userStory: UILabel!
     
     // should not crash here because login screen appears before this
     let user = PFUser.current()!
@@ -46,6 +47,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
         
             }
         })
+        userStory.sizeToFit()
+
     }
     
     override func viewDidLoad() {
@@ -73,10 +76,11 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
 
             }
         }
-        userStory.layer.masksToBounds = true
-        userStory.layer.cornerRadius = 10.0
+        userStoryBack.layer.masksToBounds = true
+        userStoryBack.layer.cornerRadius = 10.0
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3.0
+        userStory.sizeToFit()
         
     }
 

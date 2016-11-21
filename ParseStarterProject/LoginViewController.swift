@@ -86,9 +86,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     }
     
-    @IBAction func backToSignUp(_ sender: UIButton) {
-        performSegue(withIdentifier: "backToSignUp", sender: self)
-    
+    @IBAction func back(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+        
     }
     
     // tap anywhere on the screen to escape keyboard
