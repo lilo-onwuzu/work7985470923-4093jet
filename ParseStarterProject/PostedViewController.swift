@@ -13,6 +13,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var postedJobs = [PFObject]()
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var deleteJobs: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,9 +41,14 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    @IBAction func editJob(_ sender: Any) {
         
+        
+    }
+    
+    @IBAction func deleteJob(_ sender: Any) {
+    
+    
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -66,6 +72,11 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.postedRate?.text = "Rate : " + jobRate
         
         return cell
+        
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
         
     }
     
