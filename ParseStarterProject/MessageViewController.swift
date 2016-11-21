@@ -1,5 +1,5 @@
 //
-//  ConnectViewController.swift
+//  MessageViewController.swift
 //
 //  Created by mac on 10/13/16.
 //  Copyright © 2016 iponwuzu. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConnectViewController: UIViewController {
+class MesssageViewController: UIViewController {
     
     @IBOutlet weak var logo: UILabel!
     

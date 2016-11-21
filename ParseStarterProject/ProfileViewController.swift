@@ -5,10 +5,16 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
+// crash occurs because image data file is too large
+
 
 import UIKit
 
-class ProfileViewController: UIViewController, UITextFieldDelegate {
+class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+
+    let image = UIImagePickerController()
+    // should not crash here because login screen appears before this
+    let user = PFUser.current()!
 
     @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var userName: UILabel!
@@ -17,9 +23,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var editStory: UITextField!
     @IBOutlet weak var userStoryBack: UILabel!
     @IBOutlet weak var userStory: UILabel!
-    
-    // should not crash here because login screen appears before this
-    let user = PFUser.current()!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -82,8 +85,20 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
         logo.layer.cornerRadius = 3.0
         userStory.sizeToFit()
         
+        // UIImagePickerController's delegate object is of type UIImagePickerControllerDelegate and UINavigationControllerDelegate
+        // a delegate of an object (e.g UITableViewDelegate) is a "protocol" that allows the object (UITableView) to be manipulated by calling functions with the object as an arguments. These functions or methods on the object can now be called anywhere within the delegate (self or settingsVC in this case)
+        image.delegate = self
+        
     }
 
+    @IBAction func changePhoto(_ sender: Any) {
+        // lets UIImagePickerController object know where to pick image from
+        image.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
+        image.allowsEditing = false
+        self.present(image, animated: true, completion: nil)
+        
+    }
+    
     // edit action executes "after editing ends"
     @IBAction func edit(_ sender: AnyObject) {
         runEdit()
@@ -94,6 +109,19 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
     @IBAction func home(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     
+    }
+    
+    // run after UIImagePickerController has succesfully gotten a selected image, update Parse
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            userImage.image = pickedImage
+            let imageData = UIImagePNGRepresentation(pickedImage)!
+            let imageFile = PFFile(data: imageData)!
+            user["image"] = imageFile
+            user.saveInBackground()
+        }
+        self.dismiss(animated: true, completion: nil)
+        
     }
 
     // tap anywhere to escape keyboard

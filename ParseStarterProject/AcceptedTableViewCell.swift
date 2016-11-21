@@ -11,10 +11,9 @@ import UIKit
 class AcceptedTableViewCell: UITableViewCell {
 
     @IBOutlet weak var acceptedTitle: UILabel!
-    @IBOutlet weak var acceptedRate: UILabel!
     @IBOutlet weak var acceptedCycle: UILabel!
-    @IBOutlet weak var acceptedDate: UILabel!
-    
+    @IBOutlet weak var acceptedRate: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
