@@ -151,7 +151,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WORKJET" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u2l-d2-zQF">
-                                <rect key="frame" x="-4" y="160" width="383" height="98"/>
+                                <rect key="frame" x="-4" y="160.5" width="383" height="97.5"/>
                                 <fontDescription key="fontDescription" name="Dosis-Light" family="Dosis" pointSize="77"/>
                                 <color key="textColor" red="0.074067841719999999" green="0.61512178559999997" blue="0.69093198700000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -170,7 +170,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="font" text="Already Registered?" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fjt-gP-iKa">
-                                <rect key="frame" x="57" y="293" width="158" height="35"/>
+                                <rect key="frame" x="57.5" y="293" width="158" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="XCe-4u-Mnv" userLabel="height = 32"/>
                                 </constraints>
@@ -675,7 +675,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="602"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Job Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hka-0w-ep1">
-                                <rect key="frame" x="119" y="263" width="137" height="41"/>
+                                <rect key="frame" x="119" y="263.5" width="137" height="40.5"/>
                                 <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="32"/>
                                 <color key="textColor" red="0.64724865470000004" green="0.21590760019999999" blue="0.39536553499999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1034,18 +1034,21 @@
         <scene sceneID="NAP-cq-agb">
             <objects>
                 <tabBarController title="Job Tab Bar Controller" id="GdQ-f9-9rm" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" barStyle="black" id="BeY-M4-3Pz">
+                    <tabBar key="tabBar" contentMode="scaleToFill" backgroundImage="camera.png" id="BeY-M4-3Pz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="miG-pI-pOd" kind="relationship" relationship="viewControllers" id="Fkd-vM-K3A"/>
-                        <segue destination="Gpp-Zf-qEA" kind="relationship" relationship="viewControllers" id="z1a-1D-qig"/>
-                        <segue destination="CJH-VH-TOu" kind="relationship" relationship="viewControllers" id="whr-hS-ui6"/>
+                        <segue destination="Gpp-Zf-qEA" kind="relationship" relationship="viewControllers" id="p4Q-gT-GrK"/>
+                        <segue destination="CJH-VH-TOu" kind="relationship" relationship="viewControllers" id="nRF-CV-Z0f"/>
+                        <segue destination="miG-pI-pOd" kind="relationship" relationship="viewControllers" id="d95-ru-tvp"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLK-Vx-OSW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tabBarItem title="Item" id="mXP-kC-iqT" userLabel="Messages"/>
+                <tabBarItem title="Posted Jobs" id="vre-Q3-d6Z"/>
+                <tabBarItem title="Accepted Jobs" id="Uno-us-UyQ"/>
             </objects>
             <point key="canvasLocation" x="-1962" y="-1144"/>
         </scene>
@@ -1132,6 +1135,21 @@
                                                     <color key="textColor" red="0.1093157775" green="0.54072100290000003" blue="0.61433773619999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wWE-Zq-vxF">
+                                                    <rect key="frame" x="292" y="8" width="83" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="30" id="11x-eQ-4O1"/>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="EGN-bb-adX"/>
+                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="83" id="GdQ-I0-tNh"/>
+                                                        <constraint firstAttribute="height" constant="30" id="nnc-t5-csw"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="sV3-h3-aLb"/>
+                                                        <constraint firstAttribute="width" constant="83" id="zWx-3n-ph1"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="17"/>
+                                                    <state key="normal" title="X">
+                                                        <color key="titleColor" red="0.63830360539999997" green="0.27546088769999999" blue="0.35880342430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </state>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="GMM-Gh-a1N" firstAttribute="leading" secondItem="DFS-0Y-tvk" secondAttribute="leading" constant="8" id="CUf-h8-eSn"/>
@@ -1140,7 +1158,9 @@
                                                 <constraint firstAttribute="trailing" secondItem="VMS-3s-crx" secondAttribute="trailing" constant="17" id="SFZ-N4-giW"/>
                                                 <constraint firstAttribute="trailing" secondItem="GMM-Gh-a1N" secondAttribute="trailing" constant="8" id="ZOa-j3-rLJ"/>
                                                 <constraint firstAttribute="bottom" secondItem="VMS-3s-crx" secondAttribute="bottom" constant="5" id="de5-0G-t2F"/>
+                                                <constraint firstItem="wWE-Zq-vxF" firstAttribute="top" secondItem="DFS-0Y-tvk" secondAttribute="top" constant="8" id="hu4-JF-KFj"/>
                                                 <constraint firstAttribute="bottom" secondItem="2yq-AY-2gj" secondAttribute="bottom" constant="5" id="wiq-xF-8xZ"/>
+                                                <constraint firstAttribute="trailing" secondItem="wWE-Zq-vxF" secondAttribute="trailing" id="zM5-rc-wDL"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -1400,7 +1420,6 @@
         <!--PostedJobsViewController-->
         <scene sceneID="l8O-s7-obk">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="147-eL-HEB" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController title="PostedJobsViewController" id="Gpp-Zf-qEA" customClass="PostedViewController" customModule="ParseStarterProject" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="n7b-HF-C9g"/>
@@ -1453,7 +1472,7 @@
                                     <color key="titleColor" red="0.63830360539999997" green="0.27546088769999999" blue="0.35880342430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="deleteJob:" destination="Gpp-Zf-qEA" eventType="touchUpInside" id="2tq-9H-kaP"/>
+                                    <action selector="triggerDelete:" destination="Gpp-Zf-qEA" eventType="touchUpInside" id="gIg-sE-Ahl"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uwK-IJ-VVE">
@@ -1475,7 +1494,7 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="postedCell" rowHeight="65" id="5oA-ak-ynU" customClass="PostedTableViewCell" customModule="ParseStarterProject" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="375" height="65"/>
+                                        <rect key="frame" x="0.0" y="56" width="375" height="65"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5oA-ak-ynU" id="h8H-hS-HbI">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
@@ -1555,6 +1574,7 @@
                         <outlet property="tableView" destination="20d-M0-5R4" id="wKa-bO-XzB"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="147-eL-HEB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1159.2" y="-1460.4197901049477"/>
         </scene>
@@ -1611,14 +1631,14 @@
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Edit Job Rate" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jZT-aj-ark">
                                         <rect key="frame" x="16" y="276" width="343" height="30"/>
-                                        <color key="backgroundColor" red="0.26750835779999999" green="0.56722909210000005" blue="0.63095712660000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.22659065390537692" green="0.48500713277060908" blue="0.54503319300518127" alpha="0.836762764084507" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" name="Pompiere-Regular" family="Pompiere " pointSize="22"/>
                                         <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Edit Job Details" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ane-Vt-Bru">
                                         <rect key="frame" x="16" y="327" width="343" height="30"/>
-                                        <color key="backgroundColor" red="0.26750835779999999" green="0.56722909210000005" blue="0.63095712660000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.21173087096516768" green="0.45320043380395997" blue="0.50928999352331605" alpha="0.76350682218309862" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" name="Pompiere-Regular" family="Pompiere " pointSize="22"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -1898,7 +1918,7 @@
                                 <rect key="frame" x="-4" y="20" width="383" height="602"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cycle" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y8k-ee-N1K">
-                                <rect key="frame" x="143" y="243" width="89" height="41"/>
+                                <rect key="frame" x="143" y="243.5" width="89" height="40.5"/>
                                 <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="32"/>
                                 <color key="textColor" red="0.063564938830000001" green="0.52755490859999998" blue="0.58597651569999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -2077,7 +2097,7 @@
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="decimalPad"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Loa-Yx-dMq">
-                                <rect key="frame" x="151" y="263" width="73" height="41"/>
+                                <rect key="frame" x="151.5" y="263.5" width="73" height="40.5"/>
                                 <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="32"/>
                                 <color key="textColor" red="0.64724865473575133" green="0.2159076002145518" blue="0.39536553503807487" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -2159,7 +2179,7 @@
                                 <size key="shadowOffset" width="1" height="1"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="More details" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uc0-yh-KJu">
-                                <rect key="frame" x="84" y="263" width="208" height="41"/>
+                                <rect key="frame" x="84.5" y="263.5" width="207.5" height="40.5"/>
                                 <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="32"/>
                                 <color key="textColor" red="0.063564938830000001" green="0.52755490859999998" blue="0.58597651569999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -2279,7 +2299,7 @@
                                 <size key="shadowOffset" width="1" height="1"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirmed!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K1R-ed-jfL">
-                                <rect key="frame" x="97" y="263" width="181" height="41"/>
+                                <rect key="frame" x="97.5" y="263.5" width="180.5" height="40.5"/>
                                 <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="32"/>
                                 <color key="textColor" red="0.063564938830000001" green="0.52755490859999998" blue="0.58597651569999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>

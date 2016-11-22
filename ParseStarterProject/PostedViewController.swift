@@ -11,10 +11,41 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var user = PFUser.current()!
     var postedJobs = [PFObject]()
+    var confirmDelete = false
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var deleteJobs: UIButton!
     
+    // verifies delete by setting var confirmDelete to true
+    func deleteAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Go back", style: .default, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Yes Delete", style: .default, handler: { (action) in
+            alert.dismiss(animated: true, completion: nil)
+            // set confirm to true to run PFUser delete
+            self.confirmDelete = true
+            
+        }))
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
+    // get rows selected for deleting and returns the job objects
+    func getRowsToDelete() -> [PFObject] {
+        var deleteRows = [PFObject]()
+            if let indexPaths = tableView.indexPathsForSelectedRows {
+                for indexPath in indexPaths {
+                    deleteRows.append(postedJobs[indexPath.row])
+                    
+                }
+            }
+        return deleteRows
+        
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // collect user's posted jobs from a query to "Job" class
@@ -42,25 +73,60 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     @IBAction func editJob(_ sender: Any) {
-        
-        
+        if let index = tableView.indexPathForSelectedRow?.row {
+            let editJob = postedJobs[index]
+            // pass selected job to editJob segue
+            print(editJob)
+            
+        }
     }
     
-    @IBAction func deleteJob(_ sender: Any) {
-    
-    
+    @IBAction func triggerDelete(_ sender: Any) {
+        // allows user to select multiple rows once "delete" is pressed
+        if deleteJobs.currentTitle == "Delete x" {
+            tableView.allowsMultipleSelection = true
+            deleteJobs.setTitle("Done", for: UIControlState.normal)
+
+        }
+        // when "done" is pressed, there may or may not be rows selected for deletion
+        else if deleteJobs.currentTitle == "Done" {
+            // get the array of PFObjects selected for deletion, could be empty
+            let jobsToDelete = getRowsToDelete()
+            let deleteCount = jobsToDelete.count
+            // if there were rows selected for deletion, do this. Else dont show alert to confirm delete
+            if deleteCount > 0 {
+                var jobTitles = ""
+                for job in jobsToDelete {
+                    jobTitles.append(job.object(forKey: "title") as! String)
+                    
+                }
+                deleteAlert(title: "Are you sure you want to delete these jobs?", message: jobTitles)
+                // reduce tpt by placing confirmDelete() here so it is only run in this thread
+                if confirmDelete {
+                    // delete jobs in Parse
+                    self.tableView.reloadData()
+                    
+                }
+            }
+            deleteJobs.setTitle("Delete", for: UIControlState.normal)
+            tableView.allowsMultipleSelection = false
+            
+        }
     }
     
+    // UITableView Delegate method operates on my UITableView subclass "tableView"
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
         
     }
     
+    // UITableView Delegate method operates on my UITableView subclass "tableView"
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return postedJobs.count
         
     }
     
+    // UITableView Delegate method operates on my UITableView subclass "tableView"
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postedCell", for: indexPath) as! PostedTableViewCell
         let job = postedJobs[indexPath.row]
