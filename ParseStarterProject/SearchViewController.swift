@@ -129,9 +129,8 @@ class SearchViewController: UIViewController {
 					
 				}
 			}
+			self.jobDetails.sizeToFit()
 		}
-		jobDetails.sizeToFit()
-		
     }
     
     override func viewDidLoad() {

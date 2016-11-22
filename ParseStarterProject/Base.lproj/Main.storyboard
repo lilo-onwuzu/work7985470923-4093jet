@@ -1462,9 +1462,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfw-0H-iT7">
-                                <rect key="frame" x="267" y="69" width="83" height="30"/>
+                                <rect key="frame" x="219" y="69" width="156" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="83" id="Fcg-SR-puE"/>
+                                    <constraint firstAttribute="width" constant="156" id="Fcg-SR-puE"/>
                                     <constraint firstAttribute="height" constant="30" id="Vfk-Sb-w4A"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="17"/>
@@ -1557,7 +1557,7 @@
                             <constraint firstItem="R0k-p6-jwt" firstAttribute="centerX" secondItem="YR0-uZ-jtu" secondAttribute="centerX" id="461-bm-lAb"/>
                             <constraint firstItem="20d-M0-5R4" firstAttribute="top" secondItem="uwK-IJ-VVE" secondAttribute="bottom" constant="8" id="BPi-D4-j45"/>
                             <constraint firstItem="uwK-IJ-VVE" firstAttribute="leading" secondItem="YR0-uZ-jtu" secondAttribute="leadingMargin" id="Eb6-1z-aeN"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="cfw-0H-iT7" secondAttribute="trailing" constant="9" id="L6i-H1-oYn"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="cfw-0H-iT7" secondAttribute="trailing" constant="-16" id="L6i-H1-oYn"/>
                             <constraint firstAttribute="trailing" secondItem="20d-M0-5R4" secondAttribute="trailing" id="P0t-tG-KyY"/>
                             <constraint firstItem="20d-M0-5R4" firstAttribute="leading" secondItem="YR0-uZ-jtu" secondAttribute="leading" id="RUP-GJ-wlE"/>
                             <constraint firstItem="chD-q8-2zf" firstAttribute="centerX" secondItem="YR0-uZ-jtu" secondAttribute="centerX" id="bUl-SP-u5m"/>
