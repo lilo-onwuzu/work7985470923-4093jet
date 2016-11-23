@@ -5,7 +5,7 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// crash occurs because image data file is too large
+// crash occurs because import image data file is too large
 
 
 import UIKit
@@ -23,6 +23,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     @IBOutlet weak var editStory: UITextField!
     @IBOutlet weak var userStoryBack: UILabel!
     @IBOutlet weak var userStory: UILabel!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -56,17 +57,22 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        editStory.delegate = self
+        
+        userStoryBack.layer.masksToBounds = true
+        userStoryBack.layer.cornerRadius = 5
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
+        
         let firstName = user.object(forKey: "first_name") as! String
         let lastName = user.object(forKey: "last_name") as! String
+        userName.text = firstName + " " + lastName
+        
         // if story already exists for user, convert it to string (if possible- no "!") and display it
         if let story = user.object(forKey: "story") {
             userStory.text = String(describing: story)
         
         }
-
-        // display user's name
-        userName.text = firstName + " " + lastName
+        userStory.sizeToFit()
         
         // display user's saved image. user image data always exists in Parse
         let imageFile = user.object(forKey: "image") as! PFFile
@@ -79,15 +85,12 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
 
             }
         }
-        userStoryBack.layer.masksToBounds = true
-        userStoryBack.layer.cornerRadius = 10.0
-        logo.layer.masksToBounds = true
-        logo.layer.cornerRadius = 3.0
-        userStory.sizeToFit()
+        scrollView.sizeToFit()
         
         // UIImagePickerController's delegate object is of type UIImagePickerControllerDelegate and UINavigationControllerDelegate
         // a delegate of an object (e.g UITableViewDelegate) is a "protocol" that allows the object (UITableView) to be manipulated by calling functions with the object as an arguments. These functions or methods on the object can now be called anywhere within the delegate (self or settingsVC in this case)
         image.delegate = self
+        editStory.delegate = self
         
     }
 
@@ -96,6 +99,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         image.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
         image.allowsEditing = false
         self.present(image, animated: true, completion: nil)
+        scrollView.sizeToFit()
         
     }
     

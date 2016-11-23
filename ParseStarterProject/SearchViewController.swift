@@ -11,6 +11,7 @@ import UIKit
 class SearchViewController: UIViewController {
 
 	var viewedJobId = String()
+	var keepReqFId = String()
 
 	@IBOutlet weak var requesterName: UILabel!
 	@IBOutlet weak var jobTitle: UILabel!
@@ -114,6 +115,7 @@ class SearchViewController: UIViewController {
 						
 						// get job requester name and photo
 						let requesterId = job.object(forKey: "requesterId") as! String
+						self.keepReqFId = requesterId
 						do {
 							let user = try PFQuery.getUserObject(withId: requesterId)
 							let firstName = user.object(forKey: "first_name") as? String
@@ -150,6 +152,11 @@ class SearchViewController: UIViewController {
 		
 	}
 	
+	@IBAction func toRequester(_ sender: Any) {
+		performSegue(withIdentifier: "toReqProfile", sender: self)
+	
+	}
+	
 	@IBAction func home(_ sender: AnyObject) {
 		self.dismiss(animated: true, completion: nil)
 		
@@ -159,5 +166,14 @@ class SearchViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.identifier == "toReqProfile" {
+			if let vc = segue.destination as? UserProfileViewController {
+				vc.reqId = self.keepReqFId
+				
+			}
+		}
+	}
+	
 }
