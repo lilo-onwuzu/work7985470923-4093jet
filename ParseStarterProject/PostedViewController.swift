@@ -13,6 +13,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var postedJobs = [PFObject]()
     var confirmDelete = Bool()
     var editJob = PFObject(className: "Job")
+    var jobsToDelete = [PFObject]()
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var deleteJobs: UIButton!
@@ -26,7 +27,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         present(alert, animated: true, completion: nil)
         
     }
-        
+    
     // verifies delete by setting var confirmDelete to true
     func deleteAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -38,6 +39,35 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
             alert.dismiss(animated: true, completion: nil)
             // set confirm to true to run PFUser delete
             self.confirmDelete = true
+            
+            for job in self.jobsToDelete {
+                let id = job.objectId!
+                for postedJob in self.postedJobs {
+                    if id == postedJob.objectId {
+                        self.postedJobs.remove(at: (self.postedJobs.index(of: postedJob))!)
+                        let query = PFQuery(className: "Job")
+                        query.whereKey("objectId", equalTo: id)
+                        query.findObjectsInBackground(block: { (objects, error) in
+                            if let objects = objects {
+                                for object in objects {
+                                    object.deleteInBackground(block: { (success, error) in
+                                        if let error = error {
+                                            self.errorAlert(title: "Error Deleting Job", message: error.localizedDescription)
+                                            
+                                        } else {
+                                            self.tableView.reloadData()
+                                            self.deleteJobs.setTitle("Delete x", for: UIControlState.normal)
+                                            self.tableView.allowsMultipleSelection = false
+                                            
+                                        }
+                                    })
+                                    
+                                }
+                            }
+                        })
+                    }
+                }
+            }
             
         }))
         present(alert, animated: true, completion: nil)
@@ -98,70 +128,36 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBAction func triggerDelete(_ sender: Any) {
         
-        var jobsToDelete = [PFObject]()
-        
-        // allows user to select one or more rows once this button is pressed while "Select" is active
+        // if "Delete" is active, start deletion process
         if deleteJobs.currentTitle == "Delete x" {
-            deleteJobs.setTitle("Select", for: UIControlState.normal)
+            tableView.allowsMultipleSelection = true
+            deleteJobs.setTitle("Done x", for: UIControlState.normal)
 
         } else {
-            if deleteJobs.currentTitle == "Select" {
-                tableView.allowsMultipleSelection = true
-                // get the array of PFObjects selected for deletion, could be empty
+            // else if "Done" is active
+            if deleteJobs.currentTitle == "Done x" {
+                
+                var jobTitles = ""
+                // delete selected rows
+                // get the array of PFObjects selected for deletion, could be empty if no selection was made
                 jobsToDelete = getRowsToDelete()
                 let deleteCount = jobsToDelete.count
-                // if there were rows selected for deletion, do this. Else dont show alert to confirm delete
+                // if there were rows selected for deletion, display deleteAlert. Else dont show alert
+                
                 if deleteCount > 0 {
-                    var jobTitles = ""
+                    // delete jobs in Parse
                     for job in jobsToDelete {
                         let jobTitle = job.object(forKey: "title") as! String
                         jobTitles += jobTitle + " \n"
-                    
                     }
-                    deleteAlert(title: "Are you sure you want to delete these jobs?", message: jobTitles)
-                    deleteJobs.setTitle("Done", for: UIControlState.normal)
+                    // deletes "object" in "objects" then reloads tableview, resets deleteButton title and stops allowing multiple selections
+                    self.deleteAlert(title: "Are you sure you want to delete these jobs?", message: jobTitles)
                 
+                // if there are no rows selected for deletion, reset deleteButton title and stop allowing multiple selections
                 } else {
                     deleteJobs.setTitle("Delete x", for: UIControlState.normal)
                     tableView.allowsMultipleSelection = false
                     
-                }
-            } else {
-                if deleteJobs.currentTitle == "Done" {
-                    // reduce tpt by placing confirmDelete() here so it is only run in this thread
-                    if confirmDelete {
-                        // delete jobs in Parse
-                        for job in jobsToDelete {
-                            let id = job.objectId!
-                            for postedJob in postedJobs {
-                                if id == postedJob.objectId {
-                                    postedJobs.remove(at: (postedJobs.index(of: postedJob))!)
-                                    let query = PFQuery(className: "Job")
-                                    query.whereKey("objectId", equalTo: id)
-                                    query.findObjectsInBackground(block: { (objects, error) in
-                                        if let objects = objects {
-                                            for object in objects {
-                                                object.deleteInBackground(block: { (success, error) in
-                                                    if let error = error {
-                                                        self.errorAlert(title: "Error Deleting Job", message: error.localizedDescription)
-                                                        
-                                                    } else {
-                                                        self.deleteJobs.setTitle("Delete x", for: UIControlState.normal)
-                                                        // reload tableView
-                                                        print(self.postedJobs)
-                                                        self.tableView.reloadData()
-                                                        // self.deleteJobs.setTitle("Delete", for: UIControlState.normal)
-                                                        self.tableView.allowsMultipleSelection = false
-                                                        
-                                                    }
-                                                })
-                                            }
-                                        }
-                                    })
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }

@@ -1589,14 +1589,14 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZvV-MJ-rI5">
                                 <rect key="frame" x="0.0" y="76" width="375" height="591"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GjD-pR-J0P">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GjD-pR-J0P">
                                         <rect key="frame" x="16" y="109" width="343" height="30"/>
                                         <color key="backgroundColor" red="0.089055760509999998" green="0.46626926369999999" blue="0.54215916460000002" alpha="0.80259683100000001" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" name="Pompiere-Regular" family="Pompiere " pointSize="22"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jZT-aj-ark">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jZT-aj-ark">
                                         <rect key="frame" x="16" y="303" width="343" height="30"/>
                                         <color key="backgroundColor" red="0.07834695624842708" green="0.45377448924238195" blue="0.55596567590001955" alpha="0.7892000440140845" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1632,32 +1632,35 @@
                                             <action selector="stepRate:" destination="lNt-y5-bXM" eventType="touchUpInside" id="OJo-Bn-4as"/>
                                         </connections>
                                     </stepper>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VVU-tK-n56">
-                                        <rect key="frame" x="16" y="396" width="343" height="30"/>
-                                        <color key="backgroundColor" red="0.12471710066037513" green="0.47552397907461269" blue="0.57625763527469931" alpha="0.80919894366197187" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="0WJ-EM-ZNS">
+                                        <rect key="frame" x="16" y="378" width="343" height="128"/>
+                                        <color key="backgroundColor" red="0.10705313266148282" green="0.44083307337861449" blue="0.52097731491917099" alpha="0.83241637323943662" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="128" id="sCN-Qj-xBD"/>
+                                        </constraints>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" name="Pompiere-Regular" family="Pompiere " pointSize="17"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
+                                        <fontDescription key="fontDescription" name="Pompiere-Regular" family="Pompiere " pointSize="19"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="GjD-pR-J0P" firstAttribute="top" secondItem="NwX-HW-1lL" secondAttribute="bottom" constant="47" id="4yW-Hu-HKO"/>
-                                    <constraint firstItem="VVU-tK-n56" firstAttribute="top" secondItem="cf8-c4-nLu" secondAttribute="bottom" constant="26" id="6Cg-F2-Cvt"/>
                                     <constraint firstItem="jZT-aj-ark" firstAttribute="top" secondItem="pjc-Vs-ql0" secondAttribute="bottom" constant="14" id="8EN-th-qii"/>
                                     <constraint firstItem="NwX-HW-1lL" firstAttribute="centerX" secondItem="GjD-pR-J0P" secondAttribute="centerX" id="DX8-TW-QP1"/>
+                                    <constraint firstAttribute="bottom" secondItem="0WJ-EM-ZNS" secondAttribute="bottom" constant="85" id="Dsc-yd-gsZ"/>
+                                    <constraint firstItem="jZT-aj-ark" firstAttribute="trailing" secondItem="0WJ-EM-ZNS" secondAttribute="trailing" id="DyS-K3-1ma"/>
                                     <constraint firstItem="NwX-HW-1lL" firstAttribute="centerX" secondItem="ZvV-MJ-rI5" secondAttribute="centerX" id="FeE-Qs-ezN"/>
                                     <constraint firstAttribute="trailing" secondItem="GjD-pR-J0P" secondAttribute="trailing" constant="16" id="PKt-fg-Lid"/>
+                                    <constraint firstItem="jZT-aj-ark" firstAttribute="leading" secondItem="0WJ-EM-ZNS" secondAttribute="leading" id="QIL-Fg-J4W"/>
                                     <constraint firstItem="pjc-Vs-ql0" firstAttribute="top" secondItem="GjD-pR-J0P" secondAttribute="bottom" constant="16" id="UeY-5V-dc9"/>
-                                    <constraint firstItem="jZT-aj-ark" firstAttribute="leading" secondItem="VVU-tK-n56" secondAttribute="leading" id="VAy-fk-Xbf"/>
                                     <constraint firstItem="pjc-Vs-ql0" firstAttribute="leading" secondItem="jZT-aj-ark" secondAttribute="leading" id="VJl-Tr-aAa"/>
                                     <constraint firstItem="NwX-HW-1lL" firstAttribute="top" secondItem="ZvV-MJ-rI5" secondAttribute="top" constant="25" id="Z7O-Ct-3cn"/>
                                     <constraint firstItem="GjD-pR-J0P" firstAttribute="trailing" secondItem="pjc-Vs-ql0" secondAttribute="trailing" id="aGp-TJ-JzQ"/>
                                     <constraint firstItem="jZT-aj-ark" firstAttribute="top" secondItem="GjD-pR-J0P" secondAttribute="bottom" constant="164" id="aRe-Nd-Kg1"/>
-                                    <constraint firstAttribute="bottom" secondItem="VVU-tK-n56" secondAttribute="bottom" constant="165" id="bqI-Dq-1ud"/>
                                     <constraint firstItem="GjD-pR-J0P" firstAttribute="leading" secondItem="pjc-Vs-ql0" secondAttribute="leading" id="dDN-wY-QV6"/>
                                     <constraint firstItem="GjD-pR-J0P" firstAttribute="leading" secondItem="ZvV-MJ-rI5" secondAttribute="leading" constant="16" id="jf9-gd-LWS"/>
-                                    <constraint firstItem="jZT-aj-ark" firstAttribute="trailing" secondItem="VVU-tK-n56" secondAttribute="trailing" id="rIV-KV-sMb"/>
                                     <constraint firstItem="pjc-Vs-ql0" firstAttribute="trailing" secondItem="jZT-aj-ark" secondAttribute="trailing" id="tHm-ND-OUV"/>
+                                    <constraint firstItem="0WJ-EM-ZNS" firstAttribute="top" secondItem="cf8-c4-nLu" secondAttribute="bottom" constant="8" symbolic="YES" id="vLu-eE-Fx3"/>
                                     <constraint firstItem="cf8-c4-nLu" firstAttribute="top" secondItem="jZT-aj-ark" secondAttribute="bottom" constant="8" id="wPz-Ra-GRa"/>
                                     <constraint firstItem="jZT-aj-ark" firstAttribute="centerX" secondItem="cf8-c4-nLu" secondAttribute="centerX" constant="0.5" id="xsp-Yv-GS8"/>
                                 </constraints>
@@ -1682,16 +1685,16 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="tintColor" red="0.12575869549999999" green="0.62383298799999998" blue="0.70076098750000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ZvV-MJ-rI5" firstAttribute="bottom" secondItem="emI-gP-afd" secondAttribute="top" id="M16-aQ-V0S"/>
+                            <constraint firstItem="ZvV-MJ-rI5" firstAttribute="leading" secondItem="zLS-IY-2sL" secondAttribute="leading" id="9UR-Bd-Fi1"/>
+                            <constraint firstItem="ZvV-MJ-rI5" firstAttribute="top" secondItem="a4R-fL-ZAT" secondAttribute="bottom" constant="7" id="Iba-BZ-Ax0"/>
                             <constraint firstItem="emI-gP-afd" firstAttribute="top" secondItem="zLS-IY-2sL" secondAttribute="bottom" id="Q1x-uQ-7MO"/>
                             <constraint firstItem="zLS-IY-2sL" firstAttribute="leading" secondItem="a1V-Jx-LDT" secondAttribute="leading" id="U03-kb-N7b"/>
-                            <constraint firstItem="ZvV-MJ-rI5" firstAttribute="trailing" secondItem="zLS-IY-2sL" secondAttribute="trailing" id="Yax-bN-QZQ"/>
                             <constraint firstItem="Vip-ct-8Pu" firstAttribute="trailing" secondItem="a1V-Jx-LDT" secondAttribute="trailingMargin" id="d0O-He-9ZB"/>
                             <constraint firstItem="Vip-ct-8Pu" firstAttribute="top" secondItem="Ec3-Cv-ewb" secondAttribute="bottom" constant="11" id="fKX-bt-G6T"/>
+                            <constraint firstItem="ZvV-MJ-rI5" firstAttribute="bottom" secondItem="emI-gP-afd" secondAttribute="top" id="hnl-NW-UIa"/>
+                            <constraint firstItem="ZvV-MJ-rI5" firstAttribute="trailing" secondItem="zLS-IY-2sL" secondAttribute="trailing" id="jKt-vD-B4d"/>
                             <constraint firstItem="Mv8-zf-7op" firstAttribute="top" secondItem="Ec3-Cv-ewb" secondAttribute="bottom" constant="15" id="jj8-pX-hVO"/>
                             <constraint firstItem="a4R-fL-ZAT" firstAttribute="leading" secondItem="a1V-Jx-LDT" secondAttribute="leading" constant="16" id="lgT-SI-0Fb"/>
-                            <constraint firstItem="ZvV-MJ-rI5" firstAttribute="leading" secondItem="zLS-IY-2sL" secondAttribute="leading" id="mWq-dV-n6n"/>
-                            <constraint firstItem="ZvV-MJ-rI5" firstAttribute="top" secondItem="a4R-fL-ZAT" secondAttribute="bottom" constant="7" id="qjc-xN-Faa"/>
                             <constraint firstItem="Mv8-zf-7op" firstAttribute="centerX" secondItem="a1V-Jx-LDT" secondAttribute="centerX" id="s7o-YS-88F"/>
                             <constraint firstItem="zLS-IY-2sL" firstAttribute="top" secondItem="Vip-ct-8Pu" secondAttribute="bottom" constant="3" id="wip-iC-xN4"/>
                             <constraint firstAttribute="trailing" secondItem="zLS-IY-2sL" secondAttribute="trailing" id="yDs-8X-nDY"/>
@@ -1725,7 +1728,7 @@
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
                         <outlet property="editCycle" destination="pjc-Vs-ql0" id="moW-Gv-kBd"/>
-                        <outlet property="editDetails" destination="VVU-tK-n56" id="gw4-Ed-dqG"/>
+                        <outlet property="editDetails" destination="0WJ-EM-ZNS" id="8On-hG-9Eu"/>
                         <outlet property="editRate" destination="jZT-aj-ark" id="kF7-bw-5vs"/>
                         <outlet property="editTitle" destination="GjD-pR-J0P" id="xSo-d7-K45"/>
                         <segue destination="Gpp-Zf-qEA" kind="show" identifier="backToJob" id="kWT-sw-xsY"/>

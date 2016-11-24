@@ -18,7 +18,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
     @IBOutlet weak var editTitle: UITextField!
     @IBOutlet weak var editCycle: UIPickerView!
     @IBOutlet weak var editRate: UITextField!
-    @IBOutlet weak var editDetails: UITextField!
+    @IBOutlet weak var editDetails: UITextView!
     @IBOutlet weak var editStatus: UIPickerView!
     
     func errorAlert(title: String, message: String) {
@@ -69,14 +69,12 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        editCycle.layer.cornerRadius = 5
+
         editTitle.text = (editJob.object(forKey: "title") as! String)
         editRate.text = (editJob.object(forKey: "rate") as! String)
         editDetails.text = (editJob.object(forKey: "details") as! String)
         cycleSelected = editJob.object(forKey: "cycle") as! String
-        
-        editDetails.layer.masksToBounds = true
-        editDetails.layer.cornerRadius = 7
-        editDetails.sizeToFit()
         
         // set picker to job cycle value
         for index in cycle {
