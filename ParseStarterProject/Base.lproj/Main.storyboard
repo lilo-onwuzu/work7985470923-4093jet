@@ -869,7 +869,7 @@
                                         <color key="textColor" red="0.63830360539999997" green="0.27546088769999999" blue="0.35880342430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OSn-7r-8iz">
+                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OSn-7r-8iz">
                                         <rect key="frame" x="96" y="436" width="183" height="30"/>
                                         <color key="backgroundColor" red="0.21624463796615601" green="0.43814107775688171" blue="0.48813962936401367" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -942,6 +942,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
+                        <outlet property="infoLabel" destination="aec-Cc-klx" id="H5W-Bv-kha"/>
                         <outlet property="jobCycle" destination="N2D-Ap-cAq" id="XeT-U9-lOb"/>
                         <outlet property="jobDetails" destination="azC-3R-Pae" id="tc0-aX-2V1"/>
                         <outlet property="jobLocation" destination="yOT-IN-iT3" id="ORL-x9-gh9"/>

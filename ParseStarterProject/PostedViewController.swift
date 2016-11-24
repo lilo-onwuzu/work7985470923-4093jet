@@ -11,12 +11,24 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var user = PFUser.current()!
     var postedJobs = [PFObject]()
-    var confirmDelete = Bool()
     var editJob = PFObject(className: "Job")
     var jobsToDelete = [PFObject]()
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var deleteJobs: UIButton!
+    
+    // get rows selected for deleting and returns the job objects
+    func getRowsToDelete() -> [PFObject] {
+        var deleteRows = [PFObject]()
+        if let indexPaths = tableView.indexPathsForSelectedRows {
+            for indexPath in indexPaths {
+                deleteRows.append(postedJobs[indexPath.row])
+                
+            }
+        }
+        return deleteRows
+        
+    }
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -28,7 +40,6 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
-    // verifies delete by setting var confirmDelete to true
     func deleteAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Go back", style: .default, handler: { (action) in
@@ -37,11 +48,10 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }))
         alert.addAction(UIAlertAction(title: "Yes Delete", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
-            // set confirm to true to run PFUser delete
-            self.confirmDelete = true
-            
+            // run delete process if "Yes Delete" is selected
             for job in self.jobsToDelete {
                 let id = job.objectId!
+                // for loop within for loop to compare each row/job selected for deletion with the current list of posted jobs
                 for postedJob in self.postedJobs {
                     if id == postedJob.objectId {
                         self.postedJobs.remove(at: (self.postedJobs.index(of: postedJob))!)
@@ -68,23 +78,9 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     }
                 }
             }
-            
         }))
         present(alert, animated: true, completion: nil)
         
-    }
-    
-    // get rows selected for deleting and returns the job objects
-    func getRowsToDelete() -> [PFObject] {
-        var deleteRows = [PFObject]()
-        if let indexPaths = tableView.indexPathsForSelectedRows {
-            for indexPath in indexPaths {
-                deleteRows.append(postedJobs[indexPath.row])
-                
-            }
-        }
-        return deleteRows
-
     }
 
     override func viewDidLoad() {
@@ -136,14 +132,12 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         } else {
             // else if "Done" is active
             if deleteJobs.currentTitle == "Done x" {
-                
                 var jobTitles = ""
                 // delete selected rows
                 // get the array of PFObjects selected for deletion, could be empty if no selection was made
                 jobsToDelete = getRowsToDelete()
                 let deleteCount = jobsToDelete.count
                 // if there were rows selected for deletion, display deleteAlert. Else dont show alert
-                
                 if deleteCount > 0 {
                     // delete jobs in Parse
                     for job in jobsToDelete {

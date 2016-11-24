@@ -11,7 +11,7 @@ import UIKit
 class SearchViewController: UIViewController {
 
 	var viewedJobId = String()
-	var keepReqFId = String()
+	var keepId = String()
 
 	@IBOutlet weak var requesterName: UILabel!
 	@IBOutlet weak var jobTitle: UILabel!
@@ -22,6 +22,7 @@ class SearchViewController: UIViewController {
 	@IBOutlet weak var logo: UILabel!
 	@IBOutlet weak var wheelbarrow: UIImageView!
 	@IBOutlet weak var viewProfile: UIButton!
+	@IBOutlet weak var infoLabel: UILabel!
 	
 	func errorAlert(title: String, message: String) {
 		let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -115,12 +116,16 @@ class SearchViewController: UIViewController {
 						
 						// get job requester name and photo
 						let requesterId = job.object(forKey: "requesterId") as! String
-						self.keepReqFId = requesterId
+						self.keepId = requesterId
 						do {
 							let user = try PFQuery.getUserObject(withId: requesterId)
 							let firstName = user.object(forKey: "first_name") as? String
 							let lastName = user.object(forKey: "last_name") as? String
 							self.requesterName.text = "Requester: " + firstName! + " " + lastName!
+							
+							// enable viewProfile and infoLabel
+							self.viewProfile.isHidden = false
+							self.infoLabel.isHidden = false
 
 						} catch _ {
 							
@@ -133,7 +138,7 @@ class SearchViewController: UIViewController {
 			}
 			self.jobDetails.sizeToFit()
 		}
-    }
+	}
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -146,6 +151,11 @@ class SearchViewController: UIViewController {
 		requesterName.layer.masksToBounds = true
 		requesterName.layer.cornerRadius = 3
 		viewProfile.layer.cornerRadius = 10
+		
+		// disable viewProfile and infoLabel
+		viewProfile.isHidden = true
+		self.infoLabel.isHidden = true
+
 		
 		// query first job once view loads
 		getNewJob()
@@ -170,7 +180,7 @@ class SearchViewController: UIViewController {
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "toReqProfile" {
 			if let vc = segue.destination as? UserProfileViewController {
-				vc.reqId = self.keepReqFId
+				vc.reqId = self.keepId
 				
 			}
 		}
