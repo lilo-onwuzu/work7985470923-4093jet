@@ -45,7 +45,7 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func stepRate(_ sender: UIStepper) {
-        // if isNumber() has a value i.e rateField already has a valid number, add the number to the stepper value, else add 0
+        // Called on touch up inside. If isNumber() has a value i.e rateField already has a valid number, add the number to the stepper value, else add 0
         var enterRate: Double? = 0.0
         if isNumber(rateField.text) != nil {
             enterRate = isNumber(rateField.text)! + sender.value

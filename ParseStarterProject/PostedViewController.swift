@@ -12,6 +12,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var user = PFUser.current()!
     var postedJobs = [PFObject]()
     var confirmDelete = Bool()
+    var editJob = PFObject(className: "Job")
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var deleteJobs: UIButton!
@@ -84,9 +85,13 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBAction func editJob(_ sender: Any) {
         if let index = tableView.indexPathForSelectedRow?.row {
-            let editJob = postedJobs[index]
+            let selectedJob = postedJobs[index]
             // pass selected job to editJob segue
-            print(editJob)
+            editJob = selectedJob
+            performSegue(withIdentifier: "toEditJob", sender: self)
+
+        } else {
+            errorAlert(title: "Select a job to edit", message: "You have not selected any jobs")
             
         }
     }
@@ -194,6 +199,14 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.didReceiveMemoryWarning()
         
     }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toEditJob" {
+            let vc = segue.destination as! EditJobViewController
+            vc.editJob = self.editJob
+
+        }
+    }
     
     /*
      // Override to support conditional editing of the table view.
@@ -227,16 +240,6 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
      override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
      // Return false if you do not want the item to be re-orderable.
      return true
-     }
-     */
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
      }
      */
 

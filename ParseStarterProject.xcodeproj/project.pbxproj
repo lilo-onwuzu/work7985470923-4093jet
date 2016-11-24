@@ -40,7 +40,7 @@
 		04DECE151DB094F90087B887 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DECE141DB094F90087B887 /* SearchViewController.swift */; };
 		04DECE171DB0951F0087B887 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DECE161DB0951F0087B887 /* SettingsViewController.swift */; };
 		04DECE191DB1826E0087B887 /* Create2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DECE181DB1826E0087B887 /* Create2ViewController.swift */; };
-		04DECE1B1DB185C70087B887 /* Create3IViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DECE1A1DB185C70087B887 /* Create3IViewController.swift */; };
+		04DECE1B1DB185C70087B887 /* Create3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DECE1A1DB185C70087B887 /* Create3ViewController.swift */; };
 		04DECE1D1DB185D50087B887 /* Create4ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DECE1C1DB185D50087B887 /* Create4ViewController.swift */; };
 		04DECE1F1DB2BAB60087B887 /* ConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DECE1E1DB2BAB60087B887 /* ConfirmViewController.swift */; };
 		04DED02E1DB734F90087B887 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04DED0291DB734F90087B887 /* Parse.framework */; };
@@ -95,7 +95,7 @@
 		04DECE141DB094F90087B887 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; usesTabs = 1; };
 		04DECE161DB0951F0087B887 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		04DECE181DB1826E0087B887 /* Create2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Create2ViewController.swift; sourceTree = "<group>"; };
-		04DECE1A1DB185C70087B887 /* Create3IViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Create3IViewController.swift; sourceTree = "<group>"; };
+		04DECE1A1DB185C70087B887 /* Create3ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Create3ViewController.swift; sourceTree = "<group>"; };
 		04DECE1C1DB185D50087B887 /* Create4ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Create4ViewController.swift; sourceTree = "<group>"; };
 		04DECE1E1DB2BAB60087B887 /* ConfirmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmViewController.swift; sourceTree = "<group>"; };
 		04DED0291DB734F90087B887 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
@@ -168,7 +168,7 @@
 				042567431DC31E84008ED3DE /* LoginViewController.swift */,
 				04DECE121DB094EA0087B887 /* Create1ViewController.swift */,
 				04DECE181DB1826E0087B887 /* Create2ViewController.swift */,
-				04DECE1A1DB185C70087B887 /* Create3IViewController.swift */,
+				04DECE1A1DB185C70087B887 /* Create3ViewController.swift */,
 				04DECE1C1DB185D50087B887 /* Create4ViewController.swift */,
 				04DECE1E1DB2BAB60087B887 /* ConfirmViewController.swift */,
 				04DECE0A1DB03F3C0087B887 /* HomeViewController.swift */,
@@ -177,12 +177,12 @@
 				04F6DA741DD5F8D900AB8643 /* PostedTableViewCell.swift */,
 				04F6DA721DD5E11800AB8643 /* AcceptedTableViewCell.swift */,
 				04DECE141DB094F90087B887 /* SearchViewController.swift */,
-				04158BA11DE33BEF00D741C4 /* AcceptedViewController.swift */,
-				04158B9F1DE33B5000D741C4 /* PostedViewController.swift */,
 				04158B991DE3249900D741C4 /* EditJobViewController.swift */,
+				04158B9F1DE33B5000D741C4 /* PostedViewController.swift */,
+				04158BA11DE33BEF00D741C4 /* AcceptedViewController.swift */,
+				04DECE0E1DB094A60087B887 /* MessageViewController.swift */,
 				04158B9B1DE324BE00D741C4 /* SelectViewController.swift */,
 				04DECE161DB0951F0087B887 /* SettingsViewController.swift */,
-				04DECE0E1DB094A60087B887 /* MessageViewController.swift */,
 				04DECE031DAF3B670087B887 /* work.jpg */,
 				04DECE061DAF77D80087B887 /* placeholder.svg.png */,
 				04158B9D1DE3320A00D741C4 /* camera.png */,
@@ -426,7 +426,7 @@
 				04DECE131DB094EA0087B887 /* Create1ViewController.swift in Sources */,
 				04158B9C1DE324BE00D741C4 /* SelectViewController.swift in Sources */,
 				04DECE1D1DB185D50087B887 /* Create4ViewController.swift in Sources */,
-				04DECE1B1DB185C70087B887 /* Create3IViewController.swift in Sources */,
+				04DECE1B1DB185C70087B887 /* Create3ViewController.swift in Sources */,
 				81BA814B1A49DA1800E65899 /* AppDelegate.swift in Sources */,
 				04DECE0D1DB0948B0087B887 /* ProfileViewController.swift in Sources */,
 				04DECE0B1DB03F3C0087B887 /* HomeViewController.swift in Sources */,

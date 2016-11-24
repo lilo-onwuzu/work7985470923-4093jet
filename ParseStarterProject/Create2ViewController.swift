@@ -53,19 +53,19 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
     }
     
-    // number of sections layed side by side in picker
+    // UIPickerViewDelegate method: number of sections layed side by side in picker
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
         
     }
     
-    // number of items in picker
+    // UIPickerViewDelegate method: number of items in picker
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return cycle.count
     
     }
     
-    // return an item into each row in picker
+    // UIPickerViewDelegate method: return an item into each row in picker and select picker value
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         cycleValue = cycle[row]
         let cycleValueAtt = NSAttributedString(string: cycleValue, attributes: [NSForegroundColorAttributeName:UIColor.white])
