@@ -43,6 +43,8 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                 createJob.setValue(self.jobTitle.text!, forKey: "title")
                 createJob.setValue(userId, forKey: "requesterId")
                 createJob.setValue(facebookId, forKey: "requesterFid")
+                createJob.setValue([], forKey: "userAccepted")
+                createJob.setValue("", forKey: "selectedUser")
                 performSegue(withIdentifier: "toCreate2", sender: self)
                 
             } else {

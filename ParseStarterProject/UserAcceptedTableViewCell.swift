@@ -1,29 +1,27 @@
 //
-//  AcceptedTableViewCell.swift
+//  UserAcceptedTableViewCell.swift
 //
-//  Created by mac on 10/21/16.
+//  Created by mac on 11/28/16.
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
 
 import UIKit
 
-class AcceptedTableViewCell: UITableViewCell {
+class UserAcceptedTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var acceptedTitle: UILabel!
-    @IBOutlet weak var acceptedCycle: UILabel!
-    @IBOutlet weak var acceptedRate: UILabel!
-
+    @IBOutlet weak var userName: UILabel!
+    @IBOutlet weak var userImage: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
-        
+
     }
 
 }

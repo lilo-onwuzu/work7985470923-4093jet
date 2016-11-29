@@ -5,6 +5,7 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
+// geopoint issue. sometime gets (0,0). restart computer solves issue
 
 import UIKit
 
@@ -12,7 +13,9 @@ class SearchViewController: UIViewController {
 
 	var viewedJobId = String()
 	var keepId = String()
-
+	let user = PFUser.current()!
+	var currentJob = PFObject(className: "Job")
+	
 	@IBOutlet weak var requesterName: UILabel!
 	@IBOutlet weak var jobTitle: UILabel!
 	@IBOutlet weak var jobCycle: UILabel!
@@ -51,18 +54,19 @@ class SearchViewController: UIViewController {
 			var acceptedOrRejected = ""
 			if xFromCenter > 100 {
 				acceptedOrRejected = "accepted"
+				// add user id to array of users who accepted/swiped right for this job
+				currentJob.add(user.objectId!, forKey: "userAccepted")
+				currentJob.saveInBackground()
 				
 			} else if xFromCenter < -100 {
 				acceptedOrRejected = "rejected"
 				
 			}
-			
 			if acceptedOrRejected != "" {
 				PFUser.current()?.addUniqueObjects(from: [viewedJobId], forKey:acceptedOrRejected)
 				PFUser.current()?.saveInBackground()
 				
 			}
-			
 			wheelbarrow.center.x = self.view.center.x
 			rotation = CGAffineTransform(rotationAngle: 0)
 			stretch = rotation.scaledBy(x: 1, y: 1)
@@ -76,7 +80,6 @@ class SearchViewController: UIViewController {
     func getNewJob() {
 		let query = PFQuery(className: "Job")
 		query.limit = 1
-		
 		// query with PFUser's location
 		let location = PFUser.current()?["job_location"] as? PFGeoPoint
 		if let latitude = location?.latitude{
@@ -85,7 +88,6 @@ class SearchViewController: UIViewController {
 
 			}
 		}
-		
 		// query with already viewed jobs
 		var ignoredJobs = [String]()
 		if let acceptedJobs = PFUser.current()?["accepted"] {
@@ -97,12 +99,12 @@ class SearchViewController: UIViewController {
 			
 		}
 		query.whereKey("objectId", notContainedIn: ignoredJobs)
-		
 		// perform query (get job details and job requester's details)
 		query.findObjectsInBackground { (jobs, error) in
 			if let jobs = jobs {
 				if jobs.count > 0 {
 					for job in jobs {
+						self.currentJob = job
 						// get job details
 						self.viewedJobId = job.objectId!
 						let jobTitle = job.object(forKey: "title") as! String
@@ -137,6 +139,7 @@ class SearchViewController: UIViewController {
 				}
 			}
 			self.jobDetails.sizeToFit()
+			
 		}
 	}
     
@@ -179,10 +182,9 @@ class SearchViewController: UIViewController {
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "toReqProfile" {
-			if let vc = segue.destination as? UserProfileViewController {
-				vc.reqId = self.keepId
+			let vc = segue.destination as! UserProfileViewController
+			vc.reqId = self.keepId
 				
-			}
 		}
 	}
 	

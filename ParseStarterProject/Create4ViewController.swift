@@ -11,7 +11,6 @@ import UIKit
 class Create4ViewController: UIViewController, UITextFieldDelegate {
     
     var createJob: PFObject = PFObject(className: "Job")
-    var finish: Bool = false
 
     @IBOutlet weak var jobDetails: UITextField!
     @IBOutlet weak var logo: UILabel!
@@ -33,7 +32,8 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
             // saveInBackground is an asychronous call that does not wait to execute before continuing so save it with block if you need data that is returned from the async call
             createJob.saveInBackground(block: { (success, error) in
                 if success {
-                    self.finish = true
+                    // wait till finish is true or createJob object is saved in async call before segue
+                    self.performSegue(withIdentifier: "toConfirm", sender: self)
                     
                 } else {
                     self.errorAlert(title: "Database Error", message: "Please try again later")
@@ -43,11 +43,6 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
         } else {
             errorAlert(title: "Invalid Form Entry", message: "Please add some more details")
             
-        }
-        // wait till finish is true or createJob object is saved in async call before segue
-        if finish {
-            performSegue(withIdentifier: "toConfirm", sender: self)
-        
         }
     }
     

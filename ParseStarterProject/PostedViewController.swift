@@ -5,7 +5,9 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
+// cell dance when delete is pressed
 // change highlighted cell color
+// swipe to select highlighted cell only
 
 
 import UIKit
@@ -16,9 +18,12 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var postedJobs = [PFObject]()
     var editJob = PFObject(className: "Job")
     var jobsToDelete = [PFObject]()
+    var selectedJob = PFObject(className: "Job")
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var deleteJobs: UIButton!
+    @IBOutlet weak var emptyLabel: UILabel!
+    @IBOutlet weak var logo: UILabel!
     
     // get rows selected for deleting and returns the job objects
     func getRowsToDelete() -> [PFObject] {
@@ -35,7 +40,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Go back", style: .default, handler: { (action) in
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
             
         }))
@@ -97,18 +102,14 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
             // xFromCenter is +ve if pan is to the right and -ve is pan is to the left
             if gesture.state == UIGestureRecognizerState.ended {
                 if translation.x > 100 {
-                    print("hello")
-                    
-                } else if translation.x < -100 {
-                    print("hi")
+                    // reset cell center to middle of view
+                    cell.center.x = self.view.center.x
+                    // pass selected job to segue
+                    selectedJob = postedJobs[indexPath.row]
+                    // then segue to select vc
+                    performSegue(withIdentifier: "toSelect", sender: self)
                     
                 }
-                cell.center.x = self.view.center.x
-                // segue to select vc
-                performSegue(withIdentifier: "toSelect", sender: self)
-                // pass selected job to segue
-
-                
             }
         }
     }
@@ -121,14 +122,20 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         query.whereKey("requesterFid", equalTo: userFid)
         query.findObjectsInBackground { (jobs, error) in
             if let jobs = jobs {
-                for job in jobs {
-                    self.postedJobs.append(job)
+                if jobs.count > 0 {
+                    for job in jobs {
+                        self.postedJobs.append(job)
+                    }
+                    // reload data after async query
+                    self.tableView.reloadData()
+                } else {
+                    self.emptyLabel.text = "You have not posted any jobs"
+                    
                 }
-                // reload data after async query
-                self.tableView.reloadData()
-                
             }
         }
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
         tableView.delegate = self
         tableView.dataSource = self
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag))
@@ -228,6 +235,11 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let vc = segue.destination as! EditJobViewController
             vc.editJob = self.editJob
 
+        }
+        if segue.identifier == "toSelect" {
+            let vc = segue.destination as! SelectViewController
+            vc.selectedJob = self.selectedJob
+            
         }
     }
     

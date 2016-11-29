@@ -52,7 +52,6 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
             self.password.text = ""
             
         }
-        
     }
     
     func errorAlert(title: String, message: String) {

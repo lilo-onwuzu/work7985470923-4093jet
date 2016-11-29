@@ -5,6 +5,9 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
+// debug cycle picker selection
+
+
 import UIKit
 
 class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
@@ -20,6 +23,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
     @IBOutlet weak var editRate: UITextField!
     @IBOutlet weak var editDetails: UITextView!
     @IBOutlet weak var editStatus: UIPickerView!
+    @IBOutlet weak var logo: UILabel!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -45,7 +49,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
                     self.errorAlert(title: "Error Editing Job", message: error.localizedDescription + ". Please try again")
                     
                 } else {
-                    self.dismiss(animated: true, completion: nil)
+                    self.performSegue(withIdentifier: "backToJob", sender: self)
                     
                 }
             }
@@ -68,9 +72,9 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
         editCycle.layer.cornerRadius = 5
-
         editTitle.text = (editJob.object(forKey: "title") as! String)
         editRate.text = (editJob.object(forKey: "rate") as! String)
         editDetails.text = (editJob.object(forKey: "details") as! String)
