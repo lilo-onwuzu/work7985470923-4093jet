@@ -6,32 +6,43 @@
 //
 
 // change highlighted cell color
+// number of cells may become unpredictable when number of posted jobs is large. execute on main thread
 
 
 import UIKit
 
 class ReceivedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    @IBOutlet weak var tableView: UITableView!
     var user = PFUser.current()!
     var receivedJobs = [PFObject]()
+    var ready = false
+    
+    @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var emptyLabel: UILabel!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        logo.layer.masksToBounds = true
-        logo.layer.cornerRadius = 3
+    func getJobs() -> Int {
+        var received = Int()
         // query job class for list of jobs with userid as selectedUser
         let query = PFQuery(className: "Job")
         query.whereKey("selectedUser", equalTo: user.objectId!)
         query.findObjectsInBackground { (jobs, error) in
             if let jobs = jobs {
-                self.receivedJobs = jobs
+                received = jobs.count
+                self.ready = true
                 
             }
         }
+        return received
+        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
+
     }
 
     @IBAction func back(_ sender: Any) {
@@ -49,7 +60,8 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return receivedJobs.count
+        
+        return 1
         
     }
     

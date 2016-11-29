@@ -8,6 +8,7 @@
 // cell dance when delete is pressed
 // change highlighted cell color
 // swipe to select highlighted cell only
+// number of cells may become unpredictable when number of posted jobs is large. execute on main thread
 
 
 import UIKit
@@ -163,7 +164,6 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     @IBAction func triggerDelete(_ sender: Any) {
-        
         // if "Delete" is active, start deletion process
         if deleteJobs.currentTitle == "Delete x" {
             tableView.allowsMultipleSelection = true
@@ -186,7 +186,6 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     }
                     // deletes "object" in "objects" then reloads tableview, resets deleteButton title and stops allowing multiple selections
                     self.deleteAlert(title: "Are you sure you want to delete these jobs?", message: jobTitles)
-                
                 // if there are no rows selected for deletion, reset deleteButton title and stop allowing multiple selections
                 } else {
                     deleteJobs.setTitle("Delete x", for: UIControlState.normal)
