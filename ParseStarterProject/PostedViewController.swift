@@ -5,6 +5,9 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
+// change highlighted cell color
+
+
 import UIKit
 
 class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -82,6 +85,33 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         present(alert, animated: true, completion: nil)
         
     }
+    
+    func drag(gesture: UIPanGestureRecognizer) {
+        // measure the translation in pan
+        let translation = gesture.translation(in: self.view)
+        let indexPath = tableView.indexPathForSelectedRow
+        // "if let" conditional checks if a row is selected
+        if let indexPath = indexPath {
+            let cell = tableView.cellForRow(at: indexPath)!
+            cell.center.x = self.view.center.x + translation.x
+            // xFromCenter is +ve if pan is to the right and -ve is pan is to the left
+            if gesture.state == UIGestureRecognizerState.ended {
+                if translation.x > 100 {
+                    print("hello")
+                    
+                } else if translation.x < -100 {
+                    print("hi")
+                    
+                }
+                cell.center.x = self.view.center.x
+                // segue to select vc
+                performSegue(withIdentifier: "toSelect", sender: self)
+                // pass selected job to segue
+
+                
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,6 +131,9 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         tableView.delegate = self
         tableView.dataSource = self
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag))
+        tableView.addGestureRecognizer(pan)
+        tableView.isUserInteractionEnabled = true
         
     }
     

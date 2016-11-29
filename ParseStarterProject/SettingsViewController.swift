@@ -12,7 +12,6 @@ import UIKit
 class SettingsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     let user = PFUser.current()!
-    var confirm = false
 
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -23,6 +22,39 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     @IBOutlet weak var deleteAccount: UIButton!
     @IBOutlet weak var connectedPay: UILabel!
 
+    func deleteUser() {
+        user.deleteInBackground { (success, error) in
+            if success {
+                self.deletedAccount.text = "Your account has been deleted. Thanks for using WorkJet"
+                
+            } else {
+                if let error = error {
+                    self.errorAlert(title: "Account Delete Error", message: error.localizedDescription)
+                    
+                }
+            }
+        }
+    }
+    
+    func change() {
+        user.password = password.text
+        user.saveInBackground { (success, error) in
+            if success {
+                self.changedPassword.text = "Your password has been updated!"
+                
+            } else {
+                if let error = error {
+                    self.errorAlert(title: "Update Password Error", message: error.localizedDescription)
+                    
+                }
+            }
+            // reset password field
+            self.password.text = ""
+            
+        }
+        
+    }
+    
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
@@ -33,16 +65,16 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         
     }
     
-    func deleteAlert(title: String, message: String) {
+    func confirmAlert(title: String, message: String, selector: Selector ) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "No I'll Stay", style: .default, handler: { (action) in
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
             
         }))
-        alert.addAction(UIAlertAction(title: "Yes Delete", style: .default, handler: { (action) in
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
-            // set confirm to true to run PFUser delete
-            self.confirm = true
+
+            self.perform(selector)
             
         }))
         present(alert, animated: true, completion: nil)
@@ -60,36 +92,17 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     
     @IBAction func changePassword(_ sender: Any) {
         if password.text != "" {
-            user.password = password.text
-            user.saveInBackground { (success, error) in
-                if success {
-                    self.changedPassword.text = "Your password has been updated!"
-                    
-                } else {
-                    if let error = error {
-                        self.errorAlert(title: "Update Password Error", message: error.localizedDescription)
-                        
-                    }
-                }
-            }
+            confirmAlert(title: "Confirm Password Change", message: "Are you sure you want to change your password?", selector: #selector(change))
+            
+        } else {
+            errorAlert(title: "Invalid Password", message: "Please enter a valid password")
+            
         }
     }
     
     @IBAction func deleteAccount(_ sender: Any) {
-        deleteAlert(title: "Confirm Delete Account", message: "Are you sure you want to delete your account?")
-        if confirm {
-            user.deleteInBackground { (success, error) in
-                if success {
-                    self.deletedAccount.text = "Your account has been deleted. Thanks for using WorkJet"
-                    
-                } else {
-                    if let error = error {
-                        self.errorAlert(title: "Account Delete Error", message: error.localizedDescription)
-                        
-                    }
-                }
-            }
-        }
+        confirmAlert(title: "Confirm Delete Account", message: "Are you sure you want to delete your account?", selector: #selector(deleteUser))
+  
     }
     
     @IBAction func home(_ sender: Any) {

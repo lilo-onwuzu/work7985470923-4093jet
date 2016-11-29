@@ -17,6 +17,7 @@
 		04158BA01DE33B5000D741C4 /* PostedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04158B9F1DE33B5000D741C4 /* PostedViewController.swift */; };
 		04158BA21DE33BEF00D741C4 /* AcceptedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04158BA11DE33BEF00D741C4 /* AcceptedViewController.swift */; };
 		042567441DC31E84008ED3DE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042567431DC31E84008ED3DE /* LoginViewController.swift */; };
+		042856D71DED145E0091D9BE /* PayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042856D61DED145E0091D9BE /* PayViewController.swift */; };
 		049EBB631DD9B54300D76AED /* Dosis-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB071DD9B54200D76AED /* Dosis-Bold.ttf */; };
 		049EBB641DD9B54300D76AED /* Dosis-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB081DD9B54200D76AED /* Dosis-ExtraBold.ttf */; };
 		049EBB651DD9B54300D76AED /* Dosis-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB091DD9B54200D76AED /* Dosis-ExtraLight.ttf */; };
@@ -72,6 +73,7 @@
 		04158B9F1DE33B5000D741C4 /* PostedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostedViewController.swift; sourceTree = "<group>"; };
 		04158BA11DE33BEF00D741C4 /* AcceptedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcceptedViewController.swift; sourceTree = "<group>"; };
 		042567431DC31E84008ED3DE /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		042856D61DED145E0091D9BE /* PayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayViewController.swift; sourceTree = "<group>"; };
 		049EBB071DD9B54200D76AED /* Dosis-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-Bold.ttf"; sourceTree = "<group>"; };
 		049EBB081DD9B54200D76AED /* Dosis-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-ExtraBold.ttf"; sourceTree = "<group>"; };
 		049EBB091DD9B54200D76AED /* Dosis-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-ExtraLight.ttf"; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 				04DECE0E1DB094A60087B887 /* MessageViewController.swift */,
 				04158B9B1DE324BE00D741C4 /* SelectViewController.swift */,
 				04DECE161DB0951F0087B887 /* SettingsViewController.swift */,
+				042856D61DED145E0091D9BE /* PayViewController.swift */,
 				04DECE031DAF3B670087B887 /* work.jpg */,
 				04DECE061DAF77D80087B887 /* placeholder.svg.png */,
 				04158B9D1DE3320A00D741C4 /* camera.png */,
@@ -432,6 +435,7 @@
 				04DECE0B1DB03F3C0087B887 /* HomeViewController.swift in Sources */,
 				04DECE171DB0951F0087B887 /* SettingsViewController.swift in Sources */,
 				04F175C81DBED8E800DB91B3 /* SignUpViewController.swift in Sources */,
+				042856D71DED145E0091D9BE /* PayViewController.swift in Sources */,
 				04F6DA731DD5E11800AB8643 /* AcceptedTableViewCell.swift in Sources */,
 				04DECE191DB1826E0087B887 /* Create2ViewController.swift in Sources */,
 			);

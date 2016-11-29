@@ -45,7 +45,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
                     self.errorAlert(title: "Error Editing Job", message: error.localizedDescription + ". Please try again")
                     
                 } else {
-                    self.performSegue(withIdentifier: "backToJob", sender: self)
+                    self.dismiss(animated: true, completion: nil)
                     
                 }
             }
@@ -104,7 +104,6 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
     }
 
     @IBAction func saveEdit(_ sender: Any) {
-            
         // edit title
         if self.editTitle.text != "" {
             editJob.setValue(self.editTitle.text!, forKey: "title")
@@ -120,7 +119,6 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
                 // edit Details
                 if editDetails.text != "" {
                     editJob.setValue(self.editDetails.text! , forKey: "details")
-                    
                     // finally, save job
                     saveAlert(title: "Confirm Edit", message: "Are you sure you want to edit this job", job: editJob)
 

@@ -34,7 +34,7 @@ class SearchViewController: UIViewController {
 		
 	}
 	
-	func drag(_ gesture: UIPanGestureRecognizer) {
+	func drag(gesture: UIPanGestureRecognizer) {
 		// translation measures the distance of a pan. It can be positive or negative
 		let translation = gesture.translation(in: self.view)
 		// allows wheelbarrow center to move in x with pan. wheelbarrow.center.x decreases in x or moves left when pan is to the left
@@ -143,7 +143,7 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		// attach gestureRecognizer/listener to swiping element once view loads
-		let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag(_:)))
+		let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag))
 		wheelbarrow.addGestureRecognizer(pan)
 		wheelbarrow.isUserInteractionEnabled = true
 		logo.layer.masksToBounds = true

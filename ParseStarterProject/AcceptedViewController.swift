@@ -15,10 +15,40 @@ class AcceptedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     @IBOutlet weak var tableView: UITableView!
     
+    func drag(gesture: UIPanGestureRecognizer) {
+        // measure the translation in pan
+        let translation = gesture.translation(in: self.view)
+        let indexPath = tableView.indexPathForSelectedRow
+        // "if let" conditional checks if a row is selected
+        if let indexPath = indexPath {
+            let cell = tableView.cellForRow(at: indexPath)!
+            cell.center.x = self.view.center.x + translation.x
+            // xFromCenter is +ve if pan is to the right and -ve is pan is to the left
+            if gesture.state == UIGestureRecognizerState.ended {
+                if translation.x > 100 {
+                    print("hello")
+                    
+                } else if translation.x < -100 {
+                    print("hi")
+                    
+                }
+                cell.center.x = self.view.center.x
+                // segue to select vc
+                performSegue(withIdentifier: "toPay", sender: self)
+                // pass selected job to segue
+                
+                
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         acceptedJobIds = user.object(forKey: "accepted") as! [String]
-
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag))
+        tableView.addGestureRecognizer(pan)
+        tableView.isUserInteractionEnabled = true
+        
     }
 
     @IBAction func back(_ sender: Any) {
