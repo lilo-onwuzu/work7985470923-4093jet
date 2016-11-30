@@ -8,7 +8,8 @@ target 'ParseStarterProject' do
 pod 'FacebookCore'
 pod 'FacebookLogin'
 pod 'FacebookShare'
-
+pod 'Braintree'
+pod 'Braintree/Apple-Pay'
   # Pods for ParseStarterProject
 
 end
