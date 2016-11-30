@@ -49,7 +49,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
                     self.errorAlert(title: "Error Editing Job", message: error.localizedDescription + ". Please try again")
                     
                 } else {
-                    self.performSegue(withIdentifier: "backToJob", sender: self)
+                    self.performSegue(withIdentifier: "backToTab", sender: self)
                     
                 }
             }
@@ -92,7 +92,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
     }
 
     @IBAction func back(_ sender: Any) {
-        performSegue(withIdentifier: "backToJob", sender: self)
+        self.dismiss(animated: true, completion: nil)
         
     }
     

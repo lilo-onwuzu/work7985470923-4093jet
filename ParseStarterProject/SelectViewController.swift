@@ -5,6 +5,7 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
+// change cell type when match is made
 // pull to refresh
 // change highlighted cell color
 // swipe to select highlighted cell only
@@ -17,7 +18,7 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
     var selectedJob = PFObject(className: "Job")
     var users = [String]()
     var userId = ""
-    var selected = ""
+    var requesterName = ""
     
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -25,7 +26,7 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Go back", style: .default, handler: { (action) in
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
             
         }))
@@ -48,13 +49,12 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
                     cell.center.x = self.view.center.x
                     // swipe right sets selected user value
                     selectedJob.setValue(users[indexPath.row], forKey: "selectedUser")
+                    // init messaging when match is made and send message alert to user
+                    var messages = [Dictionary<String, String>]()
+                    let dict = ["intro" :  "Congratulations! " + requesterName + " picked you for the job. Connect with " + requesterName + " here"]
+                    messages.append(dict)
+                    selectedJob.setValue(messages, forKey: "messages")
                     selectedJob.saveInBackground()
-                    
-                    // update user received jobs
-                    // init messaging
-                    // init status updates
-                    // init payment series if complete
-                    // message alert to user
                     
                 }
             }
@@ -103,11 +103,12 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
     
     // UITableView Delegate method operates on my UITableView subclass "tableView"
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "user", for: indexPath) as! UserAcceptedTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath) as! UserAcceptedTableViewCell
         // fetch user name and image and display
         do {
-            let user = try PFQuery.getUserObject(withId: users[indexPath.row] )
+            let user = try PFQuery.getUserObject(withId: users[indexPath.row])
             let firstName = user.object(forKey: "first_name") as! String
+            requesterName = firstName
             let lastName = user.object(forKey: "last_name") as! String
             cell.userName.text = firstName + " " + lastName
             cell.userName.sizeToFit()

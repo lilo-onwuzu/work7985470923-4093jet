@@ -8,15 +8,15 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-
+    
+    let user = PFUser.current()!
+    
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var createButton: UIButton!
     @IBOutlet weak var jobsButton: UIButton!
     @IBOutlet weak var profileButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var logo: UILabel!
- 
-    @IBOutlet weak var backImage: UIImageView!
     
     @IBAction func search(_ sender: UIButton) {
         performSegue(withIdentifier: "toSearch", sender: self)
@@ -45,9 +45,9 @@ class HomeViewController: UIViewController {
     
     @IBAction func logOut(_ sender: AnyObject) {
         let empty = [String]()
-        PFUser.current()!["accepted"] = empty
-        PFUser.current()!["rejected"] = empty
-        PFUser.current()?.saveInBackground(block: { (success, error) in
+        user["accepted"] = empty
+        user["rejected"] = empty
+        user.saveInBackground(block: { (success, error) in
             if success {
                 PFUser.logOut()
 
@@ -66,12 +66,12 @@ class HomeViewController: UIViewController {
         jobsButton.layer.cornerRadius = 10
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-        
+
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
 }

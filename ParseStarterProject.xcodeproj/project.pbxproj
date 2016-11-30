@@ -10,6 +10,10 @@
 		0400D8DB1DBA86E2006E7E75 /* ParseFacebookUtilsV4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0400D8D71DBA86E2006E7E75 /* ParseFacebookUtilsV4.framework */; };
 		0400DFD31DBC7B95006E7E75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0400DFD21DBC7B95006E7E75 /* Assets.xcassets */; };
 		0400DFD51DBC7CD0006E7E75 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0400DFD41DBC7CD0006E7E75 /* LaunchScreen.storyboard */; };
+		0408BC4D1DED83DE0075D8D2 /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408BC4C1DED83DE0075D8D2 /* MessageTableViewCell.swift */; };
+		0408BC4F1DED95BB0075D8D2 /* ShowMessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408BC4E1DED95BB0075D8D2 /* ShowMessagesTableViewCell.swift */; };
+		0408BC511DED97530075D8D2 /* ShowMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408BC501DED97530075D8D2 /* ShowMessagesViewController.swift */; };
+		0408BC531DEDC14D0075D8D2 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408BC521DEDC14D0075D8D2 /* TabBarViewController.swift */; };
 		04158B981DE3247900D741C4 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04158B971DE3247900D741C4 /* UserProfileViewController.swift */; };
 		04158B9A1DE3249900D741C4 /* EditJobViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04158B991DE3249900D741C4 /* EditJobViewController.swift */; };
 		04158B9C1DE324BE00D741C4 /* SelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04158B9B1DE324BE00D741C4 /* SelectViewController.swift */; };
@@ -67,6 +71,10 @@
 		0400DF8F1DBC5564006E7E75 /* ParseStarterProject-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ParseStarterProject-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		0400DFD21DBC7B95006E7E75 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0400DFD41DBC7CD0006E7E75 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		0408BC4C1DED83DE0075D8D2 /* MessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
+		0408BC4E1DED95BB0075D8D2 /* ShowMessagesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMessagesTableViewCell.swift; sourceTree = "<group>"; };
+		0408BC501DED97530075D8D2 /* ShowMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMessagesViewController.swift; sourceTree = "<group>"; };
+		0408BC521DEDC14D0075D8D2 /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		04158B971DE3247900D741C4 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		04158B991DE3249900D741C4 /* EditJobViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditJobViewController.swift; sourceTree = "<group>"; };
 		04158B9B1DE324BE00D741C4 /* SelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectViewController.swift; sourceTree = "<group>"; };
@@ -179,15 +187,19 @@
 				04DECE0A1DB03F3C0087B887 /* HomeViewController.swift */,
 				04DECE0C1DB0948B0087B887 /* ProfileViewController.swift */,
 				04158B971DE3247900D741C4 /* UserProfileViewController.swift */,
+				0408BC521DEDC14D0075D8D2 /* TabBarViewController.swift */,
 				04F6DA741DD5F8D900AB8643 /* PostedTableViewCell.swift */,
 				042856DA1DED4C410091D9BE /* ReceivedTableViewCell.swift */,
 				042856D81DED1D450091D9BE /* UserAcceptedTableViewCell.swift */,
+				0408BC4C1DED83DE0075D8D2 /* MessageTableViewCell.swift */,
+				0408BC4E1DED95BB0075D8D2 /* ShowMessagesTableViewCell.swift */,
 				04158B991DE3249900D741C4 /* EditJobViewController.swift */,
 				04158B9B1DE324BE00D741C4 /* SelectViewController.swift */,
 				04158B9F1DE33B5000D741C4 /* PostedViewController.swift */,
 				04158BA11DE33BEF00D741C4 /* ReceivedViewController.swift */,
-				04DECE161DB0951F0087B887 /* SettingsViewController.swift */,
 				04DECE0E1DB094A60087B887 /* MessageViewController.swift */,
+				0408BC501DED97530075D8D2 /* ShowMessagesViewController.swift */,
+				04DECE161DB0951F0087B887 /* SettingsViewController.swift */,
 				042856D61DED145E0091D9BE /* PayViewController.swift */,
 				04DECE031DAF3B670087B887 /* work.jpg */,
 				04DECE061DAF77D80087B887 /* placeholder.svg.png */,
@@ -423,8 +435,11 @@
 				04F6DA751DD5F8D900AB8643 /* PostedTableViewCell.swift in Sources */,
 				04158BA21DE33BEF00D741C4 /* ReceivedViewController.swift in Sources */,
 				042567441DC31E84008ED3DE /* LoginViewController.swift in Sources */,
+				0408BC531DEDC14D0075D8D2 /* TabBarViewController.swift in Sources */,
 				04158B9A1DE3249900D741C4 /* EditJobViewController.swift in Sources */,
+				0408BC4D1DED83DE0075D8D2 /* MessageTableViewCell.swift in Sources */,
 				04158BA01DE33B5000D741C4 /* PostedViewController.swift in Sources */,
+				0408BC4F1DED95BB0075D8D2 /* ShowMessagesTableViewCell.swift in Sources */,
 				04158B981DE3247900D741C4 /* UserProfileViewController.swift in Sources */,
 				04DECE0F1DB094A60087B887 /* MessageViewController.swift in Sources */,
 				81BA814D1A49DA1800E65899 /* MainViewController.swift in Sources */,
@@ -439,6 +454,7 @@
 				04DECE0B1DB03F3C0087B887 /* HomeViewController.swift in Sources */,
 				04DECE171DB0951F0087B887 /* SettingsViewController.swift in Sources */,
 				04F175C81DBED8E800DB91B3 /* SignUpViewController.swift in Sources */,
+				0408BC511DED97530075D8D2 /* ShowMessagesViewController.swift in Sources */,
 				042856DB1DED4C410091D9BE /* ReceivedTableViewCell.swift in Sources */,
 				042856D71DED145E0091D9BE /* PayViewController.swift in Sources */,
 				04DECE191DB1826E0087B887 /* Create2ViewController.swift in Sources */,

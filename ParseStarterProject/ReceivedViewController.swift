@@ -6,7 +6,6 @@
 //
 
 // change highlighted cell color
-// number of cells may become unpredictable when number of posted jobs is large. execute on main thread
 
 
 import UIKit
@@ -15,36 +14,58 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     var user = PFUser.current()!
     var receivedJobs = [PFObject]()
-    var ready = false
+    var cellData = NSData()
     
     @IBOutlet weak var tableView: UITableView!
-    
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var emptyLabel: UILabel!
     
-    func getJobs() -> Int {
-        var received = Int()
+    func getJobs() -> [PFObject] {
         // query job class for list of jobs with userid as selectedUser
         let query = PFQuery(className: "Job")
         query.whereKey("selectedUser", equalTo: user.objectId!)
         query.findObjectsInBackground { (jobs, error) in
+            self.receivedJobs.removeAll()
             if let jobs = jobs {
-                received = jobs.count
-                self.ready = true
-                
+                for job in jobs {
+                    self.receivedJobs.append(job)
+                    self.tableView.reloadData()
+                    
+                }
             }
         }
-        return received
+        return receivedJobs
         
     }
+    
+//    func imageDataForCell(id: String, completion: ((NSData?, NSError?) -> Void) ) -> NSData {
+//        // fetch requestor image
+//        do {
+//            let us = try PFQuery.getUserObject(withId: id)
+//            let imageFile = us.object(forKey: "image") as! PFFile
+//            imageFile.getDataInBackground { (data, error) in
+//                if let data = data {
+//                    self.cellData = NSData(data: data)
+//                    self.tableView.reloadData()
+//
+//                }
+//            }
+//        } catch _ {
+//            
+//        }
+//        return cellData
+//        
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-
+        tableView.delegate = self
+        tableView.dataSource = self
+    
     }
-
+    
     @IBAction func back(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
 
@@ -54,46 +75,32 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     }
     
+    // UITableView Delegate method operates on my UITableView subclass "tableView"
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
         
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return 1
+        return getJobs().count
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "receivedCell", for: indexPath) as! ReceivedTableViewCell
-        if receivedJobs.count > 0 {
-            for job in receivedJobs {
-                let reqId = job.object(forKey: "requesterId") as! String
-                // fetch requestor image and display
-                do {
-                    let user = try PFQuery.getUserObject(withId: reqId)
-                    let imageFile = user.object(forKey: "image") as! PFFile
-                    imageFile.getDataInBackground { (data, error) in
-                        if let data = data {
-                            let imageData = NSData(data: data)
-                            cell.userImage.image = UIImage(data: imageData as Data)
-                            
-                        } else {
-                            // do nothing. placeholder image remains
-                        }
-                    }
-                } catch _ {
-                    
-                }
+        let jobs = getJobs()
+        if jobs.count > 0 {
+            for job in jobs {
+//                let reqId = job.object(forKey: "requesterId") as! String
+//                let imageData = imageDataForCell(id: reqId)
+//                cell.userImage.image = UIImage(data: imageData as Data)
                 let jobTitle = job.object(forKey: "title") as! String
                 let jobCycle = job.object(forKey: "cycle") as! String
                 let jobRate = job.object(forKey: "rate") as! String
                 cell.receivedTitle.text = jobTitle
                 cell.receivedCycle.text = "Cycle : " + jobCycle
                 cell.receivedRate.text = "Rate : " + jobRate
-                self.tableView.reloadData()
-                
+
             }
         } else {
             self.emptyLabel.text = "You have not posted any jobs"

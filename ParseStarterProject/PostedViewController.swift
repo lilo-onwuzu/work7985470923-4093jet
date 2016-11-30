@@ -100,7 +100,6 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let indexPath = indexPath {
             let cell = tableView.cellForRow(at: indexPath)!
             cell.center.x = self.view.center.x + translation.x
-            // xFromCenter is +ve if pan is to the right and -ve is pan is to the left
             if gesture.state == UIGestureRecognizerState.ended {
                 if translation.x > 100 {
                     // reset cell center to middle of view
@@ -126,6 +125,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 if jobs.count > 0 {
                     for job in jobs {
                         self.postedJobs.append(job)
+                        
                     }
                     // reload data after async query
                     self.tableView.reloadData()
@@ -219,7 +219,6 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.postedTitle?.text = jobTitle
         cell.postedCycle?.text = "Cycle : " + jobCycle
         cell.postedRate?.text = "Rate : " + jobRate
-        
         return cell
         
     }
