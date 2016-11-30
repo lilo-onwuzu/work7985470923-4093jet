@@ -13,6 +13,7 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
     var selectedJob = PFObject(className: "Job")
     var messages = [Dictionary<String, String>]()
     
+    @IBOutlet weak var emptyLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var logo: UILabel!

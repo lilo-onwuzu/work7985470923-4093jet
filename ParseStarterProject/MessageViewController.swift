@@ -16,17 +16,26 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
     
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var emptyLabel: UILabel!
     
-    func errorAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-            alert.dismiss(animated: true, completion: nil)
-            
-        }))
-        present(alert, animated: true, completion: nil)
+    func getJobs() -> [PFObject] {
+        // query job class for list of jobs with userid as selectedUser
+        let query = PFQuery(className: "Job")
+        query.whereKey("selectedUser", equalTo: user.objectId!)
+        query.findObjectsInBackground { (jobs, error) in
+            self.messageJobs.removeAll()
+            if let jobs = jobs {
+                for job in jobs {
+                    self.messageJobs.append(job)
+                    self.tableView.reloadData()
+                    
+                }
+            }
+        }
+        return messageJobs
         
     }
-    
+
     func drag(gesture: UIPanGestureRecognizer) {
         // measure the translation in pan
         let translation = gesture.translation(in: self.view)
@@ -56,19 +65,7 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag))
         tableView.addGestureRecognizer(pan)
         tableView.isUserInteractionEnabled = true
-        // query "Job" where user is selectedUser or requesterId
-        let query = PFQuery(className: "Job")
-        query.whereKey("selectedUser", equalTo: user.objectId!)
-        query.whereKey("requesterId", equalTo: user.objectId!)
-        query.findObjectsInBackground { (jobs, error) in
-            if let error = error {
-                self.errorAlert(title: "Error getting messages", message: error.localizedDescription)
-                
-            } else if let jobs = jobs {
-                self.messageJobs = jobs
-                
-            }
-        }
+
     }
     
     @IBAction func back(_ sender: UIButton) {
@@ -82,17 +79,22 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
         
     }
     
-    // UITableView Delegate method operates on my UITableView subclass "tableView"
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messageJobs.count
+        return getJobs().count
         
     }
     
-    // UITableView Delegate method operates on my UITableView subclass "tableView"
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell", for: indexPath) as! MessageTableViewCell
-        let job = messageJobs[indexPath.row]
-        cell.jobTitle.text = job.object(forKey: "title") as? String
+        let jobs = getJobs()
+        if jobs.count > 0 {
+            let job = jobs[indexPath.row]
+            cell.jobTitle.text = job.object(forKey: "title") as? String
+        
+        } else {
+            self.emptyLabel.text = "You have not posted any jobs"
+            
+        }
         return cell
         
     }

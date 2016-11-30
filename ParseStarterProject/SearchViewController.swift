@@ -55,7 +55,7 @@ class SearchViewController: UIViewController {
 			if xFromCenter > 100 {
 				acceptedOrRejected = "accepted"
 				// add user id to array of users who accepted/swiped right for this job
-				currentJob.add(user.objectId!, forKey: "userAccepted")
+				currentJob.addUniqueObject(user.objectId!, forKey: "userAccepted")
 				currentJob.saveInBackground()
 				
 			} else if xFromCenter < -100 {

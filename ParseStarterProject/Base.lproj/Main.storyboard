@@ -177,7 +177,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="work.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="SXT-b3-cpV">
-                                <rect key="frame" x="-184.5" y="329" width="744" height="338"/>
+                                <rect key="frame" x="-185" y="329" width="745" height="338"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hr0-uw-lNx">
                                 <rect key="frame" x="230" y="297" width="56" height="29"/>
@@ -283,7 +283,6 @@
                                     <color key="titleColor" red="0.74382691059999995" green="0.22870290630000001" blue="0.36356784660000002" alpha="0.91651078350000004" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="back:" destination="miG-pI-pOd" eventType="touchUpInside" id="8Uf-0c-k37"/>
                                     <action selector="back:" destination="pdX-gC-01V" eventType="touchUpInside" id="Zzk-a1-ZRC"/>
                                 </connections>
                             </button>
@@ -995,11 +994,11 @@
                             <tableView clipsSubviews="YES" alpha="0.60000002384185791" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="57" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="FR8-bZ-JkY">
                                 <rect key="frame" x="0.0" y="78" width="375" height="532"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Jxr-6I-bCQ">
+                                <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kD8-jW-h3V">
                                     <rect key="frame" x="0.0" y="131" width="375" height="37"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="37" id="BHf-me-7Pg"/>
+                                        <constraint firstAttribute="height" constant="37" id="LDB-QN-FT9"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="15"/>
                                     <color key="textColor" red="0.095521476310000006" green="0.47248868960000001" blue="0.53681590020000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1014,7 +1013,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TUK-bN-MLR">
-                                                    <rect key="frame" x="8" y="8" width="359" height="49"/>
+                                                    <rect key="frame" x="8" y="8" width="359" height="48"/>
                                                     <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="18"/>
                                                     <color key="textColor" red="0.12575869549999999" green="0.62383298799999998" blue="0.70076098750000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1029,7 +1028,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="jobTitle" destination="TUK-bN-MLR" id="0SV-yW-Qc1"/>
-                                            <outlet property="postedTitle" destination="TUK-bN-MLR" id="08c-cb-LOL"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1061,6 +1059,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
+                        <outlet property="emptyLabel" destination="kD8-jW-h3V" id="2wq-Xk-MRr"/>
                         <outlet property="logo" destination="rZ0-GV-f2p" id="Lja-ba-sMF"/>
                         <outlet property="tableView" destination="FR8-bZ-JkY" id="j39-a5-QSL"/>
                         <segue destination="ojL-PF-MAU" kind="show" identifier="toShowMessages" id="VSd-4m-Ehl"/>
@@ -1111,7 +1110,6 @@
                                 </state>
                                 <connections>
                                     <action selector="back:" destination="A5M-Gh-jTS" eventType="touchUpInside" id="GOb-VJ-fyq"/>
-                                    <action selector="back:" destination="miG-pI-pOd" eventType="touchUpInside" id="jnm-Pl-QDq"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1811,7 +1809,6 @@
                                     <color key="titleColor" red="0.74382691059999995" green="0.22870290630000001" blue="0.36356784660000002" alpha="0.91651078350000004" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="back:" destination="miG-pI-pOd" eventType="touchUpInside" id="1dt-Yf-GKJ"/>
                                     <action selector="back:" destination="lNt-y5-bXM" eventType="touchUpInside" id="Ehh-Xz-gd8"/>
                                 </connections>
                             </button>
@@ -2002,7 +1999,6 @@
                                     <color key="titleColor" red="0.74382691059999995" green="0.22870290630000001" blue="0.36356784660000002" alpha="0.91651078350000004" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="back:" destination="miG-pI-pOd" eventType="touchUpInside" id="KH1-5d-tin"/>
                                     <action selector="back:" destination="pbZ-9T-PZd" eventType="touchUpInside" id="V9I-0i-KfB"/>
                                 </connections>
                             </button>
@@ -2680,10 +2676,10 @@
             </objects>
             <point key="canvasLocation" x="-1962" y="-1152"/>
         </scene>
-        <!--MessageListViewController-->
+        <!--ShowMessagesViewController-->
         <scene sceneID="c1n-8V-Ouc">
             <objects>
-                <viewController title="MessageListViewController" id="ojL-PF-MAU" customClass="ShowMessagesViewController" customModule="ParseStarterProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="ShowMessagesViewController" id="ojL-PF-MAU" customClass="ShowMessagesViewController" customModule="ParseStarterProject" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="CEs-17-G8P"/>
                         <viewControllerLayoutGuide type="bottom" id="FL5-6X-dBW"/>
@@ -2723,6 +2719,16 @@
                             <tableView clipsSubviews="YES" alpha="0.60000002384185791" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="45" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="N3w-nz-Xst">
                                 <rect key="frame" x="0.0" y="78" width="375" height="532"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lTj-ZU-Px7">
+                                    <rect key="frame" x="0.0" y="118.5" width="375" height="37"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="37" id="eyi-GO-wiq"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="15"/>
+                                    <color key="textColor" red="0.095521476310000006" green="0.47248868960000001" blue="0.53681590020000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="listCell" rowHeight="45" id="oku-XO-vf4" customClass="ShowMessagesTableViewCell" customModule="ParseStarterProject" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="56" width="375" height="45"/>
@@ -2800,6 +2806,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
+                        <outlet property="emptyLabel" destination="lTj-ZU-Px7" id="9VU-7j-pxD"/>
                         <outlet property="logo" destination="sBs-l6-ugc" id="qjJ-kW-mTv"/>
                         <outlet property="newMessage" destination="4er-dU-iEr" id="kLU-Cb-3ZS"/>
                         <outlet property="sendButton" destination="G59-pP-e4k" id="85A-jq-0Pk"/>

@@ -38,25 +38,6 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
         
     }
     
-//    func imageDataForCell(id: String, completion: ((NSData?, NSError?) -> Void) ) -> NSData {
-//        // fetch requestor image
-//        do {
-//            let us = try PFQuery.getUserObject(withId: id)
-//            let imageFile = us.object(forKey: "image") as! PFFile
-//            imageFile.getDataInBackground { (data, error) in
-//                if let data = data {
-//                    self.cellData = NSData(data: data)
-//                    self.tableView.reloadData()
-//
-//                }
-//            }
-//        } catch _ {
-//            
-//        }
-//        return cellData
-//        
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         logo.layer.masksToBounds = true
@@ -90,23 +71,33 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
         let cell = tableView.dequeueReusableCell(withIdentifier: "receivedCell", for: indexPath) as! ReceivedTableViewCell
         let jobs = getJobs()
         if jobs.count > 0 {
-            for job in jobs {
-//                let reqId = job.object(forKey: "requesterId") as! String
-//                let imageData = imageDataForCell(id: reqId)
-//                cell.userImage.image = UIImage(data: imageData as Data)
-                let jobTitle = job.object(forKey: "title") as! String
-                let jobCycle = job.object(forKey: "cycle") as! String
-                let jobRate = job.object(forKey: "rate") as! String
-                cell.receivedTitle.text = jobTitle
-                cell.receivedCycle.text = "Cycle : " + jobCycle
-                cell.receivedRate.text = "Rate : " + jobRate
-
+            let job = jobs[indexPath.row]
+            let reqId = job.object(forKey: "requesterId") as! String
+            // fetch requestor image
+            do {
+                let requester = try PFQuery.getUserObject(withId: reqId)
+                let imageFile = requester.object(forKey: "image") as! PFFile
+                imageFile.getDataInBackground { (data, error) in
+                    if let data = data {
+                        let imageData = NSData(data: data)
+                        cell.userImage.image = UIImage(data: imageData as Data)
+                        
+                    }
+                }
+            } catch _ {
+                
             }
+            let jobTitle = job.object(forKey: "title") as! String
+            let jobCycle = job.object(forKey: "cycle") as! String
+            let jobRate = job.object(forKey: "rate") as! String
+            cell.receivedTitle.text = jobTitle
+            cell.receivedCycle.text = "Cycle : " + jobCycle
+            cell.receivedRate.text = "Rate : " + jobRate
+
         } else {
             self.emptyLabel.text = "You have not posted any jobs"
             
         }
-        
         return cell
         
     }

@@ -203,13 +203,11 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
-    // UITableView Delegate method operates on my UITableView subclass "tableView"
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return postedJobs.count
         
     }
     
-    // UITableView Delegate method operates on my UITableView subclass "tableView"
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postedCell", for: indexPath) as! PostedTableViewCell
         let job = postedJobs[indexPath.row]
