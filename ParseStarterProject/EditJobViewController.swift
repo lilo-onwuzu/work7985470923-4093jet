@@ -5,19 +5,21 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// debug cycle picker selection
 
+// scrollView not moving
 
 import UIKit
 
 class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
     var editJob = PFObject(className: "Job")
-    var cycleSelected = ""
     var cycle = ["Flat", "Hourly", "Weekly", "Monthly", "Annually"]
-    var cycleValue = ""
     var status = ["Accepted", "In Progress", "Complete", "Payment Successful"]
-    
+    var cycleValue = ""
+    var statusValue = ""
+    var cycleSelected = ""
+    var statusSelected = ""
+
     @IBOutlet weak var editTitle: UITextField!
     @IBOutlet weak var editCycle: UIPickerView!
     @IBOutlet weak var editRate: UITextField!
@@ -58,14 +60,13 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
         
     }
     
-    // if the argument "entry" is successfully converted to an optionalDouble return the optionalDouble, else, the function terminates and isNumber() has no value (no default value)
-    // type cast to convert to another data type. force cast to convert from optional data type to that data type
-    func isNumber(_ entry: String?) -> Double? {
+    // if the argument "entry" is successfully converted to an optionalDouble return the optionalDouble, else, the function terminates and isADouble() has nil value)
+    func isADouble(_ entry: String?) -> Double? {
         var exit: Double?
         if let entry = Double(entry!) {
             exit = entry
+            
         }
-        
         return exit
         
     }
@@ -78,8 +79,10 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
         editTitle.text = (editJob.object(forKey: "title") as! String)
         editRate.text = (editJob.object(forKey: "rate") as! String)
         editDetails.text = (editJob.object(forKey: "details") as! String)
+        // set jobCycle as selected row in cyclePicker
         cycleSelected = editJob.object(forKey: "cycle") as! String
-        
+        // set jobStatus as selected row in statusPicker
+        statusSelected = "Accepted"
         // set picker to job cycle value
         for index in cycle {
             if cycleSelected == index {
@@ -87,8 +90,13 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
             
             }
         }
-
-
+        // set picker to job status value
+        for index in status {
+            if statusSelected == index {
+                editCycle.selectRow(status.index(of: index)!, inComponent: 0, animated: true)
+                
+            }
+        }
     }
 
     @IBAction func back(_ sender: Any) {
@@ -97,14 +105,23 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
     }
     
     @IBAction func stepRate(_ sender: UIStepper) {
-        if isNumber(editRate.text) != nil {
-            editRate.text = String(isNumber(editRate.text)! + sender.value)
-            sender.value = 0.0
+        var enterRate: Double?
+        // if a double
+        if isADouble(editRate.text) != nil {
+            // if isADouble(), add to the stepper value (+ve or -ve)
+            enterRate = isADouble(editRate.text)! + sender.value
+            sender.value = 0.00
             
+            // if not a double or textField is empty, show "1.00" on first tap
         } else {
-            self.editRate.text  = "1.0"
+            enterRate = 1.00
+            // zero sender.value so it does not change on first tap
+            sender.value = 0.00
             
         }
+        // display enterRate value in textField on every tap
+        editRate.text = String(format: "%.2f", enterRate!)
+        
     }
 
     @IBAction func saveEdit(_ sender: Any) {
@@ -116,9 +133,10 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
             editJob.setValue(self.cycleValue, forKey: "cycle")
             
             // edit rate
+            let rate = String(format: "%.2f", editRate.text!)
             // confirm that rate is a valid number that is non-negative
-            if isNumber(editRate.text) != nil && isNumber(editRate.text)! > 0.0 {
-                editJob.setValue(self.editRate.text!, forKey: "rate")
+            if isADouble(editRate.text) != nil && isADouble(editRate.text)! > 0.0 {
+                editJob.setValue(rate, forKey: "rate")
                 
                 // edit Details
                 if editDetails.text != "" {
@@ -161,16 +179,32 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
     
     // UIPickerViewDelegate method: number of items in picker
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return cycle.count
+        var count = Int()
+        if (pickerView.tag == 0) {
+            count = cycle.count
+            
+        } else {
+            count = status.count
+            
+        }
+        return count
         
     }
     
     // UIPickerViewDelegate method: return an item into each row in picker and select picker value
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        cycleValue = cycle[row]
-        let cycleValueAtt = NSAttributedString(string: cycleValue, attributes: [NSForegroundColorAttributeName:UIColor.white])
-
-        return cycleValueAtt
+        var pickerValueAtt = NSAttributedString()
+        if (pickerView.tag == 0) {
+            cycleValue = cycle[row]
+            pickerValueAtt = NSAttributedString(string: cycleValue, attributes: [NSForegroundColorAttributeName: UIColor.white])
+        
+        }
+        if (pickerView.tag == 1) {
+            statusValue = status[row]
+            pickerValueAtt = NSAttributedString(string: statusValue, attributes: [NSForegroundColorAttributeName: UIColor.white])
+        
+        }
+        return pickerValueAtt
         
     }
     

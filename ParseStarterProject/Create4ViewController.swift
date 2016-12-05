@@ -10,6 +10,7 @@ import UIKit
 
 class Create4ViewController: UIViewController, UITextFieldDelegate {
     
+    let text_field_limit = 300
     var createJob: PFObject = PFObject(className: "Job")
 
     @IBOutlet weak var jobDetails: UITextField!
@@ -26,20 +27,25 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func addDetails() {
-        if jobDetails.text != "" || jobDetails.text != "Include more information here..." {
-            createJob.setValue(self.jobDetails.text! , forKey: "details")
-            // finally save createJob PFObject to Parse
-            // saveInBackground is an asychronous call that does not wait to execute before continuing so save it with block if you need data that is returned from the async call
-            createJob.saveInBackground(block: { (success, error) in
-                if success {
-                    // wait till finish is true or createJob object is saved in async call before segue
-                    self.performSegue(withIdentifier: "toConfirm", sender: self)
-                    
-                } else {
-                    self.errorAlert(title: "Database Error", message: "Please try again later")
-                }
+        if jobDetails.text != "" {
+            if jobDetails.text != "Include more information here..." {
+                createJob.setValue(self.jobDetails.text! , forKey: "details")
+                // finally save "createJob" PFObject to Parse
+                // saveInBackground is an asychronous call that does not wait to execute before continuing so save it with block if you need data that is returned from the async call
+                createJob.saveInBackground(block: { (success, error) in
+                    if success {
+                        // wait till finish is true or createJob object is saved in async call before segue
+                        self.performSegue(withIdentifier: "toConfirm", sender: self)
+                        
+                    } else {
+                        self.errorAlert(title: "Database Error", message: "Please try again later")
+                    }
 
-            })
+                })
+            } else {
+                errorAlert(title: "Invalid Form Entry", message: "Please enter valid details")
+                
+            }
         } else {
             errorAlert(title: "Invalid Form Entry", message: "Please add some more details")
             
@@ -76,6 +82,11 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
 
     }
 
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return (textField.text?.utf16.count ?? 0) + string.utf16.count - range.length <= text_field_limit
+    
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

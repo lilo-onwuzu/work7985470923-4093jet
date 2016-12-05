@@ -40,6 +40,8 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         self.cyclePicker.dataSource = self
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
+        cyclePicker.layer.masksToBounds = true
+        cyclePicker.layer.cornerRadius = 7
 
     }
     
@@ -79,6 +81,7 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // pass PFObject through segue without saving to Parse
         if segue.identifier == "toCreate3" {
             let nextVC = segue.destination as! Create3ViewController
             nextVC.createJob = self.createJob

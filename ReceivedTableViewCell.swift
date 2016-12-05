@@ -23,6 +23,9 @@ class ReceivedTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
+        let colorView = UIView()
+        colorView.backgroundColor = UIColor.darkGray
+        self.selectedBackgroundView = colorView
         
     }
 

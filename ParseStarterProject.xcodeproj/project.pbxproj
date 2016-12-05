@@ -302,7 +302,7 @@
 				TargetAttributes = {
 					81BA81441A49DA1800E65899 = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = SS5PE2Z9FA;
+						DevelopmentTeam = JNVXXYDAFM;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -576,7 +576,7 @@
 				CODE_SIGN_ENTITLEMENTS = ParseStarterProject/ParseStarterProject.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = SS5PE2Z9FA;
+				DEVELOPMENT_TEAM = JNVXXYDAFM;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -602,7 +602,7 @@
 				CODE_SIGN_ENTITLEMENTS = ParseStarterProject/ParseStarterProject.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = SS5PE2Z9FA;
+				DEVELOPMENT_TEAM = JNVXXYDAFM;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

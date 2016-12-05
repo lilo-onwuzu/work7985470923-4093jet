@@ -22,6 +22,7 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
     
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
     func errorAlert(title: String, message: String) {
@@ -66,6 +67,13 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
         users = selectedJob.object(forKey: "userAccepted") as! [String]
+        if users.count > 0 {
+            infoLabel.text = "Swipe right to pick someone for the job >>"
+            
+        } else {
+            infoLabel.text = "No users have accepted this job yet"
+            
+        }
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag))
         tableView.addGestureRecognizer(pan)
         tableView.isUserInteractionEnabled = true

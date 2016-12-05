@@ -5,7 +5,6 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// connect apple pay 
 
 import UIKit
 
@@ -17,42 +16,11 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var changePassword: UIButton!
     @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var confirmPassword: UITextField!
     @IBOutlet weak var changedPassword: UILabel!
     @IBOutlet weak var deletedAccount: UILabel!
     @IBOutlet weak var deleteAccount: UIButton!
     @IBOutlet weak var connectedPay: UILabel!
-
-    func deleteUser() {
-        user.deleteInBackground { (success, error) in
-            if success {
-                self.deletedAccount.text = "Your account has been deleted. Thanks for using WorkJet"
-                
-            } else {
-                if let error = error {
-                    self.errorAlert(title: "Account Delete Error", message: error.localizedDescription)
-                    
-                }
-            }
-        }
-    }
-    
-    func change() {
-        user.password = password.text
-        user.saveInBackground { (success, error) in
-            if success {
-                self.changedPassword.text = "Your password has been updated!"
-                
-            } else {
-                if let error = error {
-                    self.errorAlert(title: "Update Password Error", message: error.localizedDescription)
-                    
-                }
-            }
-            // reset password field
-            self.password.text = ""
-            
-        }
-    }
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -80,23 +48,69 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         
     }
     
+    func deleteUser() {
+        user.deleteInBackground { (success, error) in
+            if success {
+                self.deletedAccount.text = "Your account has been deleted. Thanks for using WorkJet"
+                
+            } else {
+                if let error = error {
+                    self.errorAlert(title: "Account Delete Error", message: error.localizedDescription)
+                    
+                }
+            }
+        }
+    }
+    
+    func savePassword() {
+        user.saveInBackground { (success, error) in
+            if success {
+                self.changedPassword.text = "Your password has been updated!"
+                
+            } else {
+                if let error = error {
+                    self.errorAlert(title: "Update Password Error", message: error.localizedDescription)
+                    
+                }
+            }
+            // reset password field
+            self.password.text = ""
+            
+        }
+    }
+    
+    func changeAction() {
+        let getPassword = self.password.text!
+        let confirmPassword = self.confirmPassword.text!
+        // password character length must be greater than 5
+        if getPassword.characters.count >= 6 {
+            if getPassword == confirmPassword {
+                confirmAlert(title: "Confirm Password Change", message: "Are you sure you want to change your password?", selector: #selector(savePassword))
+                
+            } else {
+                errorAlert(title: "Invalid Password", message: "Your entered passwords must match. Please try again")
+                
+            }
+        } else {
+            errorAlert(title: "Invalid Password", message: "Your password must have at least 6 characters")
+            
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
         deleteAccount.layer.cornerRadius = 5
         changePassword.layer.cornerRadius = 5
+        password.attributedPlaceholder = NSAttributedString(string:"Enter Password", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+        confirmPassword.attributedPlaceholder = NSAttributedString(string:"Confirm Password", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         
     }
     
     @IBAction func changePassword(_ sender: Any) {
-        if password.text != "" {
-            confirmAlert(title: "Confirm Password Change", message: "Are you sure you want to change your password?", selector: #selector(change))
-            
-        } else {
-            errorAlert(title: "Invalid Password", message: "Please enter a valid password")
-            
-        }
+        changeAction()
+        
     }
     
     @IBAction func deleteAccount(_ sender: Any) {
@@ -104,8 +118,13 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
   
     }
     
+    @IBAction func back(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
     @IBAction func home(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
 
     }
 

@@ -5,15 +5,12 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// crash occurs because import image data file is too large
-
 
 import UIKit
 
 class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     let image = UIImagePickerController()
-    // should not crash here because login screen appears before this
     let user = PFUser.current()!
 
     @IBOutlet weak var userImage: UIImageView!
@@ -21,7 +18,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     @IBOutlet weak var userLocation: UILabel!
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var editStory: UITextField!
-    @IBOutlet weak var userStoryBack: UILabel!
     @IBOutlet weak var userStory: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -52,28 +48,27 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
             }
         })
         userStory.sizeToFit()
-
+        scrollView.sizeToFit()
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        userStoryBack.layer.masksToBounds = true
-        userStoryBack.layer.cornerRadius = 5
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-        
+        // UIImagePickerController's delegate object is of type UIImagePickerControllerDelegate and UINavigationControllerDelegate
+        // a delegate of an object (e.g UITableViewDelegate) is a "protocol" that allows the object (UITableView) to be manipulated by calling functions with the object as an arguments. These functions or methods on the object can now be called anywhere within the delegate (self or settingsVC in this case)
+        image.delegate = self
+        editStory.delegate = self
         let firstName = user.object(forKey: "first_name") as! String
         let lastName = user.object(forKey: "last_name") as! String
         userName.text = firstName + " " + lastName
-        
         // if story already exists for user, convert it to string (if possible- no "!") and display it
         if let story = user.object(forKey: "story") {
             userStory.text = String(describing: story)
         
         }
         userStory.sizeToFit()
-        
         // display user's saved image. user image data always exists in Parse
         let imageFile = user.object(forKey: "image") as! PFFile
         imageFile.getDataInBackground { (data, error) in
@@ -81,29 +76,20 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
                 let imageData = NSData(data: data)
                 self.userImage.image = UIImage(data: imageData as Data)
             
-            } else {
-
             }
         }
-        scrollView.sizeToFit()
-        
-        // UIImagePickerController's delegate object is of type UIImagePickerControllerDelegate and UINavigationControllerDelegate
-        // a delegate of an object (e.g UITableViewDelegate) is a "protocol" that allows the object (UITableView) to be manipulated by calling functions with the object as an arguments. These functions or methods on the object can now be called anywhere within the delegate (self or settingsVC in this case)
-        image.delegate = self
-        editStory.delegate = self
         
     }
 
     @IBAction func changePhoto(_ sender: Any) {
         // lets UIImagePickerController object know where to pick image from
-        image.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
+        image.sourceType = UIImagePickerControllerSourceType.photoLibrary
         image.allowsEditing = false
         self.present(image, animated: true, completion: nil)
-        scrollView.sizeToFit()
         
     }
     
-    // edit action executes "after editing ends"
+    // edit action executes "after editing ends" or return button is tapped
     @IBAction func edit(_ sender: AnyObject) {
         runEdit()
         
@@ -115,14 +101,15 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     
     }
     
-    // run after UIImagePickerController has succesfully gotten a selected image, update Parse
+    // run after UIImagePickerController has succesfully gotten a selected image, updates Parse with new image and changes displayed image
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            userImage.image = pickedImage
-            let imageData = UIImagePNGRepresentation(pickedImage)!
+            let imageData = UIImageJPEGRepresentation(pickedImage, 0.5)!
             let imageFile = PFFile(data: imageData)!
             user["image"] = imageFile
             user.saveInBackground()
+            userImage.image = pickedImage
+            
         }
         self.dismiss(animated: true, completion: nil)
         

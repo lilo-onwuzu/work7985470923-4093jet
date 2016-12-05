@@ -5,11 +5,8 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// cell dance when delete is pressed
-// change highlighted cell color
-// swipe to select highlighted cell only
-// number of cells may become unpredictable when number of posted jobs is large. execute on main thread
 
+// cell dance when delete is pressed
 
 import UIKit
 
@@ -23,8 +20,35 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var deleteJobs: UIButton!
-    @IBOutlet weak var emptyLabel: UILabel!
     @IBOutlet weak var logo: UILabel!
+    @IBOutlet weak var emptyLabel: UILabel!
+    
+    // drag function is called continuosly from start to end of a pan
+    func dragged (gesture: UIPanGestureRecognizer) {
+        // during drag, if a cell is selected/highlighted, do this, else, pan gesture has no effect nothing
+        if let index = tableView.indexPathForSelectedRow {
+            // get highlighted cell
+            if let cell = tableView.cellForRow(at: index) {
+                // measure translation of gesture in x
+                let translation = gesture.translation(in: cell.contentView)
+                // continue executing dragged() function if pan is to the right, if not, do nothing, function terminates
+                if translation.x > 0 {
+                    cell.center.x = cell.center.x + translation.x
+                    // once pan gesture ends, if selected cell , pass job in highlighted cell to selectVC, perform segue
+                    if gesture.state == UIGestureRecognizerState.ended {
+                        if cell.center.x > (self.view.bounds.width/2) {
+                            selectedJob = postedJobs[index.row]
+                            performSegue(withIdentifier: "toSelect", sender: self)
+                            
+                        }
+                        // reset cell center to center of screen
+                        cell.center.x = self.view.center.x
+                        
+                    }
+                }
+            }
+        }
+    }
     
     // get rows selected for deleting and returns the job objects
     func getRowsToDelete() -> [PFObject] {
@@ -91,28 +115,6 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         present(alert, animated: true, completion: nil)
         
     }
-    
-    func drag(gesture: UIPanGestureRecognizer) {
-        // measure the translation in pan
-        let translation = gesture.translation(in: self.view)
-        let indexPath = tableView.indexPathForSelectedRow
-        // "if let" conditional checks if a row is selected
-        if let indexPath = indexPath {
-            let cell = tableView.cellForRow(at: indexPath)!
-            cell.center.x = self.view.center.x + translation.x
-            if gesture.state == UIGestureRecognizerState.ended {
-                if translation.x > 100 {
-                    // reset cell center to middle of view
-                    cell.center.x = self.view.center.x
-                    // pass selected job to segue
-                    selectedJob = postedJobs[indexPath.row]
-                    // then segue to select vc
-                    performSegue(withIdentifier: "toSelect", sender: self)
-                    
-                }
-            }
-        }
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,8 +132,8 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     // reload data after async query
                     self.tableView.reloadData()
                 } else {
-                    self.emptyLabel.text = "You have not posted any jobs"
-                    
+                    self.emptyLabel.isHidden = false
+
                 }
             }
         }
@@ -139,9 +141,6 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         logo.layer.cornerRadius = 3
         tableView.delegate = self
         tableView.dataSource = self
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag))
-        tableView.addGestureRecognizer(pan)
-        tableView.isUserInteractionEnabled = true
         
     }
     
@@ -196,7 +195,6 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
             
-            
     // UITableView Delegate method operates on my UITableView subclass "tableView"
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -217,6 +215,10 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.postedTitle?.text = jobTitle
         cell.postedCycle?.text = "Cycle : " + jobCycle
         cell.postedRate?.text = "Rate : " + jobRate
+        // attach pan gesture recognizer to each cell so whenever the cell is dragged, the dragged() function runs once
+        cell.isUserInteractionEnabled = true
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.dragged(gesture:)))
+        cell.addGestureRecognizer(pan)
         return cell
         
     }

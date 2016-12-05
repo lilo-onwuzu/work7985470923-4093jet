@@ -48,7 +48,6 @@ class SearchViewController: UIViewController {
 		let scale = min(100 / abs(xFromCenter), 1)
 		var stretch = rotation.scaledBy(x: scale, y: scale)
 		wheelbarrow.transform = stretch
-		
 		// once panning ends, record swipe left or right action, filter viewed job from showing up later, reset swipe element to initial position then finally fetch a new job from database
 		if gesture.state == UIGestureRecognizerState.ended {
 			var acceptedOrRejected = ""
@@ -71,7 +70,6 @@ class SearchViewController: UIViewController {
 			rotation = CGAffineTransform(rotationAngle: 0)
 			stretch = rotation.scaledBy(x: 1, y: 1)
 			wheelbarrow.transform = stretch
-			
 			getNewJob()
 			
 		}
@@ -154,12 +152,9 @@ class SearchViewController: UIViewController {
 		requesterName.layer.masksToBounds = true
 		requesterName.layer.cornerRadius = 3
 		viewProfile.layer.cornerRadius = 10
-		
 		// disable viewProfile and infoLabel
 		viewProfile.isHidden = true
 		self.infoLabel.isHidden = true
-
-		
 		// query first job once view loads
 		getNewJob()
 		
