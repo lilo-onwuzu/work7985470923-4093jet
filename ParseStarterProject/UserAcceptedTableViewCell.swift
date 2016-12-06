@@ -12,19 +12,33 @@ class UserAcceptedTableViewCell: UITableViewCell {
 
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var userImage: UIImageView!
+    @IBOutlet weak var viewProfile: UIButton!
+    @IBOutlet weak var cellBack: UILabel!
     
     override func awakeFromNib() {
-        super.awakeFromNib()
         // Initialization code
+        super.awakeFromNib()
+        cellBack.layer.masksToBounds = true
+        cellBack.layer.cornerRadius = 7
+        viewProfile.layer.masksToBounds = true
+        viewProfile.layer.cornerRadius = 7
+        userImage.layer.masksToBounds = true
+        userImage.layer.cornerRadius = 28
+
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
-        let colorView = UIView()
-        colorView.backgroundColor = UIColor.darkGray
-        self.selectedBackgroundView = colorView
-        
+        if selected {
+            // show swipe animation
+            viewProfile.isHidden = false
+            self.userName.textColor = UIColor.black
+            
+        } else {
+            self.userName.textColor = UIColor.white
+
+        }
     }
 
 }

@@ -14,19 +14,30 @@ class ReceivedTableViewCell: UITableViewCell {
     @IBOutlet weak var receivedRate: UILabel!
     @IBOutlet weak var receivedCycle: UILabel!
     @IBOutlet weak var userImage: UIImageView!
+    @IBOutlet weak var receivedLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        receivedLabel.layer.masksToBounds = true
+        receivedLabel.layer.cornerRadius = 7
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
-        let colorView = UIView()
-        colorView.backgroundColor = UIColor.darkGray
-        self.selectedBackgroundView = colorView
-        
+        // Configure the highlighted color for the selected state
+        if selected {
+            self.receivedTitle.textColor = UIColor.black
+            self.receivedCycle.textColor = UIColor.black
+            self.receivedRate.textColor = UIColor.black
+            
+        } else {
+            self.receivedTitle.textColor = UIColor.white
+            self.receivedCycle.textColor = UIColor.white
+            self.receivedRate.textColor = UIColor.white
+            
+        }
     }
 
 }

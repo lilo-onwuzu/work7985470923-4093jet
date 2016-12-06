@@ -18,12 +18,12 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var newMessage: UITextField!
+    @IBOutlet weak var jobTitle: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-        sendButton.layer.cornerRadius = 10
         
     }
     

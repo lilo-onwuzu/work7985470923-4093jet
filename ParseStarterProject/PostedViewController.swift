@@ -167,6 +167,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if deleteJobs.currentTitle == "Delete x" {
             tableView.allowsMultipleSelection = true
             deleteJobs.setTitle("Done x", for: UIControlState.normal)
+            // add animation for delete
 
         } else {
             // else if "Done" is active

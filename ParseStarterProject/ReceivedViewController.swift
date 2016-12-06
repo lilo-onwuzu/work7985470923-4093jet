@@ -14,7 +14,6 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     var user = PFUser.current()!
     var receivedJobs = [PFObject]()
-    var cellData = NSData()
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var logo: UILabel!

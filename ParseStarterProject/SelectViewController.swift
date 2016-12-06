@@ -7,8 +7,6 @@
 
 // change cell type when match is made
 // pull to refresh
-// change highlighted cell color
-// swipe to select highlighted cell only
 
 
 import UIKit
@@ -35,28 +33,34 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
         
     }
     
-    func drag(gesture: UIPanGestureRecognizer) {
-        // measure the translation in pan
-        let translation = gesture.translation(in: self.view)
-        let indexPath = tableView.indexPathForSelectedRow
-        // "if let" conditional checks if a row is selected
-        if let indexPath = indexPath {
-            let cell = tableView.cellForRow(at: indexPath)!
-            cell.center.x = self.view.center.x + translation.x
-            // xFromCenter is +ve if pan is to the right and -ve is pan is to the left
-            if gesture.state == UIGestureRecognizerState.ended {
-                if translation.x > 100 {
-                    // reset cell center to middle of view
-                    cell.center.x = self.view.center.x
-                    // swipe right sets selected user value
-                    selectedJob.setValue(users[indexPath.row], forKey: "selectedUser")
-                    // init messaging when match is made and send message alert to user
-                    var messages = [Dictionary<String, String>]()
-                    let dict = ["intro" :  "Congratulations! " + requesterName + " picked you for the job. Connect with " + requesterName + " here"]
-                    messages.append(dict)
-                    selectedJob.setValue(messages, forKey: "messages")
-                    selectedJob.saveInBackground()
-                    
+    // drag function is called continuosly from start to end of a pan
+    func dragged (gesture: UIPanGestureRecognizer) {
+        // during drag, if a cell is selected/highlighted, do this, else, pan gesture has no effect nothing
+        if let index = tableView.indexPathForSelectedRow {
+            // get highlighted cell
+            if let cell = tableView.cellForRow(at: index) {
+                // measure translation of gesture in x
+                let translation = gesture.translation(in: cell.contentView)
+                // continue executing dragged() function if pan is to the right, if not, do nothing, function terminates
+                if translation.x > 0 {
+                    cell.center.x = cell.center.x + translation.x
+                    // once pan gesture ends, if selected cell , pass job in highlighted cell to selectVC, perform segue
+                    if gesture.state == UIGestureRecognizerState.ended {
+                        if cell.center.x > (self.view.bounds.width/2) {
+                            // swipe right sets selected user value
+                            selectedJob.setValue(users[index.row], forKey: "selectedUser")
+                            // init messaging when match is made and send message alert to user
+                            var messages = [Dictionary<String, String>]()
+                            let dict = ["intro" :  "Congratulations! " + requesterName + " picked you for the job. Connect with " + requesterName + " here"]
+                            messages.append(dict)
+                            selectedJob.setValue(messages, forKey: "messages")
+                            selectedJob.saveInBackground()
+                            
+                        }
+                        // reset cell center to center of screen
+                        cell.center.x = self.view.center.x
+                        
+                    }
                 }
             }
         }
@@ -66,17 +70,13 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
+        tableView.delegate = self
+        tableView.dataSource = self
         users = selectedJob.object(forKey: "userAccepted") as! [String]
-        if users.count > 0 {
-            infoLabel.text = "Swipe right to pick someone for the job >>"
-            
-        } else {
+        if users.count == 0 {
             infoLabel.text = "No users have accepted this job yet"
             
         }
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag))
-        tableView.addGestureRecognizer(pan)
-        tableView.isUserInteractionEnabled = true
         
     }
     
@@ -134,7 +134,10 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
         } catch _ {
             
         }
-        
+        // attach pan gesture recognizer to each cell so whenever the cell is dragged, the dragged() function runs once
+        cell.isUserInteractionEnabled = true
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.dragged(gesture:)))
+        cell.addGestureRecognizer(pan)
         return cell
         
     }
