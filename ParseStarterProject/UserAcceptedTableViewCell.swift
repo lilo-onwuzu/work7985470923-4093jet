@@ -33,12 +33,8 @@ class UserAcceptedTableViewCell: UITableViewCell {
         if selected {
             // show swipe animation
             viewProfile.isHidden = false
-            self.userName.textColor = UIColor.black
             
-        } else {
-            self.userName.textColor = UIColor.white
-
-        }
+        } 
     }
 
 }

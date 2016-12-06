@@ -28,5 +28,10 @@ class ShowMessagesTableViewCell: UITableViewCell {
             
         }
     }
+    
+    @IBAction func send(_ sender: Any) {
+        
+        
+    }
 
 }

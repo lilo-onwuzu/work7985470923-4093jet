@@ -17,24 +17,6 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var emptyLabel: UILabel!
-    
-    func getJobs() -> [PFObject] {
-        // query job class for list of jobs with userid as selectedUser
-        let query = PFQuery(className: "Job")
-        query.whereKey("selectedUser", equalTo: user.objectId!)
-        query.findObjectsInBackground { (jobs, error) in
-            self.messageJobs.removeAll()
-            if let jobs = jobs {
-                for job in jobs {
-                    self.messageJobs.append(job)
-                    self.tableView.reloadData()
-                    
-                }
-            }
-        }
-        return messageJobs
-        
-    }
 
     // drag function is called continuosly from start to end of a pan
     func dragged (gesture: UIPanGestureRecognizer) {
@@ -69,7 +51,24 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
         logo.layer.cornerRadius = 3
         tableView.delegate = self
         tableView.dataSource = self
-
+        // query job class for list of jobs with userid as selectedUser
+        let query = PFQuery(className: "Job")
+        query.whereKey("selectedUser", equalTo: user.objectId!)
+        query.findObjectsInBackground { (jobs, error) in
+            if let jobs = jobs {
+                if jobs.count > 0 {
+                    for job in jobs {
+                        self.messageJobs.append(job)
+                        
+                    }
+                    // reload data after async query
+                    self.tableView.reloadData()
+                } else {
+                    self.emptyLabel.isHidden = false
+                    
+                }
+            }
+        }
     }
     
     @IBAction func back(_ sender: UIButton) {
@@ -84,21 +83,15 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return getJobs().count
+        return messageJobs.count
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell", for: indexPath) as! MessageTableViewCell
-        let jobs = getJobs()
-        if jobs.count > 0 {
-            let job = jobs[indexPath.row]
-            cell.messageLabel.text = job.object(forKey: "title") as? String
-        
-        } else {
-            self.emptyLabel.text = "You have not posted any jobs"
-            
-        }
+        let job = messageJobs[indexPath.row]
+        let jobTitle = job.object(forKey: "title") as! String
+        cell.messageLabel.text = jobTitle
         // attach pan gesture recognizer to each cell so whenever the cell is dragged to the right, the dragged() function is called to move the selected cell along with the pan and then perform segue to show messages
         cell.isUserInteractionEnabled = true
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.dragged(gesture:)))
@@ -113,7 +106,7 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toMessageList" {
+        if segue.identifier == "toShowMessages" {
             let vc = segue.destination as! ShowMessagesViewController
             vc.selectedJob = selectedJob
             

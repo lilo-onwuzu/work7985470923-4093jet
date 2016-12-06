@@ -21,6 +21,8 @@ class ReceivedTableViewCell: UITableViewCell {
         // Initialization code
         receivedLabel.layer.masksToBounds = true
         receivedLabel.layer.cornerRadius = 7
+        userImage.layer.masksToBounds = true
+        userImage.layer.cornerRadius = 28
         
     }
 
