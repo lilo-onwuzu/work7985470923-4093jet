@@ -6,6 +6,7 @@
 //
 
 
+// first message not displaying
 // pull to refresh
 
 import UIKit

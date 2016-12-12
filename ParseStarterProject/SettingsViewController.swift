@@ -11,7 +11,8 @@ import UIKit
 class SettingsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     let user = PFUser.current()!
-
+    var showMenu = false
+    
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var changePassword: UIButton!
@@ -21,6 +22,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     @IBOutlet weak var deletedAccount: UILabel!
     @IBOutlet weak var deleteAccount: UIButton!
     @IBOutlet weak var connectedPay: UILabel!
+    @IBOutlet weak var menuView: UIView!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -105,10 +107,33 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         changePassword.layer.cornerRadius = 5
         password.attributedPlaceholder = NSAttributedString(string:"Enter Password", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         confirmPassword.attributedPlaceholder = NSAttributedString(string:"Confirm Password", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
+        menuView.isHidden = true
         
-        // create timer object
-        
-        
+    }
+    
+    @IBAction func mainMenu(_ sender: Any) {
+        if showMenu == false {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+            menuView = vc.view
+            let view = menuView.subviews[1]
+            view.isHidden = true
+            menuView.frame = CGRect(x: 0, y: 69, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
+            menuView.alpha = 0
+            self.view.addSubview(menuView)
+            UIView.transition(with: menuView,
+                              duration: 0.25,
+                              options: .curveEaseInOut,
+                              animations: { self.menuView.alpha = 1 },
+                              completion: nil)
+            menuView.isHidden = false
+            showMenu = true
+            
+        } else if showMenu == true {
+            let view = self.view.subviews.last!
+            view.removeFromSuperview()
+            showMenu = false
+            
+        }
     }
     
     @IBAction func changePassword(_ sender: Any) {
@@ -119,16 +144,6 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     @IBAction func deleteAccount(_ sender: Any) {
         confirmAlert(title: "Confirm Delete Account", message: "Are you sure you want to delete your account?", selector: #selector(deleteUser))
   
-    }
-    
-    @IBAction func back(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-        
-    }
-    
-    @IBAction func home(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-
     }
 
     override func didReceiveMemoryWarning() {

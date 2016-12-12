@@ -10,6 +10,7 @@ import UIKit
 
 class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
+    var showMenu = false
     let image = UIImagePickerController()
     let user = PFUser.current()!
     
@@ -20,6 +21,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     @IBOutlet weak var editStory: UITextField!
     @IBOutlet weak var userStory: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var menuView: UIView!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -78,6 +80,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
             
             }
         }
+        menuView.isHidden = true
     }
 
     @IBAction func changePhoto(_ sender: Any) {
@@ -85,7 +88,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         image.sourceType = UIImagePickerControllerSourceType.photoLibrary
         image.allowsEditing = false
         self.present(image, animated: true, completion: nil)
-        
+
     }
     
     // edit action executes "after editing ends" or return button is tapped
@@ -95,16 +98,28 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     }
     
     @IBAction func mainMenu(_ sender: Any) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-        self.addChildViewController(vc)
-        let menuView = (vc.view)!
-        menuView.frame = CGRect(x: 0, y: (self.view.bounds.height * 0.1), width: (0.8 * self.view.bounds.width), height: (0.75 * self.view.bounds.height))
-        menuView.alpha = 0
-        self.view.addSubview(menuView)
-        UIView.transition(with: menuView, duration: 2, options: [], animations: {
-            menuView.alpha = 1
-        }, completion: nil)
-        
+        if showMenu == false {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+            menuView = vc.view
+            let view = menuView.subviews[1]
+            view.isHidden = true
+            menuView.frame = CGRect(x: 0, y: 69, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
+            menuView.alpha = 0
+            self.view.addSubview(menuView)
+            UIView.transition(with: menuView,
+                              duration: 0.25,
+                              options: .curveEaseInOut,
+                              animations: { self.menuView.alpha = 1 },
+                              completion: nil)
+            menuView.isHidden = false
+            showMenu = true
+            
+        } else if showMenu == true {
+            let view = self.view.subviews.last!
+            view.removeFromSuperview()
+            showMenu = false
+            
+        }
     }
 
     // run after UIImagePickerController has succesfully gotten a selected image, updates Parse with new image and changes displayed image

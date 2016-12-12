@@ -10,6 +10,7 @@ import UIKit
 
 class MesssageViewController: UIViewController , UITableViewDelegate, UITableViewDataSource {
     
+    var showMenu = false
     let user = PFUser.current()!
     var messageJobs = [PFObject]()
     var selectedJob = PFObject(className: "Job")
@@ -17,6 +18,7 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var emptyLabel: UILabel!
+    @IBOutlet weak var menuView: UIView!
 
     // drag function is called continuosly from start to end of a pan
     func dragged (gesture: UIPanGestureRecognizer) {
@@ -69,11 +71,33 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
                 }
             }
         }
+        menuView.isHidden = true
+        
     }
     
-    @IBAction func back(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
-
+    @IBAction func mainMenu(_ sender: Any) {
+        if showMenu == false {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+            menuView = vc.view
+            let view = menuView.subviews[1]
+            view.isHidden = true
+            menuView.frame = CGRect(x: 0, y: 69, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
+            menuView.alpha = 0
+            self.view.addSubview(menuView)
+            UIView.transition(with: menuView,
+                              duration: 0.25,
+                              options: .curveEaseInOut,
+                              animations: { self.menuView.alpha = 1 },
+                              completion: nil)
+            menuView.isHidden = false
+            showMenu = true
+            
+        } else if showMenu == true {
+            let view = self.view.subviews.last!
+            view.removeFromSuperview()
+            showMenu = false
+            
+        }
     }
     
     // UITableView Delegate method operates on my UITableView subclass "tableView"

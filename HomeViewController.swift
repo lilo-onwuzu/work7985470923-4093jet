@@ -5,6 +5,9 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
+
+// add animations
+
 import UIKit
 
 class HomeViewController: UIViewController {
@@ -103,7 +106,7 @@ class HomeViewController: UIViewController {
                           options: .transitionCrossDissolve,
                           animations: { self.mainImage.image = self.first_image
                             self.mainImage.alpha = 1
-                            self.mainImage.contentMode = UIViewContentMode.bottomRight},
+                            self.mainImage.contentMode = UIViewContentMode.bottomRight },
                           completion: { (success) in
                             self.getSecondImage()
         })

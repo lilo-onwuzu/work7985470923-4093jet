@@ -12,6 +12,7 @@ import UIKit
 
 class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var showMenu = false
     var user = PFUser.current()!
     var postedJobs = [PFObject]()
     var editJob = PFObject(className: "Job")
@@ -22,6 +23,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var deleteJobs: UIButton!
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var emptyLabel: UILabel!
+    @IBOutlet weak var menuView: UIView!
     
     // drag function is called continuosly from start to end of a pan
     func dragged (gesture: UIPanGestureRecognizer) {
@@ -141,12 +143,32 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         logo.layer.cornerRadius = 3
         tableView.delegate = self
         tableView.dataSource = self
-        
+        menuView.isHidden = true
     }
     
-    @IBAction func back(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+    @IBAction func mainMenu(_ sender: Any) {
+        if showMenu == false {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+            menuView = vc.view
+            let view = menuView.subviews[1]
+            view.isHidden = true
+            menuView.frame = CGRect(x: 0, y: 69, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
+            menuView.alpha = 0
+            self.view.addSubview(menuView)
+            UIView.transition(with: menuView,
+                              duration: 0.25,
+                              options: .curveEaseInOut,
+                              animations: { self.menuView.alpha = 1 },
+                              completion: nil)
+            menuView.isHidden = false
+            showMenu = true
+            
+        } else if showMenu == true {
+            let view = self.view.subviews.last!
+            view.removeFromSuperview()
+            showMenu = false
         
+        }
     }
     
     @IBAction func editJob(_ sender: Any) {

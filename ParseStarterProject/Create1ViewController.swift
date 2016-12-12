@@ -10,6 +10,7 @@ import UIKit
 
 class CreateViewController: UIViewController, UITextFieldDelegate {
 
+    var showMenu = false
     let text_field_limit = 64
     var finish: Bool = false
     // new createJob object is initialized with VC
@@ -20,6 +21,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var backImage: UIImageView!
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var menuView: UIView!
 
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -83,6 +85,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         nextButton.alpha = 0
         label.alpha = 0
         jobTitle.alpha = 0
+        menuView.isHidden = true
         
     }
     
@@ -101,10 +104,30 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         }, completion: nil)
         
     }
-    
-    @IBAction func back(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+
+    @IBAction func mainMenu(_ sender: Any) {
+        if showMenu == false {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+            menuView = vc.view
+            let view = menuView.subviews[1]
+            view.isHidden = true
+            menuView.frame = CGRect(x: 0, y: 69, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
+            menuView.alpha = 0
+            self.view.addSubview(menuView)
+            UIView.transition(with: menuView,
+                              duration: 0.25,
+                              options: .curveEaseInOut,
+                              animations: { self.menuView.alpha = 1 },
+                              completion: nil)
+            menuView.isHidden = false
+            showMenu = true
+            
+        } else if showMenu == true {
+            let view = self.view.subviews.last!
+            view.removeFromSuperview()
+            showMenu = false
         
+        }
     }
     
     @IBAction func addJobTitle(_ sender: UIButton) {
