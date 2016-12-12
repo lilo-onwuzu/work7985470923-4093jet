@@ -15,6 +15,8 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var jobDetails: UITextField!
     @IBOutlet weak var logo: UILabel!
+    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var createButton: UIButton!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -57,6 +59,25 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
         self.jobDetails.delegate = self
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
+        label.alpha = 0
+        jobDetails.alpha = 0
+        createButton.alpha = 0
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.label.alpha = 1
+            self.label.center.x += 0
+        }, completion: nil)
+        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.jobDetails.alpha = 0.5
+            self.jobDetails.center.x += 0
+        }, completion: nil)
+        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.createButton.alpha = 0.8
+            self.createButton.center.x += 0
+        }, completion: nil)
         
     }
     

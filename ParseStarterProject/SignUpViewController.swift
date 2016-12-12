@@ -15,11 +15,16 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var logo: UILabel!
+    @IBOutlet weak var bar: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet weak var enterPassword: UITextField!
+    @IBOutlet weak var mainImage: UIImageView!
     
     // initialize new empty PFUser object
     let user: PFUser = PFUser()
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     var loggedIn: Bool = false
+    let facebookButton = LoginButton(readPermissions: [ .publicProfile ])
     
     func activity() {
         let rect: CGRect = CGRect(x: 0, y: 0, width: 50, height: 50)
@@ -53,13 +58,35 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
         super.viewDidLoad()
         self.password.delegate = self
         // display Facebook login button
-        let signUpButton = LoginButton(readPermissions: [ .publicProfile ])
-        signUpButton.frame = CGRect(x: (self.view.bounds.width / 2) - 100, y: 200, width: 200, height: 25)
-        view.addSubview(signUpButton)
-        signUpButton.delegate = self
+        facebookButton.frame = CGRect(x: (self.view.bounds.width / 2) - 37.5, y: (self.view.bounds.height / 2) - 25, width: 75, height: 25)
+        view.addSubview(facebookButton)
+        facebookButton.delegate = self
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-        
+        bar.alpha = 0
+        signUpButton.alpha = 0
+        enterPassword.alpha = 0
+        mainImage.alpha = 0
+        facebookButton.alpha = 0
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.facebookButton.alpha = 0.9
+            self.mainImage.alpha = 1.0
+        }, completion: nil)
+        UIView.animate(withDuration: 2, delay: 1.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.bar.alpha = 1.0
+            self.bar.center.y -= 30
+        }, completion: nil)
+        UIView.animate(withDuration: 3, delay: 1.5, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.signUpButton.alpha = 1.0
+            self.signUpButton.center.y -= 30
+            self.enterPassword.alpha = 1.0
+            self.enterPassword.center.y -= 30
+        }, completion: nil)
+    
     }
     
     // FBSDKLoginDelegate method

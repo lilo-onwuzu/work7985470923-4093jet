@@ -17,6 +17,8 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
 
     @IBOutlet weak var cyclePicker: UIPickerView!
     @IBOutlet weak var logo: UILabel!
+    @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var label: UILabel!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -42,7 +44,25 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         logo.layer.cornerRadius = 3
         cyclePicker.layer.masksToBounds = true
         cyclePicker.layer.cornerRadius = 7
-
+        nextButton.alpha = 0
+        cyclePicker.alpha = 0
+        label.alpha = 0
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.label.alpha = 1
+            self.label.center.x += 0
+        }, completion: nil)
+        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.cyclePicker.alpha = 0.8
+            self.cyclePicker.center.x += 0
+        }, completion: nil)
+        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.nextButton.alpha = 0.9
+            self.nextButton.center.x += 0
+        }, completion: nil)
+        
     }
     
     @IBAction func createButton(_ sender: AnyObject) {

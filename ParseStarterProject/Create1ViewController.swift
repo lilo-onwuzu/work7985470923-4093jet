@@ -17,6 +17,9 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var jobTitle: UITextField!
     @IBOutlet weak var logo: UILabel!
+    @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var backImage: UIImageView!
+    @IBOutlet weak var label: UILabel!
 
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -77,6 +80,26 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                 
             }
         }
+        nextButton.alpha = 0
+        label.alpha = 0
+        jobTitle.alpha = 0
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.label.alpha = 1
+            self.label.center.x += 0
+        }, completion: nil)
+        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.jobTitle.alpha = 0.8
+            self.jobTitle.center.x += 0
+        }, completion: nil)
+        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.nextButton.alpha = 1.0
+            self.nextButton.center.x += 0
+        }, completion: nil)
+        
     }
     
     @IBAction func back(_ sender: Any) {

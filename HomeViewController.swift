@@ -10,6 +10,9 @@ import UIKit
 class HomeViewController: UIViewController {
     
     let user = PFUser.current()!
+    let first_image = UIImage(named: "work.jpg")!
+    let second_image = UIImage(named:"work_1.jpeg")!
+    let third_image = UIImage(named: "work_2.jpeg")!
     
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var createButton: UIButton!
@@ -17,6 +20,31 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var profileButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var logo: UILabel!
+    @IBOutlet weak var mainImage: UIImageView!
+    
+    func getSecondImage() {
+        UIView.transition(with: self.mainImage,
+                          duration: 7,
+                          options: .transitionCrossDissolve,
+                          animations: { self.mainImage.image = self.second_image
+                            self.mainImage.alpha = 1
+                            self.mainImage.contentMode = UIViewContentMode.scaleAspectFill },
+                          completion: { (success) in
+                            self.getThirdImage()
+        })
+    }
+    
+    func getThirdImage() {
+        UIView.transition(with: self.mainImage,
+                          duration: 7,
+                          options: .transitionCrossDissolve,
+                          animations: { self.mainImage.image = self.third_image
+                            self.mainImage.alpha = 1
+                            self.mainImage.contentMode = UIViewContentMode.scaleAspectFill },
+                          completion: { (success) in
+                            self.viewDidAppear(true)
+        })
+    }
     
     @IBAction func search(_ sender: UIButton) {
         performSegue(withIdentifier: "toSearch", sender: self)
@@ -35,7 +63,7 @@ class HomeViewController: UIViewController {
     
     @IBAction func settings(_ sender: AnyObject) {
         performSegue(withIdentifier: "toSettings", sender: self)
-    
+        
     }
     
     @IBAction func myJobs(_ sender: Any) {
@@ -68,7 +96,19 @@ class HomeViewController: UIViewController {
         logo.layer.cornerRadius = 3
 
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.transition(with: self.mainImage,
+                          duration: 7,
+                          options: .transitionCrossDissolve,
+                          animations: { self.mainImage.image = self.first_image
+                            self.mainImage.alpha = 1
+                            self.mainImage.contentMode = UIViewContentMode.bottomRight},
+                          completion: { (success) in
+                            self.getSecondImage()
+        })
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

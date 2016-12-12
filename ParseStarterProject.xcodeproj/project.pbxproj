@@ -33,11 +33,8 @@
 		049EBB691DD9B54300D76AED /* Dosis-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB0D1DD9B54200D76AED /* Dosis-SemiBold.ttf */; };
 		049EBB9C1DD9B54300D76AED /* Offside-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB401DD9B54300D76AED /* Offside-Regular.ttf */; };
 		049EBB9D1DD9B54300D76AED /* Pompiere-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB411DD9B54300D76AED /* Pompiere-Regular.ttf */; };
-		049EBB9E1DD9B54300D76AED /* Rajdhani-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB421DD9B54300D76AED /* Rajdhani-Bold.ttf */; };
-		049EBB9F1DD9B54300D76AED /* Rajdhani-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB431DD9B54300D76AED /* Rajdhani-Light.ttf */; };
-		049EBBA01DD9B54300D76AED /* Rajdhani-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB441DD9B54300D76AED /* Rajdhani-Medium.ttf */; };
-		049EBBA11DD9B54300D76AED /* Rajdhani-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB451DD9B54300D76AED /* Rajdhani-Regular.ttf */; };
-		049EBBA21DD9B54300D76AED /* Rajdhani-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB461DD9B54300D76AED /* Rajdhani-SemiBold.ttf */; };
+		04B525E91DF6CC9500A284A0 /* work_1.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 04B525E71DF6CC9500A284A0 /* work_1.jpeg */; };
+		04B525EA1DF6CC9500A284A0 /* work_2.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 04B525E81DF6CC9500A284A0 /* work_2.jpeg */; };
 		04DECE041DAF3B670087B887 /* work.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 04DECE031DAF3B670087B887 /* work.jpg */; };
 		04DECE071DAF77D80087B887 /* placeholder.svg.png in Resources */ = {isa = PBXBuildFile; fileRef = 04DECE061DAF77D80087B887 /* placeholder.svg.png */; };
 		04DECE0B1DB03F3C0087B887 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DECE0A1DB03F3C0087B887 /* HomeViewController.swift */; };
@@ -94,11 +91,8 @@
 		049EBB0D1DD9B54200D76AED /* Dosis-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-SemiBold.ttf"; sourceTree = "<group>"; };
 		049EBB401DD9B54300D76AED /* Offside-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Offside-Regular.ttf"; sourceTree = "<group>"; };
 		049EBB411DD9B54300D76AED /* Pompiere-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pompiere-Regular.ttf"; sourceTree = "<group>"; };
-		049EBB421DD9B54300D76AED /* Rajdhani-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rajdhani-Bold.ttf"; sourceTree = "<group>"; };
-		049EBB431DD9B54300D76AED /* Rajdhani-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rajdhani-Light.ttf"; sourceTree = "<group>"; };
-		049EBB441DD9B54300D76AED /* Rajdhani-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rajdhani-Medium.ttf"; sourceTree = "<group>"; };
-		049EBB451DD9B54300D76AED /* Rajdhani-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rajdhani-Regular.ttf"; sourceTree = "<group>"; };
-		049EBB461DD9B54300D76AED /* Rajdhani-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rajdhani-SemiBold.ttf"; sourceTree = "<group>"; };
+		04B525E71DF6CC9500A284A0 /* work_1.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = work_1.jpeg; sourceTree = "<group>"; };
+		04B525E81DF6CC9500A284A0 /* work_2.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = work_2.jpeg; sourceTree = "<group>"; };
 		04DECE031DAF3B670087B887 /* work.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = work.jpg; sourceTree = "<group>"; };
 		04DECE061DAF77D80087B887 /* placeholder.svg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.svg.png; sourceTree = "<group>"; };
 		04DECE0A1DB03F3C0087B887 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = ../HomeViewController.swift; sourceTree = "<group>"; };
@@ -202,6 +196,8 @@
 				04DECE161DB0951F0087B887 /* SettingsViewController.swift */,
 				042856D61DED145E0091D9BE /* PayViewController.swift */,
 				04DECE031DAF3B670087B887 /* work.jpg */,
+				04B525E71DF6CC9500A284A0 /* work_1.jpeg */,
+				04B525E81DF6CC9500A284A0 /* work_2.jpeg */,
 				04DECE061DAF77D80087B887 /* placeholder.svg.png */,
 				04158B9D1DE3320A00D741C4 /* camera.png */,
 				0400DFD41DBC7CD0006E7E75 /* LaunchScreen.storyboard */,
@@ -223,11 +219,6 @@
 				049EBB0D1DD9B54200D76AED /* Dosis-SemiBold.ttf */,
 				049EBB401DD9B54300D76AED /* Offside-Regular.ttf */,
 				049EBB411DD9B54300D76AED /* Pompiere-Regular.ttf */,
-				049EBB421DD9B54300D76AED /* Rajdhani-Bold.ttf */,
-				049EBB431DD9B54300D76AED /* Rajdhani-Light.ttf */,
-				049EBB441DD9B54300D76AED /* Rajdhani-Medium.ttf */,
-				049EBB451DD9B54300D76AED /* Rajdhani-Regular.ttf */,
-				049EBB461DD9B54300D76AED /* Rajdhani-SemiBold.ttf */,
 				81BA81491A49DA1800E65899 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -340,11 +331,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				049EBB9D1DD9B54300D76AED /* Pompiere-Regular.ttf in Resources */,
-				049EBB9F1DD9B54300D76AED /* Rajdhani-Light.ttf in Resources */,
+				04B525E91DF6CC9500A284A0 /* work_1.jpeg in Resources */,
 				049EBB631DD9B54300D76AED /* Dosis-Bold.ttf in Resources */,
 				049EBB651DD9B54300D76AED /* Dosis-ExtraLight.ttf in Resources */,
 				81BA81501A49DA1800E65899 /* Main.storyboard in Resources */,
-				049EBBA01DD9B54300D76AED /* Rajdhani-Medium.ttf in Resources */,
+				04B525EA1DF6CC9500A284A0 /* work_2.jpeg in Resources */,
 				049EBB681DD9B54300D76AED /* Dosis-Regular.ttf in Resources */,
 				049EBB9C1DD9B54300D76AED /* Offside-Regular.ttf in Resources */,
 				04158B9E1DE3320A00D741C4 /* camera.png in Resources */,
@@ -352,12 +343,9 @@
 				049EBB641DD9B54300D76AED /* Dosis-ExtraBold.ttf in Resources */,
 				04DECE071DAF77D80087B887 /* placeholder.svg.png in Resources */,
 				049EBB691DD9B54300D76AED /* Dosis-SemiBold.ttf in Resources */,
-				049EBBA21DD9B54300D76AED /* Rajdhani-SemiBold.ttf in Resources */,
 				049EBB671DD9B54300D76AED /* Dosis-Medium.ttf in Resources */,
 				0400DFD51DBC7CD0006E7E75 /* LaunchScreen.storyboard in Resources */,
-				049EBBA11DD9B54300D76AED /* Rajdhani-Regular.ttf in Resources */,
 				049EBB661DD9B54300D76AED /* Dosis-Light.ttf in Resources */,
-				049EBB9E1DD9B54300D76AED /* Rajdhani-Bold.ttf in Resources */,
 				0400DFD31DBC7B95006E7E75 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

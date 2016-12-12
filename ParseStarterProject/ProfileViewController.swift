@@ -12,7 +12,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
 
     let image = UIImagePickerController()
     let user = PFUser.current()!
-
+    
     @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var userLocation: UILabel!
@@ -78,7 +78,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
             
             }
         }
-        
     }
 
     @IBAction func changePhoto(_ sender: Any) {
@@ -95,12 +94,19 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         
     }
     
-    // dismiss current VC to go back instead of using segue to go back. Segue creates a new instance or reference of the VC which could cause controller build up and your app to run of memory when excessively used.
-    @IBAction func home(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
-    
+    @IBAction func mainMenu(_ sender: Any) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+        self.addChildViewController(vc)
+        let menuView = (vc.view)!
+        menuView.frame = CGRect(x: 0, y: (self.view.bounds.height * 0.1), width: (0.8 * self.view.bounds.width), height: (0.75 * self.view.bounds.height))
+        menuView.alpha = 0
+        self.view.addSubview(menuView)
+        UIView.transition(with: menuView, duration: 2, options: [], animations: {
+            menuView.alpha = 1
+        }, completion: nil)
+        
     }
-    
+
     // run after UIImagePickerController has succesfully gotten a selected image, updates Parse with new image and changes displayed image
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {

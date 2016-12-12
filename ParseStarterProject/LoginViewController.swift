@@ -14,6 +14,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var logo: UILabel!
+    @IBOutlet weak var backgroundImage: UIImageView!
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
@@ -78,7 +79,31 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         loginButton.layer.cornerRadius = 15.0
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
+        loginButton.alpha = 0
+        backgroundImage.alpha = 0
+        username.alpha = 0
+        password.alpha = 0
 
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.username.alpha = 1.0
+            self.username.center.y -= 10
+            self.password.alpha = 1.0
+            self.password.center.y -= 10
+        }, completion: nil)
+        
+        UIView.animate(withDuration: 2, delay: 0.5, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.backgroundImage.alpha = 1.0
+            self.backgroundImage.center.y -= 30
+        }, completion: nil)
+        
+        UIView.animate(withDuration: 2, delay: 1.5, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.loginButton.alpha = 0.9
+            self.loginButton.center.y -= 30
+        }, completion: nil)
+        
     }
     
     @IBAction func login(_ sender: AnyObject) {
@@ -86,6 +111,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     }
     
+    // dismiss current VC to go back instead of using segue to go back. Segue creates a new instance or reference of the VC which could cause controller build up and your app to run of memory when excessively used.
     @IBAction func back(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
         

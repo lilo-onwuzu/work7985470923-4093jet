@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="pdX-gC-01V">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -12,6 +12,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Dosis-ExtraBold.ttf">
+            <string>Dosis-ExtraBold</string>
+        </array>
         <array key="Dosis-Light.ttf">
             <string>Dosis-Light</string>
         </array>
@@ -57,8 +60,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="Zys-rR-i4S"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Noteworthy-Light" family="Noteworthy" pointSize="20"/>
-                                <color key="textColor" red="0.33996999259999999" green="0.77497053149999995" blue="0.80555284019999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="23"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J8X-yW-c7t" userLabel="Underline">
@@ -84,9 +86,9 @@
                                     <constraint firstAttribute="height" constant="30" id="VGS-07-ogQ"/>
                                     <constraint firstAttribute="width" constant="77" id="rP0-a7-aYK"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="18"/>
-                                <state key="normal" title="&lt;&lt; Back">
-                                    <color key="titleColor" red="0.77145761683814884" green="0.27845256696426784" blue="0.4301649283489537" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="20"/>
+                                <state key="normal" title="X">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="back:" destination="HAS-k2-NqI" eventType="touchUpInside" id="iF3-4V-jwa"/>
@@ -127,15 +129,19 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bar" destination="J8X-yW-c7t" id="hvW-OG-1Sw"/>
+                        <outlet property="enterPassword" destination="2DX-Oy-Tew" id="WZF-j1-bWh"/>
                         <outlet property="logo" destination="1hd-Fi-Ddp" id="yHo-RL-wTx"/>
+                        <outlet property="mainImage" destination="e0o-Kj-6tL" id="QSU-NZ-mO5"/>
                         <outlet property="name" destination="dh3-i4-jdd" id="qGl-hB-eh1"/>
                         <outlet property="password" destination="2DX-Oy-Tew" id="RKs-Md-ChK"/>
+                        <outlet property="signUpButton" destination="6Ze-LT-qtK" id="TYB-7B-X4r"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="toMain" id="jA5-3V-bfh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kYa-Ef-0H1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4854" y="-718"/>
+            <point key="canvasLocation" x="-4745" y="-718"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -149,9 +155,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WORKJET" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u2l-d2-zQF">
-                                <rect key="frame" x="-4" y="160" width="383" height="98"/>
-                                <fontDescription key="fontDescription" name="Dosis-Light" family="Dosis" pointSize="77"/>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.10000000000000001" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WORKJET" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u2l-d2-zQF">
+                                <rect key="frame" x="-4" y="174" width="383" height="70"/>
+                                <fontDescription key="fontDescription" name="Dosis-Light" family="Dosis" pointSize="55"/>
                                 <color key="textColor" red="0.074067841719999999" green="0.61512178559999997" blue="0.69093198700000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -212,13 +218,18 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="appLabel" destination="u2l-d2-zQF" id="OOW-Ld-YmU"/>
+                        <outlet property="loginButton" destination="hr0-uw-lNx" id="9xF-Dg-AzN"/>
+                        <outlet property="mainImage" destination="SXT-b3-cpV" id="hEO-jx-lcx"/>
+                        <outlet property="registeredLabel" destination="Fjt-gP-iKa" id="loP-7w-yk5"/>
+                        <outlet property="signUpButton" destination="OUZ-V6-xC3" id="jMb-tc-LqN"/>
                         <segue destination="HAS-k2-NqI" kind="show" identifier="toSignUp" id="4za-jv-lat"/>
                         <segue destination="pdX-gC-01V" kind="show" identifier="toLogin" id="cVG-Pj-F2b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4143.1999999999998" y="-718.29085457271367"/>
+            <point key="canvasLocation" x="-4049" y="-718"/>
         </scene>
         <!--LoginViewController-->
         <scene sceneID="wbp-IQ-wMQ">
@@ -232,7 +243,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="work.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="6OL-nA-xvk">
+                            <imageView userInteractionEnabled="NO" contentMode="bottomRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="work.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="6OL-nA-xvk">
                                 <rect key="frame" x="0.0" y="213" width="376" height="453"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WORKJET" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zRQ-Ud-hSd">
@@ -279,9 +290,9 @@
                                     <constraint firstAttribute="height" constant="34" id="Gpw-0Z-Gda"/>
                                     <constraint firstAttribute="width" constant="98" id="K9T-tX-Jer"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="18"/>
-                                <state key="normal" title="&lt;&lt; Back">
-                                    <color key="titleColor" red="0.74382691059999995" green="0.22870290630000001" blue="0.36356784660000002" alpha="0.91651078350000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="20"/>
+                                <state key="normal" title="X">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="back:" destination="pdX-gC-01V" eventType="touchUpInside" id="Zzk-a1-ZRC"/>
@@ -309,6 +320,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backgroundImage" destination="6OL-nA-xvk" id="aSc-am-GZ3"/>
                         <outlet property="loginButton" destination="bXD-qi-Amz" id="2QW-7z-GE1"/>
                         <outlet property="logo" destination="zRQ-Ud-hSd" id="Eud-zK-L1C"/>
                         <outlet property="password" destination="dNw-G5-7oo" id="Gsw-q1-BxP"/>
@@ -318,12 +330,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E3H-va-hj9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3442.4000000000001" y="-718.29085457271367"/>
+            <point key="canvasLocation" x="-3367" y="-718"/>
         </scene>
         <!--HomeViewController-->
         <scene sceneID="c5P-tY-vCv">
             <objects>
-                <viewController title="HomeViewController" id="Z3h-TX-yqK" customClass="HomeViewController" customModule="ParseStarterProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" autoresizesArchivedViewToFullSize="NO" title="HomeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Z3h-TX-yqK" customClass="HomeViewController" customModule="ParseStarterProject" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="G54-Jt-hYW"/>
                         <viewControllerLayoutGuide type="bottom" id="kyC-A2-DpW"/>
@@ -332,7 +344,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="bottomRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="work.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="3ck-92-0cr" userLabel="work.jpeg">
+                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="bottomRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3ck-92-0cr" userLabel="work.jpeg">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WORKJET" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q9r-9f-WS1">
@@ -352,7 +364,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="37" id="cCe-lI-ySt"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="29"/>
+                                <fontDescription key="fontDescription" name="Dosis-ExtraBold" family="Dosis" pointSize="33"/>
                                 <state key="normal" title="Search Posts">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -366,12 +378,13 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="37" id="RuY-K7-UgM"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="29"/>
+                                <fontDescription key="fontDescription" name="Dosis-ExtraBold" family="Dosis" pointSize="33"/>
                                 <state key="normal" title="My Profile">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="profile:" destination="Z3h-TX-yqK" eventType="touchUpInside" id="4o3-dP-nlR"/>
+                                    <segue destination="7GK-ge-rXC" kind="showDetail" identifier="toProfile" id="iQg-nP-JBV"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aob-LU-UAn">
@@ -380,7 +393,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="37" id="z1p-vz-w3R"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="29"/>
+                                <fontDescription key="fontDescription" name="Dosis-ExtraBold" family="Dosis" pointSize="32"/>
                                 <state key="normal" title="My Jobs">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -394,9 +407,9 @@
                                     <constraint firstAttribute="height" constant="41" id="cf7-yZ-YL8"/>
                                     <constraint firstAttribute="width" constant="83" id="uqx-0U-k3W"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="21"/>
+                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="18"/>
                                 <state key="normal" title="Log out">
-                                    <color key="titleColor" red="0.71620482210000003" green="0.32794517280000002" blue="0.4176036119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" red="0.065174344479999993" green="0.45515051680000002" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="logOut:" destination="Z3h-TX-yqK" eventType="touchUpInside" id="g1c-rk-FqB"/>
@@ -408,7 +421,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="37" id="ATt-Wc-dkb"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="29"/>
+                                <fontDescription key="fontDescription" name="Dosis-ExtraBold" family="Dosis" pointSize="33"/>
                                 <state key="normal" title="Settings">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -422,7 +435,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="37" id="ifw-Mt-TCb"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="29"/>
+                                <fontDescription key="fontDescription" name="Dosis-ExtraBold" family="Dosis" pointSize="32"/>
                                 <state key="normal" title="Create A Post">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -458,17 +471,18 @@
                             <constraint firstAttribute="trailing" secondItem="WRz-wd-lrr" secondAttribute="trailing" id="tvb-rg-0py"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Title" id="KFF-np-Aly"/>
                     <connections>
                         <outlet property="createButton" destination="TF8-PM-xzA" id="SOF-AQ-TK7"/>
                         <outlet property="jobsButton" destination="Aob-LU-UAn" id="lie-0X-DF1"/>
                         <outlet property="logo" destination="Q9r-9f-WS1" id="0b4-eV-fFs"/>
+                        <outlet property="mainImage" destination="3ck-92-0cr" id="eXJ-WP-bSe"/>
                         <outlet property="profileButton" destination="3bq-fr-zbd" id="QCr-7K-NGM"/>
                         <outlet property="searchButton" destination="kiG-hL-gDa" id="xbc-RY-X9n"/>
                         <outlet property="settingsButton" destination="WRz-wd-lrr" id="GYB-aG-gNd"/>
                         <segue destination="87v-cw-FcC" kind="show" identifier="toSearch" id="3FF-LG-84F"/>
                         <segue destination="4aq-nf-voc" kind="show" identifier="toCreate" id="jZ4-bq-Xs9"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="toMain" id="6tI-K6-gs3"/>
-                        <segue destination="7GK-ge-rXC" kind="show" identifier="toProfile" id="tsX-FC-lYv"/>
                         <segue destination="hN5-69-Fi8" kind="show" identifier="toSettings" id="8W2-9G-3F7"/>
                         <segue destination="Wlx-jP-JLZ" kind="show" identifier="toMyJobs" id="oA4-ZD-Ncc"/>
                     </connections>
@@ -504,7 +518,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EXy-Il-qun">
-                                <rect key="frame" x="0.0" y="69" width="375" height="545"/>
+                                <rect key="frame" x="0.0" y="69" width="375" height="598"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OMW-P0-xiq" userLabel="Image Back">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="378"/>
@@ -580,19 +594,6 @@
                                     <constraint firstItem="7KP-c4-hRY" firstAttribute="trailing" secondItem="NAR-xO-diX" secondAttribute="trailing" id="vGc-x3-ONw"/>
                                 </constraints>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="usa-nI-p55">
-                                <rect key="frame" x="0.0" y="612" width="375" height="55"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="55" id="7bi-0I-gic"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="30"/>
-                                <state key="normal" title="home">
-                                    <color key="titleColor" red="0.10931577750959053" green="0.54072100292298719" blue="0.61433773620466325" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="home:" destination="7GK-ge-rXC" eventType="touchUpInside" id="GMQ-Nw-kGp"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ncB-bV-oUg">
                                 <rect key="frame" x="313" y="28" width="55" height="38"/>
                                 <constraints>
@@ -604,24 +605,41 @@
                                     <action selector="changePhoto:" destination="7GK-ge-rXC" eventType="touchUpInside" id="ec9-kw-Kxv"/>
                                 </connections>
                             </button>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CM9-10-WFP">
+                                <rect key="frame" x="16" y="25" width="45" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="FGV-Hz-Dv0"/>
+                                    <constraint firstAttribute="height" constant="44" id="dzC-T4-w1u"/>
+                                </constraints>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <navigationItem id="EBF-rx-GcY">
+                                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="organize" id="DDk-y3-65z">
+                                            <connections>
+                                                <action selector="mainMenu:" destination="7GK-ge-rXC" id="K8h-nR-ZXx"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="bHq-F4-wq6" secondAttribute="trailing" id="4BL-I9-Z4O"/>
                             <constraint firstAttribute="trailing" secondItem="ncB-bV-oUg" secondAttribute="trailing" constant="7" id="4xy-XX-Vbd"/>
-                            <constraint firstItem="usa-nI-p55" firstAttribute="leading" secondItem="wJr-g5-Lef" secondAttribute="leading" id="7k1-Xp-Eug"/>
+                            <constraint firstItem="CM9-10-WFP" firstAttribute="leading" secondItem="wJr-g5-Lef" secondAttribute="leadingMargin" id="6Pq-4e-HH6"/>
                             <constraint firstAttribute="trailing" secondItem="EXy-Il-qun" secondAttribute="trailing" id="CfX-wD-tNi"/>
                             <constraint firstItem="Qe1-Na-ECO" firstAttribute="top" secondItem="bHq-F4-wq6" secondAttribute="bottom" id="DXU-Iq-0TP"/>
                             <constraint firstItem="6Mn-tt-7rh" firstAttribute="centerX" secondItem="wJr-g5-Lef" secondAttribute="centerX" id="EBu-Aa-baN"/>
                             <constraint firstItem="ncB-bV-oUg" firstAttribute="top" secondItem="0k6-Pn-0gJ" secondAttribute="bottom" constant="8" id="Fxd-6d-Bkr"/>
                             <constraint firstItem="EXy-Il-qun" firstAttribute="leading" secondItem="wJr-g5-Lef" secondAttribute="leading" id="GTl-kB-f65"/>
                             <constraint firstItem="EXy-Il-qun" firstAttribute="top" secondItem="6Mn-tt-7rh" secondAttribute="bottom" constant="8" symbolic="YES" id="Msj-ga-vXD"/>
-                            <constraint firstItem="Qe1-Na-ECO" firstAttribute="top" secondItem="EXy-Il-qun" secondAttribute="bottom" constant="53" id="Smj-IA-Fj4"/>
+                            <constraint firstItem="CM9-10-WFP" firstAttribute="top" secondItem="0k6-Pn-0gJ" secondAttribute="bottom" constant="5" id="NM0-8q-K1z"/>
+                            <constraint firstItem="Qe1-Na-ECO" firstAttribute="top" secondItem="EXy-Il-qun" secondAttribute="bottom" id="Smj-IA-Fj4"/>
                             <constraint firstItem="bHq-F4-wq6" firstAttribute="leading" secondItem="wJr-g5-Lef" secondAttribute="leading" id="hwf-uy-QFZ"/>
-                            <constraint firstItem="Qe1-Na-ECO" firstAttribute="top" secondItem="usa-nI-p55" secondAttribute="bottom" id="jmv-Me-qtg"/>
                             <constraint firstItem="6Mn-tt-7rh" firstAttribute="top" secondItem="0k6-Pn-0gJ" secondAttribute="bottom" constant="15" id="lGX-p2-2Dj"/>
                             <constraint firstItem="bHq-F4-wq6" firstAttribute="top" secondItem="wJr-g5-Lef" secondAttribute="top" id="nyB-ax-8Cj"/>
-                            <constraint firstAttribute="trailing" secondItem="usa-nI-p55" secondAttribute="trailing" id="xGv-z9-1D3"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -658,7 +676,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="602"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Job Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hka-0w-ep1">
-                                <rect key="frame" x="119" y="263" width="137" height="41"/>
+                                <rect key="frame" x="119" y="263.5" width="137" height="40.5"/>
                                 <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="32"/>
                                 <color key="textColor" red="0.64724865470000004" green="0.21590760019999999" blue="0.39536553499999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -717,9 +735,9 @@
                                     <constraint firstAttribute="height" constant="33" id="Veu-Rv-cRP"/>
                                     <constraint firstAttribute="width" constant="109" id="cSH-it-Fin"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="18"/>
-                                <state key="normal" title="&lt;&lt; Back">
-                                    <color key="titleColor" red="0.67718280137461151" green="0.31275712079565943" blue="0.40127743174357711" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="20"/>
+                                <state key="normal" title="X">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="back:" destination="4aq-nf-voc" eventType="touchUpInside" id="5wi-OA-Tod"/>
@@ -750,14 +768,17 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backImage" destination="Ewf-1q-s8I" id="dVc-th-xbw"/>
                         <outlet property="jobTitle" destination="oOw-HA-Bmu" id="6VK-t6-ens"/>
+                        <outlet property="label" destination="Hka-0w-ep1" id="0co-cS-0I7"/>
                         <outlet property="logo" destination="Pt5-i5-Oqm" id="dFP-lX-9R4"/>
+                        <outlet property="nextButton" destination="eFP-md-bvV" id="HRP-Qf-5Xa"/>
                         <segue destination="wnM-KQ-kq1" kind="show" identifier="toCreate2" id="pBo-B1-haM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DVN-eJ-K64" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1962" y="1078"/>
+            <point key="canvasLocation" x="-1964" y="-3366"/>
         </scene>
         <!--SearchViewController-->
         <scene sceneID="Lm1-Sg-hYE">
@@ -938,7 +959,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W2x-PD-PUs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1962" y="394"/>
+            <point key="canvasLocation" x="-1963" y="-2643"/>
         </scene>
         <!--MessageViewController-->
         <scene sceneID="RZf-ti-cVi">
@@ -1060,7 +1081,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ztR-ZB-hRU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-524" y="-1153"/>
+            <point key="canvasLocation" x="-1411" y="-1915"/>
         </scene>
         <!--PayViewController-->
         <scene sceneID="6Jk-Zp-N6n">
@@ -1139,7 +1160,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8n0-2p-Kyc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="158" y="-1799"/>
+            <point key="canvasLocation" x="-162" y="-1541"/>
         </scene>
         <!--ReceivedJobsViewController-->
         <scene sceneID="ttn-bk-YDg">
@@ -1323,7 +1344,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fKd-B1-4XO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1138" y="-806"/>
+            <point key="canvasLocation" x="-988" y="-414"/>
         </scene>
         <!--SettingsViewController-->
         <scene sceneID="PRW-XO-Vxd">
@@ -1746,7 +1767,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="147-eL-HEB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1138" y="-1530"/>
+            <point key="canvasLocation" x="-1345" y="-1207"/>
         </scene>
         <!--EditViewController-->
         <scene sceneID="pBT-hL-69k">
@@ -1934,6 +1955,7 @@
                             </button>
                         </barButtonItem>
                     </navigationItem>
+                    <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
@@ -1949,7 +1971,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oeK-5t-yXA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="776.79999999999995" y="-1529.6851574212894"/>
+            <point key="canvasLocation" x="-602" y="-1206"/>
         </scene>
         <!--SelectViewController-->
         <scene sceneID="mpi-EW-0Aa">
@@ -1995,27 +2017,27 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UVu-1J-bU1">
-                                                            <rect key="frame" x="10" y="10" width="355" height="74"/>
+                                                            <rect key="frame" x="10" y="10" width="355" height="73"/>
                                                             <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="test" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vyh-iH-stv" userLabel="User Name">
-                                                            <rect key="frame" x="160" y="18" width="205" height="34"/>
+                                                            <rect key="frame" x="160" y="18" width="205" height="33"/>
                                                             <color key="backgroundColor" red="0.93330078919340775" green="0.95702368832530016" blue="1" alpha="0.066791373239436666" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="21"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder.svg.png" translatesAutoresizingMaskIntoConstraints="NO" id="3WT-9e-5uR">
-                                                            <rect key="frame" x="83" y="18" width="57" height="58"/>
+                                                            <rect key="frame" x="83" y="18" width="57" height="57"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="57" id="DlD-Gp-zZS"/>
                                                             </constraints>
                                                         </imageView>
                                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Up0-T8-ILf">
-                                                            <rect key="frame" x="208" y="52" width="157" height="23"/>
+                                                            <rect key="frame" x="208" y="51" width="157" height="23"/>
                                                             <color key="backgroundColor" red="0.93330078919340775" green="0.95702368832530016" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="157" id="5wx-Ar-14H"/>
@@ -2136,6 +2158,7 @@
                             </button>
                         </barButtonItem>
                     </navigationItem>
+                    <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
@@ -2149,7 +2172,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vma-Oh-5wf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="777" y="-2272"/>
+            <point key="canvasLocation" x="-163" y="-810"/>
         </scene>
         <!--UserProfileViewController-->
         <scene sceneID="DKh-Oc-nty">
@@ -2287,7 +2310,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gfq-5a-ekw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1455" y="-1071"/>
+            <point key="canvasLocation" x="-391" y="-2617"/>
         </scene>
         <!--Create2ViewController-->
         <scene sceneID="ND3-ri-3i2">
@@ -2305,7 +2328,7 @@
                                 <rect key="frame" x="-4" y="20" width="383" height="602"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cycle" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y8k-ee-N1K">
-                                <rect key="frame" x="143" y="243" width="89" height="41"/>
+                                <rect key="frame" x="143" y="243.5" width="89" height="40.5"/>
                                 <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="32"/>
                                 <color key="textColor" red="0.063564938830000001" green="0.52755490859999998" blue="0.58597651569999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -2364,9 +2387,9 @@
                                     <constraint firstAttribute="width" constant="116" id="2ws-0t-ki4"/>
                                     <constraint firstAttribute="height" constant="30" id="vW8-sq-Gw1"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="18"/>
-                                <state key="normal" title="&lt;&lt; Back">
-                                    <color key="titleColor" red="0.71620482210000003" green="0.32794517280000002" blue="0.4176036119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="20"/>
+                                <state key="normal" title="X">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="back:" destination="wnM-KQ-kq1" eventType="touchUpInside" id="BvE-ex-fJt"/>
@@ -2398,13 +2421,15 @@
                     </view>
                     <connections>
                         <outlet property="cyclePicker" destination="gkf-hL-UAX" id="vRe-YG-ejs"/>
+                        <outlet property="label" destination="y8k-ee-N1K" id="EEB-EV-lbs"/>
                         <outlet property="logo" destination="M3h-UK-ILF" id="491-FE-kmq"/>
+                        <outlet property="nextButton" destination="3E5-Dg-1k7" id="A79-QK-i8C"/>
                         <segue destination="XUY-kr-0yc" kind="show" identifier="toCreate3" id="HBF-HA-VQC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FX3-ET-w2z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1250.4000000000001" y="1076.311844077961"/>
+            <point key="canvasLocation" x="-1273" y="-3367"/>
         </scene>
         <!--Create3ViewController-->
         <scene sceneID="5ck-Fb-6HK">
@@ -2480,7 +2505,7 @@
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="decimalPad"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Loa-Yx-dMq">
-                                <rect key="frame" x="151" y="263" width="73" height="41"/>
+                                <rect key="frame" x="151.5" y="263.5" width="73" height="40.5"/>
                                 <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="32"/>
                                 <color key="textColor" red="0.64724865473575133" green="0.2159076002145518" blue="0.39536553503807487" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -2491,9 +2516,9 @@
                                     <constraint firstAttribute="width" constant="120" id="59Q-7e-JEo"/>
                                     <constraint firstAttribute="height" constant="30" id="Ieh-uf-Kev"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="18"/>
-                                <state key="normal" title="&lt;&lt; Back">
-                                    <color key="titleColor" red="0.71620482210000003" green="0.32794517280000002" blue="0.4176036119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="20"/>
+                                <state key="normal" title="X">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="back:" destination="XUY-kr-0yc" eventType="touchUpInside" id="V2A-Cr-Ct2"/>
@@ -2525,15 +2550,16 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="label" destination="Loa-Yx-dMq" id="TyF-Ca-IkQ"/>
                         <outlet property="logo" destination="ec4-5L-O5l" id="PiH-39-Wfi"/>
                         <outlet property="rateField" destination="wzI-g7-Q77" id="c53-Oc-2ZR"/>
-                        <outlet property="rateStepper" destination="VXH-kP-CAU" id="Z6K-ar-kz7"/>
+                        <outlet property="rateStepper" destination="cdR-bv-MID" id="MxQ-dt-ZxO"/>
                         <segue destination="NDT-GE-efS" kind="show" identifier="toCreate4" id="1O4-VQ-hEQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ejm-NH-AwI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-543.20000000000005" y="1076.311844077961"/>
+            <point key="canvasLocation" x="-577" y="-3370"/>
         </scene>
         <!--Create4ViewController-->
         <scene sceneID="7uH-8q-4pd">
@@ -2608,9 +2634,9 @@
                                     <constraint firstAttribute="width" constant="107" id="Buj-2Z-pUg"/>
                                     <constraint firstAttribute="height" constant="30" id="eNE-sP-2dY"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="18"/>
-                                <state key="normal" title="&lt;&lt; Back">
-                                    <color key="titleColor" red="0.71620482210000003" green="0.32794517280000002" blue="0.4176036119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Offside-Regular" family="Offside" pointSize="20"/>
+                                <state key="normal" title="X">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="back:" destination="NDT-GE-efS" eventType="touchUpInside" id="a26-KC-uIa"/>
@@ -2644,14 +2670,16 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="createButton" destination="m34-hj-Max" id="Y68-0V-4cw"/>
                         <outlet property="jobDetails" destination="IV4-n3-4ic" id="Wld-2w-XtP"/>
+                        <outlet property="label" destination="Uc0-yh-KJu" id="7TI-0t-DyM"/>
                         <outlet property="logo" destination="hob-ZD-uFC" id="igl-Ig-xif"/>
                         <segue destination="BOr-DE-hTK" kind="show" identifier="toConfirm" id="pCl-Lg-noo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tp8-4B-o67" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="157.59999999999999" y="1076.311844077961"/>
+            <point key="canvasLocation" x="106" y="-3370"/>
         </scene>
         <!--ConfirmViewController-->
         <scene sceneID="J9e-zb-bss">
@@ -2731,13 +2759,14 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="label" destination="K1R-ed-jfL" id="Yrf-7v-QcI"/>
                         <outlet property="logo" destination="2bY-d4-aKt" id="Q5A-xv-LIu"/>
                         <segue destination="Z3h-TX-yqK" kind="show" identifier="toHome" id="o4X-fx-IRB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2wa-nq-TLU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="850" y="1076"/>
+            <point key="canvasLocation" x="798" y="-3370"/>
         </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="tvR-hn-kXx">
@@ -2888,7 +2917,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BQh-I3-6f9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-524" y="-465"/>
+            <point key="canvasLocation" x="-988" y="-1916"/>
         </scene>
     </scenes>
     <resources>
@@ -2897,9 +2926,9 @@
         <image name="work.jpg" width="744" height="439"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="J3O-m9-9bf"/>
+        <segue reference="o4X-fx-IRB"/>
+        <segue reference="6tI-K6-gs3"/>
+        <segue reference="oA4-ZD-Ncc"/>
         <segue reference="kWs-vy-QTC"/>
-        <segue reference="SYm-nF-jh8"/>
-        <segue reference="jA5-3V-bfh"/>
     </inferredMetricsTieBreakers>
 </document>

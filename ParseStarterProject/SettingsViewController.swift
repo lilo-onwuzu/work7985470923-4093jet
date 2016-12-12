@@ -106,6 +106,9 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         password.attributedPlaceholder = NSAttributedString(string:"Enter Password", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         confirmPassword.attributedPlaceholder = NSAttributedString(string:"Confirm Password", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         
+        // create timer object
+        
+        
     }
     
     @IBAction func changePassword(_ sender: Any) {

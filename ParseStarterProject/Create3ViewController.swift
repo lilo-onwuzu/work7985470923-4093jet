@@ -13,8 +13,9 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
     var createJob = PFObject(className: "Job")
 
     @IBOutlet weak var rateField: UITextField!
-    @IBOutlet weak var rateStepper: UIImageView!
+    @IBOutlet weak var rateStepper: UIStepper!
     @IBOutlet weak var logo: UILabel!
+    @IBOutlet weak var label: UILabel!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -26,13 +27,6 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        logo.layer.masksToBounds = true
-        logo.layer.cornerRadius = 3
- 
-    }
-
     // if the argument "entry" is successfully converted to an optionalDouble return the optionalDouble, else, the function terminates and isADouble() has nil value)
     func isADouble(_ entry: String?) -> Double? {
         var exit: Double?
@@ -41,6 +35,32 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
             
         }
         return exit
+        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
+        rateField.alpha = 0
+        rateStepper.alpha = 0
+        label.alpha = 0
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.label.alpha = 1
+            self.label.center.x += 0
+        }, completion: nil)
+        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.rateField.alpha = 0.8
+            self.rateField.center.x += 0
+        }, completion: nil)
+        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+            self.rateStepper.alpha = 1.0
+            self.rateStepper.center.x += 0
+        }, completion: nil)
         
     }
     
