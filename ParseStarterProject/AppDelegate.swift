@@ -5,7 +5,7 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-import Braintree
+
 import UIKit
 import ParseFacebookUtilsV4
 
@@ -25,7 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.initialize(with: parseConfiguration)
         PFUser.enableAutomaticUser()
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        BTAppSwitch.setReturnURLScheme("com.iponwuzu.WorkJet.payments")
         // Override point for customization after application launch.
         return true
         
@@ -37,10 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        if url.scheme?.localizedCaseInsensitiveCompare("com.your-company.Your-App.payments") == .orderedSame {
-            return BTAppSwitch.handleOpen(url as URL, sourceApplication:sourceApplication)
-        
-        }
+
         return false
         
     }

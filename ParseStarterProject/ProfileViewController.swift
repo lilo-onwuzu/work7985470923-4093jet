@@ -6,6 +6,8 @@
 //
 
 
+// location
+
 import UIKit
 
 class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {

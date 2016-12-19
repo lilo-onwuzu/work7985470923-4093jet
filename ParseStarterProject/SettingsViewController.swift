@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class SettingsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
 
     let user = PFUser.current()!
     var showMenu = false
@@ -21,8 +21,8 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     @IBOutlet weak var changedPassword: UILabel!
     @IBOutlet weak var deletedAccount: UILabel!
     @IBOutlet weak var deleteAccount: UIButton!
-    @IBOutlet weak var connectedPay: UILabel!
     @IBOutlet weak var menuView: UIView!
+    @IBOutlet weak var middleBar: UILabel!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -65,6 +65,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     }
     
     func savePassword() {
+        user.password = self.password.text!
         user.saveInBackground { (success, error) in
             if success {
                 self.changedPassword.text = "Your password has been updated!"
@@ -108,10 +109,11 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         password.attributedPlaceholder = NSAttributedString(string:"Enter Password", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         confirmPassword.attributedPlaceholder = NSAttributedString(string:"Confirm Password", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         menuView.isHidden = true
-        
+        self.password.delegate = self
+    
     }
     
-    @IBAction func mainMenu(_ sender: Any) {
+    @IBAction func openMenu(_ sender: Any) {
         if showMenu == false {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
             menuView = vc.view
@@ -146,6 +148,19 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
   
     }
 
+    // tap anywhere to escape keyboard
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+        
+    }
+    
+    // hit return to escape keyboard
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

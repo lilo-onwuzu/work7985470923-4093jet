@@ -5,6 +5,9 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
+
+// add swipe icon to highlighted cell
+
 import UIKit
 
 class MessageTableViewCell: UITableViewCell {

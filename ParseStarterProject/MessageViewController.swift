@@ -81,7 +81,7 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
             menuView = vc.view
             let view = menuView.subviews[1]
             view.isHidden = true
-            menuView.frame = CGRect(x: 0, y: 69, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
+            menuView.frame = CGRect(x: 0, y: 104, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
             menuView.alpha = 0
             self.view.addSubview(menuView)
             UIView.transition(with: menuView,

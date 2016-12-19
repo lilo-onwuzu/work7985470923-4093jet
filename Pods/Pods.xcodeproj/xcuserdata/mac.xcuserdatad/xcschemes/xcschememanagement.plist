@@ -9,21 +9,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Braintree-Braintree-Drop-In-Localization.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Braintree-Braintree-UI-Localization.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Braintree.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>FBSDKCoreKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -77,7 +62,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>726426D96ED6BE0C1089BD19D68F8CA4</key>
+		<key>79C72323E9817E472CC4352B973A4996</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -97,22 +82,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BA9DDC20472E4AEDF519FAFA4FAE6DCD</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C77A7D60705B213DA534502A469CAF2A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>DD707E469C8D0BEA816D740155A3B629</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EAE851D0B4150D8581400571B4A17ABC</key>
 		<dict>
 			<key>primary</key>
 			<true/>

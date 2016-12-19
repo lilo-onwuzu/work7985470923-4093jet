@@ -85,8 +85,8 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    @IBAction func createButton(_ sender: AnyObject) {
-        let rate = String(format: "%.2f", rateField.text!)
+    @IBAction func next(_ sender: Any) {
+        let rate = String(format: "%.2f", isADouble(rateField.text)!)
         // before redirecting, confirm that rate still has a valid number that is non-negative
         if isADouble(rateField.text) != nil && isADouble(rateField.text)! > 0 {
             createJob.setValue(rate, forKey: "rate")

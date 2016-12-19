@@ -90,17 +90,17 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 0.25, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.label.alpha = 1
-            self.label.center.x += 0
+            self.label.center.y -= 30
         }, completion: nil)
-        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 0.25, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.jobTitle.alpha = 0.8
-            self.jobTitle.center.x += 0
+            self.jobTitle.center.y -= 30
         }, completion: nil)
-        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 0.25, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.nextButton.alpha = 1.0
-            self.nextButton.center.x += 0
+            self.nextButton.center.y -= 30
         }, completion: nil)
         
     }
@@ -126,7 +126,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             let view = self.view.subviews.last!
             view.removeFromSuperview()
             showMenu = false
-        
+            
         }
     }
     

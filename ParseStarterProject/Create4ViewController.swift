@@ -15,8 +15,11 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var jobDetails: UITextField!
     @IBOutlet weak var logo: UILabel!
-    @IBOutlet weak var label: UILabel!
     @IBOutlet weak var createButton: UIButton!
+    @IBOutlet weak var confirmLabel: UILabel!
+    @IBOutlet weak var homeButton: UIButton!
+    @IBOutlet weak var formLabel: UILabel!
+    @IBOutlet weak var createIcon: UIButton!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -36,13 +39,27 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
                 // saveInBackground is an asychronous call that does not wait to execute before continuing so save it with block if you need data that is returned from the async call
                 createJob.saveInBackground(block: { (success, error) in
                     if success {
-                        // wait till finish is true or createJob object is saved in async call before segue
-                        self.performSegue(withIdentifier: "toConfirm", sender: self)
+                        // wait till finish is true or createJob object is saved in async call before confirming
+                        // hide background
+                        self.jobDetails.isHidden = true
+                        self.formLabel.isHidden = true
+                        self.createButton.isHidden = true
+                        // display confirmation
+                        self.confirmLabel.isHidden = false
+                        self.homeButton.isHidden = false
+                        self.confirmLabel.layer.masksToBounds = true
+                        self.confirmLabel.layer.cornerRadius = 5
+                        self.homeButton.layer.cornerRadius = 5
+                        UIView.transition(with: self.createIcon, duration: 2,
+                                          options: .transitionFlipFromLeft,
+                                          animations: {
+                                            self.createIcon.setImage(UIImage(named: "caseIcon.png"), for:.normal)
+                        }, completion: nil)
                         
                     } else {
                         self.errorAlert(title: "Database Error", message: "Please try again later")
+                    
                     }
-
                 })
             } else {
                 errorAlert(title: "Invalid Form Entry", message: "Please enter valid details")
@@ -59,7 +76,7 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
         self.jobDetails.delegate = self
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-        label.alpha = 0
+        formLabel.alpha = 0
         jobDetails.alpha = 0
         createButton.alpha = 0
         
@@ -67,16 +84,13 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-            self.label.alpha = 1
-            self.label.center.x += 0
+            self.formLabel.alpha = 1
         }, completion: nil)
         UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.jobDetails.alpha = 0.5
-            self.jobDetails.center.x += 0
         }, completion: nil)
         UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.createButton.alpha = 0.8
-            self.createButton.center.x += 0
         }, completion: nil)
         
     }
@@ -91,6 +105,11 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
 
     }
     
+    @IBAction func home(_ sender: Any) {
+        performSegue(withIdentifier: "toHome", sender: self)
+        
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
         
@@ -98,7 +117,6 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         jobDetails.resignFirstResponder()
-        addDetails()
         return true
 
     }

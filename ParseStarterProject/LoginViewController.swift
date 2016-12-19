@@ -15,17 +15,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var backgroundImage: UIImageView!
+    @IBOutlet weak var loginIcon: UIButton!
+    @IBOutlet weak var userIcon: UIButton!
+    @IBOutlet weak var passwordIcon: UIButton!
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     func activity() {
-        let rect: CGRect = CGRect(x: 0, y: 0, width: 500, height: 500)
+        let rect: CGRect = CGRect(x: 0, y: 0, width: 50, height: 50)
         activityIndicator = UIActivityIndicatorView(frame: rect)
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
+        UIView.transition(with: self.loginIcon, duration: 0.5,
+                          options: .transitionFlipFromLeft,
+                          animations: {
+        }, completion: nil)
         UIApplication.shared.beginIgnoringInteractionEvents()
       
     }
@@ -83,27 +90,33 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         backgroundImage.alpha = 0
         username.alpha = 0
         password.alpha = 0
-
+        loginIcon.alpha = 0
+        userIcon.alpha = 0
+        passwordIcon.alpha = 0
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 2, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.username.alpha = 1.0
-            self.username.center.y -= 10
+            self.username.center.y += 10
             self.password.alpha = 1.0
-            self.password.center.y -= 10
+            self.password.center.y += 10
+            self.userIcon.alpha = 1.0
+            self.userIcon.center.y -= 10
+            self.passwordIcon.alpha = 1.0
+            self.passwordIcon.center.y -= 10
         }, completion: nil)
-        
         UIView.animate(withDuration: 2, delay: 0.5, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.backgroundImage.alpha = 1.0
             self.backgroundImage.center.y -= 30
         }, completion: nil)
-        
         UIView.animate(withDuration: 2, delay: 1.5, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.loginButton.alpha = 0.9
             self.loginButton.center.y -= 30
+            self.loginIcon.alpha = 1
+            self.loginIcon.center.y -= 30
         }, completion: nil)
-        
     }
     
     @IBAction func login(_ sender: AnyObject) {

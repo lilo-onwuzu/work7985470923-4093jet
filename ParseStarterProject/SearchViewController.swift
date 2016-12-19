@@ -23,12 +23,13 @@ class SearchViewController: UIViewController {
 	@IBOutlet weak var jobCycle: UILabel!
 	@IBOutlet weak var jobRate: UILabel!
 	@IBOutlet weak var jobLocation: UILabel!
-	@IBOutlet weak var jobDetails: UILabel!
+	@IBOutlet weak var jobDetails: UITextView!
 	@IBOutlet weak var logo: UILabel!
 	@IBOutlet weak var wheelbarrow: UIImageView!
 	@IBOutlet weak var viewProfile: UIButton!
 	@IBOutlet weak var infoLabel: UILabel!
 	@IBOutlet weak var menuView: UIView!
+	@IBOutlet weak var menuIcon: UIButton!
 	
 	func errorAlert(title: String, message: String) {
 		let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -185,7 +186,7 @@ class SearchViewController: UIViewController {
 			let view = self.view.subviews.last!
 			view.removeFromSuperview()
 			showMenu = false
-		
+
 		}
 	}
 	

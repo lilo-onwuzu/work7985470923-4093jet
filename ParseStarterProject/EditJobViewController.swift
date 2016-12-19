@@ -6,8 +6,6 @@
 //
 
 
-// scrollView not moving
-
 import UIKit
 
 class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {

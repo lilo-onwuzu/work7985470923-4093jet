@@ -5,9 +5,6 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-
-// add animations
-
 import UIKit
 
 class HomeViewController: UIViewController {
@@ -24,6 +21,13 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var mainImage: UIImageView!
+    @IBOutlet weak var userImage: UIImageView!
+    @IBOutlet weak var searchIcon: UIButton!
+    @IBOutlet weak var createIcon: UIButton!
+    @IBOutlet weak var jobsIcon: UIButton!
+    @IBOutlet weak var profileIcon: UIButton!
+    @IBOutlet weak var settingsIcon: UIButton!
+    @IBOutlet weak var logOut: UIButton!
     
     func getSecondImage() {
         UIView.transition(with: self.mainImage,
@@ -97,10 +101,60 @@ class HomeViewController: UIViewController {
         jobsButton.layer.cornerRadius = 10
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-
+        searchButton.alpha = 0
+        createButton.alpha = 0
+        jobsButton.alpha = 0
+        profileButton.alpha = 0
+        settingsButton.alpha = 0
+        userImage.alpha = 0
+        let imageFile = user.object(forKey: "image") as! PFFile
+        imageFile.getDataInBackground { (data, error) in
+            if let data = data {
+                let imageData = NSData(data: data)
+                self.userImage.image = UIImage(data: imageData as Data)
+                
+            }
+        }
+        userImage.layer.masksToBounds = true
+        userImage.layer.cornerRadius = 60
+        searchIcon.alpha = 0
+        createIcon.alpha = 0
+        jobsIcon.alpha = 0
+        profileIcon.alpha = 0
+        settingsIcon.alpha = 0
+        logOut.alpha = 0
+        if UIApplication.shared.statusBarOrientation.isLandscape {
+            userImage.isHidden = true
+            
+        }
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: 0.5,
+                       delay: 0.025,
+                       usingSpringWithDamping: 0.6,
+                       initialSpringVelocity: 0.0,
+                       options: [],
+                       animations: { self.searchButton.alpha = 1
+                            self.createButton.alpha = 1
+                            self.jobsButton.alpha = 1
+                            self.profileButton.alpha = 1
+                            self.settingsButton.alpha = 1
+                            self.searchIcon.alpha = 1
+                            self.createIcon.alpha = 1
+                            self.jobsIcon.alpha = 1
+                            self.profileIcon.alpha = 1
+                            self.settingsIcon.alpha = 1
+                            self.logOut.alpha = 1
+        }, completion: nil)
+        UIView.animate(withDuration: 1,
+                       delay: 0.5,
+                       usingSpringWithDamping: 0.6,
+                       initialSpringVelocity: 0.0,
+                       options: .transitionCrossDissolve,
+                       animations: { self.searchButton.alpha = 1
+                        self.userImage.alpha = 1
+        }, completion: nil)
         UIView.transition(with: self.mainImage,
                           duration: 7,
                           options: .transitionCrossDissolve,

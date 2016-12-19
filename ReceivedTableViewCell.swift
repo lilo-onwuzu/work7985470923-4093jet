@@ -6,6 +6,8 @@
 //
 
 
+// add swipe icon to highlighted cell
+
 import UIKit
 
 class ReceivedTableViewCell: UITableViewCell {

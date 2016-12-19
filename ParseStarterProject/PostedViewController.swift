@@ -144,6 +144,20 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.delegate = self
         tableView.dataSource = self
         menuView.isHidden = true
+        self.emptyLabel.alpha = 0
+        self.emptyLabel.center.x -= 30
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: 1,
+                       delay: 0.025,
+                       usingSpringWithDamping: 0.6,
+                       initialSpringVelocity: 0.0,
+                       options: [],
+                       animations: { self.emptyLabel.alpha = 1
+                        self.emptyLabel.center.x += 30
+        }, completion: nil)
     }
     
     @IBAction func mainMenu(_ sender: Any) {
@@ -152,7 +166,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
             menuView = vc.view
             let view = menuView.subviews[1]
             view.isHidden = true
-            menuView.frame = CGRect(x: 0, y: 69, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
+            menuView.frame = CGRect(x: 0, y: 104, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
             menuView.alpha = 0
             self.view.addSubview(menuView)
             UIView.transition(with: menuView,
@@ -167,7 +181,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let view = self.view.subviews.last!
             view.removeFromSuperview()
             showMenu = false
-        
+            
         }
     }
     

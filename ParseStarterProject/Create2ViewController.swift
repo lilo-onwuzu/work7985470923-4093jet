@@ -47,20 +47,21 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         nextButton.alpha = 0
         cyclePicker.alpha = 0
         label.alpha = 0
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 0.25, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.label.alpha = 1
-            self.label.center.x += 0
+            self.label.center.y -= 30
         }, completion: nil)
-        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 0.25, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.cyclePicker.alpha = 0.8
-            self.cyclePicker.center.x += 0
+            self.cyclePicker.center.y -= 30
         }, completion: nil)
-        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 0.25, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.nextButton.alpha = 0.9
-            self.nextButton.center.x += 0
+            self.nextButton.center.y -= 30
         }, completion: nil)
         
     }

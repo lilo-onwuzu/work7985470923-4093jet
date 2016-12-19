@@ -6,8 +6,6 @@
 //
 
 
-// resize details textfield to fit
-
 import UIKit
 
 class UserProfileViewController: UIViewController {
