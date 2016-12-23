@@ -5,11 +5,13 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
+
 import UIKit
 
 class EnterMessageTableViewCell: UITableViewCell {
 
     var selectedJob = PFObject(className: "Job")
+    var myTableView = UITableView()
 
     @IBOutlet weak var entertextField: UITextField!
     @IBOutlet weak var sendButton: UIButton!
@@ -28,11 +30,11 @@ class EnterMessageTableViewCell: UITableViewCell {
     @IBAction func send(_ sender: UIButton) {
         if entertextField.text! != "" {
             let enteredText = entertextField.text!
-            let dict = NSDictionary()
-            dict.setValue(enteredText, forKey: "requester")
-            var messages = selectedJob.object(forKey: "messages") as! Array<Any>
-            messages.append(dict)
-            print(messages)
+            let newMessage: [String : String] = ["req" : enteredText]
+            selectedJob.add(newMessage, forKey: "messages")
+            selectedJob.saveInBackground()
+            myTableView.reloadData()
+            entertextField.text = ""
             
         }
     }

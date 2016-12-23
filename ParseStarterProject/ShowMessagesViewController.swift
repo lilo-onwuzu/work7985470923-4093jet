@@ -37,7 +37,7 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            let messages = selectedJob.object(forKey: "messages") as! Array<Any>
+            let messages = selectedJob.object(forKey: "messages") as! [NSDictionary]
             return messages.count
             
         } else {
@@ -53,20 +53,24 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! ShowMessagesTableViewCell
-            let messages = selectedJob.object(forKey: "messages") as! Array<Any>
-            for message in messages {
-                let dictionary = message as! NSDictionary
-                let row = dictionary.object(forKey: "intro") as! String
-                cell.message.text = row
-                cell.message.sizeToFit()
+            let messages = selectedJob.object(forKey: "messages") as! [NSDictionary]
+            if indexPath.row == 0 {
+                let dictionary = messages[0]
+                let introMessage = dictionary.object(forKey: "intro") as! String
+                cell.message.text = introMessage
+                
+            } else {
+                let dictionary = messages[indexPath.row]
+                let message = dictionary.object(forKey: "req") as! String
+                cell.message.text = message
                 
             }
-            cell.sizeToFit()
             return cell
             
         } else {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "entryCell", for: indexPath) as! EnterMessageTableViewCell
             cell.selectedJob = selectedJob
+            cell.myTableView = tableView
             return cell
             
         }

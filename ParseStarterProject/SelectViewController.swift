@@ -65,9 +65,10 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
                             // swipe right sets selected user value
                             selectedJob.setValue(users[index.row], forKey: "selectedUser")
                             // init messaging when match is made and send message alert to user
-                            var messages = [Dictionary<String, String>]()
-                            let dict = ["intro" :  "Congratulations! " + requesterName + " picked you for the job. Connect with " + requesterName + " here"]
-                            messages.append(dict)
+                            let introValue = "Congratulations! " + requesterName + " picked you for the job. Connect with " + requesterName + " here"
+                            let introMessage: [String : String] = ["intro" : introValue]
+                            var messages = [NSDictionary]()
+                            messages.append(introMessage as NSDictionary)
                             selectedJob.setValue(messages, forKey: "messages")
                             selectedJob.saveInBackground()
                             self.tableView.reloadData()
