@@ -6,8 +6,6 @@
 //
 
 
-// cell dance when delete is pressed
-
 import UIKit
 
 class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -18,12 +16,14 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var editJob = PFObject(className: "Job")
     var jobsToDelete = [PFObject]()
     var selectedJob = PFObject(className: "Job")
+    var deleting = false
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var deleteJobs: UIButton!
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var emptyLabel: UILabel!
     @IBOutlet weak var menuView: UIView!
+    @IBOutlet weak var deleteLabel: UILabel!
     
     // drag function is called continuosly from start to end of a pan
     func dragged (gesture: UIPanGestureRecognizer) {
@@ -106,7 +106,6 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                             
                                         }
                                     })
-                                    
                                 }
                             }
                         })
@@ -199,36 +198,33 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     @IBAction func triggerDelete(_ sender: Any) {
-        // if "Delete" is active, start deletion process
-        if deleteJobs.currentTitle == "Delete x" {
-            tableView.allowsMultipleSelection = true
-            deleteJobs.setTitle("Done x", for: UIControlState.normal)
-            // add animation for delete
-
-        } else {
-            // else if "Done" is active
-            if deleteJobs.currentTitle == "Done x" {
-                var jobTitles = ""
-                // delete selected rows
-                // get the array of PFObjects selected for deletion, could be empty if no selection was made
-                jobsToDelete = getRowsToDelete()
-                let deleteCount = jobsToDelete.count
-                // if there were rows selected for deletion, display deleteAlert. Else dont show alert
-                if deleteCount > 0 {
-                    // delete jobs in Parse
-                    for job in jobsToDelete {
-                        let jobTitle = job.object(forKey: "title") as! String
-                        jobTitles += jobTitle + " \n"
-                    }
-                    // deletes "object" in "objects" then reloads tableview, resets deleteButton title and stops allowing multiple selections
-                    self.deleteAlert(title: "Are you sure you want to delete these jobs?", message: jobTitles)
-                // if there are no rows selected for deletion, reset deleteButton title and stop allowing multiple selections
-                } else {
-                    deleteJobs.setTitle("Delete x", for: UIControlState.normal)
-                    tableView.allowsMultipleSelection = false
-                    
+        // if deleting is in process
+        if deleting {
+            deleteLabel.isHidden = true
+            deleting = false
+            var jobTitles = ""
+            // get the array of PFObjects selected for deletion, could be empty if no selection was made
+            jobsToDelete = getRowsToDelete()
+            let deleteCount = jobsToDelete.count
+            // if there were rows selected for deletion, display deleteAlert. Else dont show alert
+            if deleteCount > 0 {
+                // delete jobs in Parse
+                for job in jobsToDelete {
+                    let jobTitle = job.object(forKey: "title") as! String
+                    jobTitles += jobTitle + " \n"
                 }
+                // deletes "object" in "objects" then reloads tableview, resets deleteButton title and stops allowing multiple selections
+                self.deleteAlert(title: "Are you sure you want to delete these jobs?", message: jobTitles)
+                
             }
+            tableView.allowsMultipleSelection = false
+            
+        } else {
+            deleteLabel.isHidden = false
+            tableView.allowsMultipleSelection = true
+            // start animating cells and activate delete trigger "deleting"
+            deleting = true
+  
         }
     }
             

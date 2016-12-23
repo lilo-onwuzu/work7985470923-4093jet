@@ -17,14 +17,15 @@
 		04158B981DE3247900D741C4 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04158B971DE3247900D741C4 /* UserProfileViewController.swift */; };
 		04158B9A1DE3249900D741C4 /* EditJobViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04158B991DE3249900D741C4 /* EditJobViewController.swift */; };
 		04158B9C1DE324BE00D741C4 /* SelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04158B9B1DE324BE00D741C4 /* SelectViewController.swift */; };
-		04158B9E1DE3320A00D741C4 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 04158B9D1DE3320A00D741C4 /* camera.png */; };
 		04158BA01DE33B5000D741C4 /* PostedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04158B9F1DE33B5000D741C4 /* PostedViewController.swift */; };
 		04158BA21DE33BEF00D741C4 /* ReceivedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04158BA11DE33BEF00D741C4 /* ReceivedViewController.swift */; };
 		042567441DC31E84008ED3DE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042567431DC31E84008ED3DE /* LoginViewController.swift */; };
 		042856D91DED1D450091D9BE /* UserAcceptedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042856D81DED1D450091D9BE /* UserAcceptedTableViewCell.swift */; };
 		042856DB1DED4C410091D9BE /* ReceivedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042856DA1DED4C410091D9BE /* ReceivedTableViewCell.swift */; };
-		045E82471E07CA1A00B0C5C9 /* enterIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 045E82461E07CA1A00B0C5C9 /* enterIcon.png */; };
 		045E82491E0811CD00B0C5C9 /* caseIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 045E82481E0811CD00B0C5C9 /* caseIcon.png */; };
+		045E824B1E0B599900B0C5C9 /* wineIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 045E824A1E0B599900B0C5C9 /* wineIcon.png */; };
+		045E824D1E0B65C400B0C5C9 /* handIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 045E824C1E0B65C300B0C5C9 /* handIcon.png */; };
+		045E824F1E0BD0AB00B0C5C9 /* EnterMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045E824E1E0BD0AB00B0C5C9 /* EnterMessageTableViewCell.swift */; };
 		049EBB631DD9B54300D76AED /* Dosis-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB071DD9B54200D76AED /* Dosis-Bold.ttf */; };
 		049EBB641DD9B54300D76AED /* Dosis-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB081DD9B54200D76AED /* Dosis-ExtraBold.ttf */; };
 		049EBB651DD9B54300D76AED /* Dosis-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 049EBB091DD9B54200D76AED /* Dosis-ExtraLight.ttf */; };
@@ -75,7 +76,6 @@
 		04158B971DE3247900D741C4 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		04158B991DE3249900D741C4 /* EditJobViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditJobViewController.swift; sourceTree = "<group>"; };
 		04158B9B1DE324BE00D741C4 /* SelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectViewController.swift; sourceTree = "<group>"; };
-		04158B9D1DE3320A00D741C4 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
 		04158B9F1DE33B5000D741C4 /* PostedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostedViewController.swift; sourceTree = "<group>"; };
 		04158BA11DE33BEF00D741C4 /* ReceivedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceivedViewController.swift; sourceTree = "<group>"; };
 		042567431DC31E84008ED3DE /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -91,8 +91,10 @@
 		045E820C1E050A6E00B0C5C9 /* FaunaOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FaunaOne-Regular.ttf"; sourceTree = "<group>"; };
 		045E820D1E050A7E00B0C5C9 /* Flamenco-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Flamenco-Light.ttf"; sourceTree = "<group>"; };
 		045E820E1E050A7E00B0C5C9 /* Flamenco-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Flamenco-Regular.ttf"; sourceTree = "<group>"; };
-		045E82461E07CA1A00B0C5C9 /* enterIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = enterIcon.png; sourceTree = "<group>"; };
 		045E82481E0811CD00B0C5C9 /* caseIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = caseIcon.png; sourceTree = "<group>"; };
+		045E824A1E0B599900B0C5C9 /* wineIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wineIcon.png; sourceTree = "<group>"; };
+		045E824C1E0B65C300B0C5C9 /* handIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = handIcon.png; sourceTree = "<group>"; };
+		045E824E1E0BD0AB00B0C5C9 /* EnterMessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterMessageTableViewCell.swift; sourceTree = "<group>"; };
 		049EBB071DD9B54200D76AED /* Dosis-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-Bold.ttf"; sourceTree = "<group>"; };
 		049EBB081DD9B54200D76AED /* Dosis-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-ExtraBold.ttf"; sourceTree = "<group>"; };
 		049EBB091DD9B54200D76AED /* Dosis-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Dosis-ExtraLight.ttf"; sourceTree = "<group>"; };
@@ -179,37 +181,38 @@
 				0400DF8F1DBC5564006E7E75 /* ParseStarterProject-Bridging-Header.h */,
 				81BA814A1A49DA1800E65899 /* AppDelegate.swift */,
 				81BA814E1A49DA1800E65899 /* Main.storyboard */,
-				81BA814C1A49DA1800E65899 /* MainViewController.swift */,
 				04F175C71DBED8E800DB91B3 /* SignUpViewController.swift */,
+				81BA814C1A49DA1800E65899 /* MainViewController.swift */,
 				042567431DC31E84008ED3DE /* LoginViewController.swift */,
+				04DECE0A1DB03F3C0087B887 /* HomeViewController.swift */,
 				04DECE141DB094F90087B887 /* SearchViewController.swift */,
+				04DECE0C1DB0948B0087B887 /* ProfileViewController.swift */,
 				04DECE121DB094EA0087B887 /* Create1ViewController.swift */,
 				04DECE181DB1826E0087B887 /* Create2ViewController.swift */,
 				04DECE1A1DB185C70087B887 /* Create3ViewController.swift */,
 				04DECE1C1DB185D50087B887 /* Create4ViewController.swift */,
-				04DECE0A1DB03F3C0087B887 /* HomeViewController.swift */,
-				04DECE0C1DB0948B0087B887 /* ProfileViewController.swift */,
 				04158B971DE3247900D741C4 /* UserProfileViewController.swift */,
-				0408BC521DEDC14D0075D8D2 /* TabBarViewController.swift */,
+				04DECE161DB0951F0087B887 /* SettingsViewController.swift */,
 				04F6DA741DD5F8D900AB8643 /* PostedTableViewCell.swift */,
-				042856DA1DED4C410091D9BE /* ReceivedTableViewCell.swift */,
 				042856D81DED1D450091D9BE /* UserAcceptedTableViewCell.swift */,
+				042856DA1DED4C410091D9BE /* ReceivedTableViewCell.swift */,
 				0408BC4C1DED83DE0075D8D2 /* MessageTableViewCell.swift */,
 				0408BC4E1DED95BB0075D8D2 /* ShowMessagesTableViewCell.swift */,
-				04158B991DE3249900D741C4 /* EditJobViewController.swift */,
-				04158B9B1DE324BE00D741C4 /* SelectViewController.swift */,
+				045E824E1E0BD0AB00B0C5C9 /* EnterMessageTableViewCell.swift */,
+				0408BC521DEDC14D0075D8D2 /* TabBarViewController.swift */,
 				04158B9F1DE33B5000D741C4 /* PostedViewController.swift */,
+				04158B9B1DE324BE00D741C4 /* SelectViewController.swift */,
+				04158B991DE3249900D741C4 /* EditJobViewController.swift */,
 				04158BA11DE33BEF00D741C4 /* ReceivedViewController.swift */,
 				04DECE0E1DB094A60087B887 /* MessageViewController.swift */,
 				0408BC501DED97530075D8D2 /* ShowMessagesViewController.swift */,
-				04DECE161DB0951F0087B887 /* SettingsViewController.swift */,
 				04DECE031DAF3B670087B887 /* work.jpg */,
 				04B525E71DF6CC9500A284A0 /* work_1.jpeg */,
 				04B525E81DF6CC9500A284A0 /* work_2.jpeg */,
+				045E824C1E0B65C300B0C5C9 /* handIcon.png */,
+				045E824A1E0B599900B0C5C9 /* wineIcon.png */,
 				045E82481E0811CD00B0C5C9 /* caseIcon.png */,
-				045E82461E07CA1A00B0C5C9 /* enterIcon.png */,
 				04DECE061DAF77D80087B887 /* placeholder.svg.png */,
-				04158B9D1DE3320A00D741C4 /* camera.png */,
 				0400DFD41DBC7CD0006E7E75 /* LaunchScreen.storyboard */,
 				0400DFD21DBC7B95006E7E75 /* Assets.xcassets */,
 				81BA81481A49DA1800E65899 /* Supporting Files */,
@@ -357,9 +360,9 @@
 				81BA81501A49DA1800E65899 /* Main.storyboard in Resources */,
 				04B525EA1DF6CC9500A284A0 /* work_2.jpeg in Resources */,
 				049EBB681DD9B54300D76AED /* Dosis-Regular.ttf in Resources */,
+				045E824B1E0B599900B0C5C9 /* wineIcon.png in Resources */,
 				049EBB9C1DD9B54300D76AED /* Offside-Regular.ttf in Resources */,
-				04158B9E1DE3320A00D741C4 /* camera.png in Resources */,
-				045E82471E07CA1A00B0C5C9 /* enterIcon.png in Resources */,
+				045E824D1E0B65C400B0C5C9 /* handIcon.png in Resources */,
 				04DECE041DAF3B670087B887 /* work.jpg in Resources */,
 				049EBB641DD9B54300D76AED /* Dosis-ExtraBold.ttf in Resources */,
 				04DECE071DAF77D80087B887 /* placeholder.svg.png in Resources */,
@@ -459,6 +462,7 @@
 				04DECE1D1DB185D50087B887 /* Create4ViewController.swift in Sources */,
 				04DECE1B1DB185C70087B887 /* Create3ViewController.swift in Sources */,
 				81BA814B1A49DA1800E65899 /* AppDelegate.swift in Sources */,
+				045E824F1E0BD0AB00B0C5C9 /* EnterMessageTableViewCell.swift in Sources */,
 				04DECE0D1DB0948B0087B887 /* ProfileViewController.swift in Sources */,
 				04DECE0B1DB03F3C0087B887 /* HomeViewController.swift in Sources */,
 				04DECE171DB0951F0087B887 /* SettingsViewController.swift in Sources */,

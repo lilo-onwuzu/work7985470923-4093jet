@@ -5,7 +5,6 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// change cell type when match is made
 // pull to refresh
 
 
@@ -22,6 +21,7 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var jobTitle: UILabel!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -31,6 +31,21 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
         }))
         present(alert, animated: true, completion: nil)
         
+    }
+    
+    func showSelectedRow(index: Int, swipeButton: UIButton, selectLabel: UILabel) {
+        let selected = selectedJob.object(forKey: "selectedUser") as! String
+        if selected == users[index] {
+            let buttonImage = UIImage(named: "wineIcon.png")
+            swipeButton.setImage(buttonImage, for: .normal)
+            selectLabel.text = "MATCHED!"
+        
+        } else {
+            let buttonImage = UIImage(named: "handIcon.png")
+            swipeButton.setImage(buttonImage, for: .normal)
+            selectLabel.text = "SELECT"
+            
+        }
     }
     
     // drag function is called continuosly from start to end of a pan
@@ -55,6 +70,7 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
                             messages.append(dict)
                             selectedJob.setValue(messages, forKey: "messages")
                             selectedJob.saveInBackground()
+                            self.tableView.reloadData()
                             
                         }
                         // reset cell center to center of screen
@@ -77,6 +93,8 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
             infoLabel.text = "No users have accepted this job yet"
             
         }
+        let title = selectedJob.object(forKey: "title") as! String
+        jobTitle.text = title
         
     }
     
@@ -138,6 +156,7 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
         cell.isUserInteractionEnabled = true
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.dragged(gesture:)))
         cell.addGestureRecognizer(pan)
+        showSelectedRow(index: indexPath.row, swipeButton: cell.swipeIcon, selectLabel: cell.selectLabel)
         return cell
         
     }

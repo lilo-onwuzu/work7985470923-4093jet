@@ -130,7 +130,7 @@ class HomeViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 0.5,
+        UIView.animate(withDuration: 0.25,
                        delay: 0.025,
                        usingSpringWithDamping: 0.6,
                        initialSpringVelocity: 0.0,

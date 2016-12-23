@@ -115,7 +115,25 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
         let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell", for: indexPath) as! MessageTableViewCell
         let job = messageJobs[indexPath.row]
         let jobTitle = job.object(forKey: "title") as! String
-        cell.messageLabel.text = jobTitle
+        cell.messageTitle.text = jobTitle
+        // get images
+        let reqId = job.object(forKey: "requesterId") as! String
+        // fetch requestor image
+        var requester = PFUser()
+        do {
+            requester = try PFQuery.getUserObject(withId: reqId)
+            
+        } catch _ {
+            
+        }
+        let imageFile = requester.object(forKey: "image") as! PFFile
+        imageFile.getDataInBackground { (data, error) in
+            if let data = data {
+                let imageData = NSData(data: data)
+                cell.reqImage.image = UIImage(data: imageData as Data)
+                
+            }
+        }
         // attach pan gesture recognizer to each cell so whenever the cell is dragged to the right, the dragged() function is called to move the selected cell along with the pan and then perform segue to show messages
         cell.isUserInteractionEnabled = true
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.dragged(gesture:)))

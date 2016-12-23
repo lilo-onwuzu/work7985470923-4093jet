@@ -70,6 +70,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         self.jobTitle.delegate = self
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
+        menuView.isHidden = true
         // add job location (latitude & longitude) with PFGeoPoint
         // async call, use block and handshake boolean "finish"
         PFGeoPoint.geoPointForCurrentLocation { (coordinates, error) in
@@ -82,27 +83,6 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                 
             }
         }
-        nextButton.alpha = 0
-        label.alpha = 0
-        jobTitle.alpha = 0
-        menuView.isHidden = true
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 0.25, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-            self.label.alpha = 1
-            self.label.center.y -= 30
-        }, completion: nil)
-        UIView.animate(withDuration: 0.25, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-            self.jobTitle.alpha = 0.8
-            self.jobTitle.center.y -= 30
-        }, completion: nil)
-        UIView.animate(withDuration: 0.25, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-            self.nextButton.alpha = 1.0
-            self.nextButton.center.y -= 30
-        }, completion: nil)
-        
     }
 
     @IBAction func mainMenu(_ sender: Any) {
@@ -132,7 +112,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func addJobTitle(_ sender: UIButton) {
         addTitle()
-        
+
     }
     
     // tap anywhere to escape keyboard

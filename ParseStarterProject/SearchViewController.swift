@@ -5,7 +5,6 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// rethink this view
 // geopoint issue. sometime gets (0,0). restart computer solves issue
 
 import UIKit
@@ -30,6 +29,7 @@ class SearchViewController: UIViewController {
 	@IBOutlet weak var infoLabel: UILabel!
 	@IBOutlet weak var menuView: UIView!
 	@IBOutlet weak var menuIcon: UIButton!
+	@IBOutlet weak var reqImage: UIImageView!
 	
 	func errorAlert(title: String, message: String) {
 		let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -126,7 +126,14 @@ class SearchViewController: UIViewController {
 							let firstName = user.object(forKey: "first_name") as? String
 							let lastName = user.object(forKey: "last_name") as? String
 							self.requesterName.text = "Requester: " + firstName! + " " + lastName!
-							
+							let imageFile = user.object(forKey: "image") as! PFFile
+							imageFile.getDataInBackground { (data, error) in
+								if let data = data {
+									let imageData = NSData(data: data)
+									self.reqImage.image = UIImage(data: imageData as Data)
+									
+								}
+							}
 							// enable viewProfile and infoLabel
 							self.viewProfile.isHidden = false
 							self.infoLabel.isHidden = false
@@ -160,6 +167,8 @@ class SearchViewController: UIViewController {
 		viewProfile.isHidden = true
 		self.infoLabel.isHidden = true
 		// query first job once view loads
+		reqImage.layer.masksToBounds = true
+		reqImage.layer.cornerRadius = 60
 		getNewJob()
 		menuView.isHidden = true
 		

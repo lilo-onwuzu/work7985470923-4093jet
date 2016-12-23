@@ -6,8 +6,6 @@
 //
 
 
-// add swipe icon to highlighted cell
-
 import UIKit
 
 class ReceivedTableViewCell: UITableViewCell {
@@ -24,7 +22,7 @@ class ReceivedTableViewCell: UITableViewCell {
         receivedLabel.layer.masksToBounds = true
         receivedLabel.layer.cornerRadius = 7
         userImage.layer.masksToBounds = true
-        userImage.layer.cornerRadius = 28
+        userImage.layer.cornerRadius = 45
         
     }
 

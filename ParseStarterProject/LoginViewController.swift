@@ -29,10 +29,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
-        UIView.transition(with: self.loginIcon, duration: 0.5,
+        UIView.transition(with: self.loginIcon,
+                          duration: 0.5,
                           options: .transitionFlipFromLeft,
-                          animations: {
-        }, completion: nil)
+                          animations: {},
+                          completion: nil
+        )
         UIApplication.shared.beginIgnoringInteractionEvents()
       
     }
@@ -83,6 +85,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.password.delegate = self
+        self.username.delegate = self
         loginButton.layer.cornerRadius = 15.0
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
@@ -138,7 +141,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     // hit return to escape keyboard and login simultaneously
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        if textField === username {
+            textField.resignFirstResponder()
+            password.becomeFirstResponder()
+        
+        }
         logInAction()
         return true
         

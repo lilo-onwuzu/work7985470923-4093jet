@@ -42,25 +42,6 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-        rateField.alpha = 0
-        rateStepper.alpha = 0
-        label.alpha = 0
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-            self.label.alpha = 1
-            self.label.center.x += 0
-        }, completion: nil)
-        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-            self.rateField.alpha = 0.8
-            self.rateField.center.x += 0
-        }, completion: nil)
-        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-            self.rateStepper.alpha = 1.0
-            self.rateStepper.center.x += 0
-        }, completion: nil)
         
     }
     

@@ -12,6 +12,7 @@ import UIKit
 
 class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
+    let text_field_limit = 600
     var showMenu = false
     let image = UIImagePickerController()
     let user = PFUser.current()!
@@ -149,6 +150,11 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         textField.resignFirstResponder()
         runEdit()
         return true
+        
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return (textField.text?.utf16.count ?? 0) + string.utf16.count - range.length <= text_field_limit
         
     }
 

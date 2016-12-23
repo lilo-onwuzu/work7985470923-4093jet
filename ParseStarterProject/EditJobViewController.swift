@@ -12,7 +12,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
 
     var editJob = PFObject(className: "Job")
     var cycle = ["Flat", "Hourly", "Weekly", "Monthly", "Annually"]
-    var status = ["Accepted", "In Progress", "Complete", "Payment Successful"]
+    var status = ["Accepted", "In Progress", "Complete"]
     var cycleValue = ""
     var statusValue = ""
     var cycleSelected = ""
@@ -85,13 +85,13 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
         for index in cycle {
             if cycleSelected == index {
                 editCycle.selectRow(cycle.index(of: index)!, inComponent: 0, animated: true)
-            
+                
             }
         }
         // set picker to job status value
         for index in status {
             if statusSelected == index {
-                editCycle.selectRow(status.index(of: index)!, inComponent: 0, animated: true)
+                editStatus.selectRow(status.index(of: index)!, inComponent: 0, animated: true)
                 
             }
         }
@@ -109,6 +109,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
             // if isADouble(), add to the stepper value (+ve or -ve)
             enterRate = isADouble(editRate.text)! + sender.value
             sender.value = 0.00
+            print(enterRate!)
             
             // if not a double or textField is empty, show "1.00" on first tap
         } else {
@@ -131,7 +132,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
             editJob.setValue(self.cycleValue, forKey: "cycle")
             
             // edit rate
-            let rate = String(format: "%.2f", editRate.text!)
+            let rate = String(format: "%.2f", isADouble((editRate.text)!)!)
             // confirm that rate is a valid number that is non-negative
             if isADouble(editRate.text) != nil && isADouble(editRate.text)! > 0.0 {
                 editJob.setValue(rate, forKey: "rate")
@@ -194,12 +195,12 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
         var pickerValueAtt = NSAttributedString()
         if (pickerView.tag == 0) {
             cycleValue = cycle[row]
-            pickerValueAtt = NSAttributedString(string: cycleValue, attributes: [NSForegroundColorAttributeName: UIColor.white])
+            pickerValueAtt = NSAttributedString(string: cycleValue, attributes: [NSForegroundColorAttributeName: UIColor.black])
         
         }
         if (pickerView.tag == 1) {
             statusValue = status[row]
-            pickerValueAtt = NSAttributedString(string: statusValue, attributes: [NSForegroundColorAttributeName: UIColor.white])
+            pickerValueAtt = NSAttributedString(string: statusValue, attributes: [NSForegroundColorAttributeName: UIColor.black])
         
         }
         return pickerValueAtt

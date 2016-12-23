@@ -6,8 +6,6 @@
 //
 
 
-// status updates
-
 import UIKit
 
 class ReceivedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -88,25 +86,24 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "receivedCell", for: indexPath) as! ReceivedTableViewCell
         let job = receivedJobs[indexPath.row]
-        
-//        let reqId = job.object(forKey: "requesterId") as! String
-////             fetch requestor image
-//        var requester = PFUser()
-//        do {
-//                requester = try PFQuery.getUserObject(withId: reqId)
-//            
-//            } catch _ {
-//                
-//            }
-//        let imageFile = requester.object(forKey: "image") as! PFFile
-//        imageFile.getDataInBackground { (data, error) in
-//            if let data = data {
-//                let imageData = NSData(data: data)
-//                cell.userImage.image = UIImage(data: imageData as Data)
-//                
-//            }
-//        }
-
+        // get images
+        let reqId = job.object(forKey: "requesterId") as! String
+        // fetch requestor image
+        var requester = PFUser()
+        do {
+            requester = try PFQuery.getUserObject(withId: reqId)
+      
+        } catch _ {
+      
+        }
+        let imageFile = requester.object(forKey: "image") as! PFFile
+        imageFile.getDataInBackground { (data, error) in
+            if let data = data {
+                let imageData = NSData(data: data)
+                cell.userImage.image = UIImage(data: imageData as Data)
+                
+            }
+        }
         let jobTitle = job.object(forKey: "title") as! String
         let jobCycle = job.object(forKey: "cycle") as! String
         let jobRate = job.object(forKey: "rate") as! String

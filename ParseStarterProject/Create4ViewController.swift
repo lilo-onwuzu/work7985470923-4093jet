@@ -76,22 +76,6 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
         self.jobDetails.delegate = self
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-        formLabel.alpha = 0
-        jobDetails.alpha = 0
-        createButton.alpha = 0
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-            self.formLabel.alpha = 1
-        }, completion: nil)
-        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-            self.jobDetails.alpha = 0.5
-        }, completion: nil)
-        UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-            self.createButton.alpha = 0.8
-        }, completion: nil)
         
     }
     

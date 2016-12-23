@@ -44,25 +44,6 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         logo.layer.cornerRadius = 3
         cyclePicker.layer.masksToBounds = true
         cyclePicker.layer.cornerRadius = 7
-        nextButton.alpha = 0
-        cyclePicker.alpha = 0
-        label.alpha = 0
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 0.25, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-            self.label.alpha = 1
-            self.label.center.y -= 30
-        }, completion: nil)
-        UIView.animate(withDuration: 0.25, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-            self.cyclePicker.alpha = 0.8
-            self.cyclePicker.center.y -= 30
-        }, completion: nil)
-        UIView.animate(withDuration: 0.25, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-            self.nextButton.alpha = 0.9
-            self.nextButton.center.y -= 30
-        }, completion: nil)
         
     }
     
