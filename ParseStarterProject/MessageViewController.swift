@@ -14,6 +14,7 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
     let user = PFUser.current()!
     var messageJobs = [PFObject]()
     var selectedJob = PFObject(className: "Job")
+    var refresher: UIRefreshControl!
     
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -47,6 +48,12 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
         }
     }
     
+    func refresh() {
+        self.tableView.reloadData()
+        self.refresher.endRefreshing()
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         logo.layer.masksToBounds = true
@@ -72,6 +79,10 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
             }
         }
         menuView.isHidden = true
+        refresher = UIRefreshControl()
+        refresher.attributedTitle = NSAttributedString(string: "Refreshing...")
+        refresher.addTarget(self, action: #selector(PostedViewController.refresh), for: UIControlEvents.valueChanged)
+        self.tableView.addSubview(refresher)
         
     }
     
@@ -134,10 +145,12 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
                 
             }
         }
-        // attach pan gesture recognizer to each cell so whenever the cell is dragged to the right, the dragged() function is called to move the selected cell along with the pan and then perform segue to show messages
-        cell.isUserInteractionEnabled = true
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.dragged(gesture:)))
-        cell.addGestureRecognizer(pan)
+        cell.myTableView = tableView
+        if cell.ready {
+            cell.selectedJob = job
+            performSegue(withIdentifier: "toShowMessages", sender: self)
+            
+        }
         return cell
         
     }

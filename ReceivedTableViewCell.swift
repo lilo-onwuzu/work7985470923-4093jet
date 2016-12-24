@@ -31,14 +31,10 @@ class ReceivedTableViewCell: UITableViewCell {
         // Configure the highlighted color for the selected state
         if selected {
             self.receivedTitle.textColor = UIColor.black
-            self.receivedCycle.textColor = UIColor.black
-            self.receivedRate.textColor = UIColor.black
             
         } else {
             self.receivedTitle.textColor = UIColor.white
-            self.receivedCycle.textColor = UIColor.white
-            self.receivedRate.textColor = UIColor.white
-            
+
         }
     }
 

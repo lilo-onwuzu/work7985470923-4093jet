@@ -13,11 +13,18 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
     var showMenu = false
     var user = PFUser.current()!
     var receivedJobs = [PFObject]()
+    var refresher: UIRefreshControl!
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var emptyLabel: UILabel!
     @IBOutlet weak var menuView: UIView!
+    
+    func refresh() {
+        self.tableView.reloadData()
+        self.refresher.endRefreshing()
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +51,11 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
         menuView.isHidden = true
-        
+        refresher = UIRefreshControl()
+        refresher.attributedTitle = NSAttributedString(string: "Refreshing...")
+        refresher.addTarget(self, action: #selector(PostedViewController.refresh), for: UIControlEvents.valueChanged)
+        self.tableView.addSubview(refresher)
+
     }
     
     @IBAction func mainMenu(_ sender: Any) {

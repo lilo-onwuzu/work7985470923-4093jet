@@ -6,23 +6,32 @@
 //
 
 
-// pull to refresh
-
 import UIKit
 
 class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var selectedJob = PFObject(className: "Job")
+    var refresher: UIRefreshControl!
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var jobTitle: UILabel!
     
+    func refresh() {
+        self.tableView.reloadData()
+        self.refresher.endRefreshing()
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-
+        refresher = UIRefreshControl()
+        refresher.attributedTitle = NSAttributedString(string: "Refreshing...")
+        refresher.addTarget(self, action: #selector(PostedViewController.refresh), for: UIControlEvents.valueChanged)
+        self.tableView.addSubview(refresher)
+        
     }
     
     @IBAction func back(_ sender: Any) {

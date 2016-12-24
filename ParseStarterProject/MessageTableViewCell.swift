@@ -10,6 +10,10 @@ import UIKit
 
 class MessageTableViewCell: UITableViewCell {
 
+    var selectedJob = PFObject(className: "Job")
+    var myTableView = UITableView()
+    var ready = false
+    
     @IBOutlet weak var reqImage: UIImageView!
     @IBOutlet weak var messageTitle: UILabel!
     @IBOutlet weak var swipeIcon: UIButton!
@@ -24,6 +28,27 @@ class MessageTableViewCell: UITableViewCell {
                        options: .transitionCrossDissolve,
                        animations: { self.swipeIcon.center.x -= 30 },
                        completion: nil)
+    }
+    
+    // drag function is called continuosly from start to end of a pan
+    func dragged (gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self.contentView)
+        // continue executing dragged() function if pan is to the right, if not, do nothing, function terminates
+        if translation.x > 0 {
+            self.center.x = self.center.x + translation.x
+            // once pan gesture ends, if selected cell , pass job in highlighted cell to selectVC, perform segue
+            if gesture.state == UIGestureRecognizerState.ended {
+                if self.center.x > (self.bounds.width/2) {
+                    ready = true
+                    // reload tableView to get "SelectVC" segue instruction
+                    myTableView.reloadData()
+                    
+                }
+                // reset cell center to center of screen
+                self.center.x = self.bounds.width/2
+                
+            }
+        }
     }
     
     override func awakeFromNib() {
@@ -53,6 +78,7 @@ class MessageTableViewCell: UITableViewCell {
                             self.recenter()
                             
             })
+            
         } else {
             self.messageTitle.textColor = UIColor.white
             swipeIcon.isHidden = true

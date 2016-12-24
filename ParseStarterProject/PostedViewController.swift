@@ -17,6 +17,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var jobsToDelete = [PFObject]()
     var selectedJob = PFObject(className: "Job")
     var deleting = false
+    var refresher: UIRefreshControl!
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var deleteJobs: UIButton!
@@ -24,33 +25,6 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var emptyLabel: UILabel!
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var deleteLabel: UILabel!
-    
-    // drag function is called continuosly from start to end of a pan
-    func dragged (gesture: UIPanGestureRecognizer) {
-        // during drag, if a cell is selected/highlighted, do this, else, pan gesture has no effect nothing
-        if let index = tableView.indexPathForSelectedRow {
-            // get highlighted cell
-            if let cell = tableView.cellForRow(at: index) {
-                // measure translation of gesture in x
-                let translation = gesture.translation(in: cell.contentView)
-                // continue executing dragged() function if pan is to the right, if not, do nothing, function terminates
-                if translation.x > 0 {
-                    cell.center.x = cell.center.x + translation.x
-                    // once pan gesture ends, if selected cell , pass job in highlighted cell to selectVC, perform segue
-                    if gesture.state == UIGestureRecognizerState.ended {
-                        if cell.center.x > (self.view.bounds.width/2) {
-                            selectedJob = postedJobs[index.row]
-                            performSegue(withIdentifier: "toSelect", sender: self)
-                            
-                        }
-                        // reset cell center to center of screen
-                        cell.center.x = self.view.center.x
-                        
-                    }
-                }
-            }
-        }
-    }
     
     // get rows selected for deleting and returns the job objects
     func getRowsToDelete() -> [PFObject] {
@@ -116,7 +90,13 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         present(alert, animated: true, completion: nil)
         
     }
+    
+    func refresh() {
+        self.tableView.reloadData()
+        self.refresher.endRefreshing()
 
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // collect user's posted jobs from a query to "Job" class
@@ -145,18 +125,11 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         menuView.isHidden = true
         self.emptyLabel.alpha = 0
         self.emptyLabel.center.x -= 30
+        refresher = UIRefreshControl()
+        refresher.attributedTitle = NSAttributedString(string: "Refreshing...")
+        refresher.addTarget(self, action: #selector(PostedViewController.refresh), for: UIControlEvents.valueChanged)
+        self.tableView.addSubview(refresher)
 
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 1,
-                       delay: 0.025,
-                       usingSpringWithDamping: 0.6,
-                       initialSpringVelocity: 0.0,
-                       options: [],
-                       animations: { self.emptyLabel.alpha = 1
-                        self.emptyLabel.center.x += 30
-        }, completion: nil)
     }
     
     @IBAction func mainMenu(_ sender: Any) {
@@ -248,10 +221,11 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.postedTitle?.text = jobTitle
         cell.postedCycle?.text = "Cycle : " + jobCycle
         cell.postedRate?.text = "Rate : " + jobRate
-        // attach pan gesture recognizer to each cell so whenever the cell is dragged, the dragged() function runs once
-        cell.isUserInteractionEnabled = true
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.dragged(gesture:)))
-        cell.addGestureRecognizer(pan)
+        cell.myTableView = tableView
+        if cell.ready {
+            selectedJob = job
+            performSegue(withIdentifier: "toSelect", sender: self)
+        }
         return cell
         
     }

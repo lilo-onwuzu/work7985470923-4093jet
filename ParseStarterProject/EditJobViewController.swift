@@ -109,7 +109,6 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
             // if isADouble(), add to the stepper value (+ve or -ve)
             enterRate = isADouble(editRate.text)! + sender.value
             sender.value = 0.00
-            print(enterRate!)
             
             // if not a double or textField is empty, show "1.00" on first tap
         } else {
