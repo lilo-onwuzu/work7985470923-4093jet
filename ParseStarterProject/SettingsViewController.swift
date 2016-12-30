@@ -11,7 +11,6 @@ import UIKit
 class SettingsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
 
     let user = PFUser.current()!
-    var showMenu = false
     
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -22,7 +21,6 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     @IBOutlet weak var deletedAccount: UILabel!
     @IBOutlet weak var deleteAccount: UIButton!
     @IBOutlet weak var menuView: UIView!
-    @IBOutlet weak var middleBar: UILabel!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -51,14 +49,36 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     }
     
     func deleteUser() {
-        user.deleteInBackground { (success, error) in
-            if success {
-                self.deletedAccount.text = "Your account has been deleted. Thanks for using WorkJet"
-                
-            } else {
-                if let error = error {
-                    self.errorAlert(title: "Account Delete Error", message: error.localizedDescription)
-                    
+        // first delete all user's posted jobs
+        let userId = user.objectId!
+        let queryPostedJobs = PFQuery(className: "Job")
+        queryPostedJobs.whereKey("requesterId", equalTo: userId)
+        queryPostedJobs.findObjectsInBackground { (objects, error) in
+            if let objects = objects {
+                for object in objects {
+                    object.deleteInBackground(block: { (success, error) in
+                        if success {
+                            // then delete user as selectedUser for all jobs
+                            let queryReceivedJobs = PFQuery(className: "Job")
+                            queryReceivedJobs.whereKey("selectedUser", equalTo: userId)
+                            queryReceivedJobs.findObjectsInBackground { (objects, error) in
+                                if let objects = objects {
+                                    for object in objects {
+                                        object.deleteInBackground(block: { (success, error) in
+                                            if success {
+                                                self.user.deleteInBackground { (success, error) in
+                                                    if success {
+                                                        self.performSegue(withIdentifier: "toHome", sender: self)
+                                                        
+                                                    }
+                                                }
+                                            }
+                                        })
+                                    }
+                                }
+                            }
+                        }
+                    })
                 }
             }
         }
@@ -114,28 +134,20 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     }
     
     @IBAction func openMenu(_ sender: Any) {
-        if showMenu == false {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-            menuView = vc.view
-            let view = menuView.subviews[1]
-            view.isHidden = true
-            menuView.frame = CGRect(x: 0, y: 69, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
-            menuView.alpha = 0
-            self.view.addSubview(menuView)
-            UIView.transition(with: menuView,
-                              duration: 0.25,
-                              options: .curveEaseInOut,
-                              animations: { self.menuView.alpha = 1 },
-                              completion: nil)
-            menuView.isHidden = false
-            showMenu = true
-            
-        } else if showMenu == true {
-            let view = self.view.subviews.last!
-            view.removeFromSuperview()
-            showMenu = false
-            
-        }
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+        // place home view in menuView
+        menuView = vc.view
+        let view = menuView.subviews[1]
+        // hide logo to prevent logo repeat
+        view.isHidden = true
+        self.view.addSubview(menuView)
+        // menuView is hidden in viewDidLoad, now it is displayed
+        UIView.transition(with: menuView,
+                          duration: 2,
+                          options: .transitionFlipFromRight,
+                          animations: { self.menuView.isHidden = false },
+                          completion: nil)
+
     }
     
     @IBAction func changePassword(_ sender: Any) {
@@ -151,6 +163,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     // tap anywhere to escape keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+        menuView.isHidden = true
         
     }
     

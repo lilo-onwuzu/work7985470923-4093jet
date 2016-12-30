@@ -10,7 +10,6 @@ import UIKit
 
 class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var showMenu = false
     var user = PFUser.current()!
     var postedJobs = [PFObject]()
     var jobsToDelete = [PFObject]()
@@ -131,28 +130,20 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     @IBAction func mainMenu(_ sender: Any) {
-        if showMenu == false {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-            menuView = vc.view
-            let view = menuView.subviews[1]
-            view.isHidden = true
-            menuView.frame = CGRect(x: 0, y: 104, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
-            menuView.alpha = 0
-            self.view.addSubview(menuView)
-            UIView.transition(with: menuView,
-                              duration: 0.25,
-                              options: .curveEaseInOut,
-                              animations: { self.menuView.alpha = 1 },
-                              completion: nil)
-            menuView.isHidden = false
-            showMenu = true
-            
-        } else if showMenu == true {
-            let view = self.view.subviews.last!
-            view.removeFromSuperview()
-            showMenu = false
-            
-        }
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+        // place home view in menuView
+        menuView = vc.view
+        let view = menuView.subviews[1]
+        // hide logo to prevent logo repeat
+        view.isHidden = true
+        self.view.addSubview(menuView)
+        // menuView is hidden in viewDidLoad, now it is displayed
+        UIView.transition(with: menuView,
+                          duration: 2,
+                          options: .transitionFlipFromRight,
+                          animations: { self.menuView.isHidden = false },
+                          completion: nil)
+
     }
     
     @IBAction func editJob(_ sender: Any) {
@@ -226,6 +217,12 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         }
         return cell
+        
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("check this out")
+        menuView.isHidden = true
         
     }
     

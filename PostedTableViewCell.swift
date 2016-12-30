@@ -26,7 +26,7 @@ class PostedTableViewCell: UITableViewCell {
                        usingSpringWithDamping: 0.6,
                        initialSpringVelocity: 0.0,
                        options: .transitionCrossDissolve,
-                       animations: { self.swipeIcon.center.x -= 30 },
+                       animations: { self.swipeIcon.center.x += 30 },
                        completion: nil)
     }
     
@@ -71,7 +71,7 @@ class PostedTableViewCell: UITableViewCell {
                            usingSpringWithDamping: 0.6,
                            initialSpringVelocity: 0.0,
                            options: .transitionCrossDissolve,
-                           animations: { self.swipeIcon.center.x += 30 },
+                           animations: { self.swipeIcon.center.x -= 30 },
                            completion: { (success) in
                             self.recenter()
               

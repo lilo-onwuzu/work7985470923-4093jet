@@ -11,7 +11,6 @@ import UIKit
 class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     let text_field_limit = 600
-    var showMenu = false
     let image = UIImagePickerController()
     let user = PFUser.current()!
     var changingPhoto = true
@@ -147,28 +146,20 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     }
     
     @IBAction func mainMenu(_ sender: Any) {
-        if showMenu == false {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-            menuView = vc.view
-            let view = menuView.subviews[1]
-            view.isHidden = true
-            menuView.frame = CGRect(x: 0, y: 69, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
-            menuView.alpha = 0
-            self.view.addSubview(menuView)
-            UIView.transition(with: menuView,
-                              duration: 0.25,
-                              options: .curveEaseInOut,
-                              animations: { self.menuView.alpha = 1 },
-                              completion: nil)
-            menuView.isHidden = false
-            showMenu = true
-            
-        } else if showMenu == true {
-            let view = self.view.subviews.last!
-            view.removeFromSuperview()
-            showMenu = false
-            
-        }
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+        // place home view in menuView
+        menuView = vc.view
+        let view = menuView.subviews[1]
+        // hide logo to prevent logo repeat
+        view.isHidden = true
+        self.view.addSubview(menuView)
+        // menuView is hidden in viewDidLoad, now it is displayed
+        UIView.transition(with: menuView,
+                          duration: 2,
+                          options: .transitionFlipFromRight,
+                          animations: { self.menuView.isHidden = false },
+                          completion: nil)
+
     }
 
     // run after UIImagePickerController has succesfully gotten a selected image, updates Parse with new image and changes displayed image
@@ -192,6 +183,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     // tap anywhere to escape keyboard
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+        menuView.isHidden = true
         
     }
     

@@ -5,6 +5,7 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
+
 import UIKit
 
 class HomeViewController: UIViewController {
@@ -123,10 +124,7 @@ class HomeViewController: UIViewController {
         profileIcon.alpha = 0
         settingsIcon.alpha = 0
         logOut.alpha = 0
-        if UIApplication.shared.statusBarOrientation.isLandscape {
-            userImage.isHidden = true
-            
-        }
+
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -164,6 +162,26 @@ class HomeViewController: UIViewController {
                           completion: { (success) in
                             self.getSecondImage()
         })
+    }
+    
+    override func viewDidLayoutSubviews() {
+        if UIDevice.current.orientation.isLandscape {
+            // hide user image when in landscape
+            for view in self.view.subviews {
+                if view.tag == 1 {
+                    view.isHidden = true
+                    
+                }
+            }
+        } else {
+            // else show user image in portrait
+            for view in self.view.subviews {
+                if view.tag == 1 {
+                    view.isHidden = false
+                    
+                }
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {

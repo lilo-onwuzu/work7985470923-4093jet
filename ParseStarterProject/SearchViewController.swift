@@ -155,9 +155,9 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		// attach gestureRecognizer/listener to swiping element once view loads
-		let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag))
-		wheelbarrow.addGestureRecognizer(pan)
-		wheelbarrow.isUserInteractionEnabled = true
+		//let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag))
+		//wheelbarrow.addGestureRecognizer(pan)
+		//wheelbarrow.isUserInteractionEnabled = true
 		logo.layer.masksToBounds = true
 		logo.layer.cornerRadius = 3
 		requesterName.layer.masksToBounds = true

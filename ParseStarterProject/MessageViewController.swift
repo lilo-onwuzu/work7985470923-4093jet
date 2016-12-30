@@ -10,7 +10,6 @@ import UIKit
 
 class MesssageViewController: UIViewController , UITableViewDelegate, UITableViewDataSource {
     
-    var showMenu = false
     let user = PFUser.current()!
     var messageJobs = [PFObject]()
     var selectedJob = PFObject(className: "Job")
@@ -60,28 +59,20 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
     }
     
     @IBAction func mainMenu(_ sender: Any) {
-        if showMenu == false {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-            menuView = vc.view
-            let view = menuView.subviews[1]
-            view.isHidden = true
-            menuView.frame = CGRect(x: 0, y: 104, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
-            menuView.alpha = 0
-            self.view.addSubview(menuView)
-            UIView.transition(with: menuView,
-                              duration: 0.25,
-                              options: .curveEaseInOut,
-                              animations: { self.menuView.alpha = 1 },
-                              completion: nil)
-            menuView.isHidden = false
-            showMenu = true
-            
-        } else if showMenu == true {
-            let view = self.view.subviews.last!
-            view.removeFromSuperview()
-            showMenu = false
-            
-        }
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+        // place home view in menuView
+        menuView = vc.view
+        let view = menuView.subviews[1]
+        // hide logo to prevent logo repeat
+        view.isHidden = true
+        self.view.addSubview(menuView)
+        // menuView is hidden in viewDidLoad, now it is displayed
+        UIView.transition(with: menuView,
+                          duration: 2,
+                          options: .transitionFlipFromRight,
+                          animations: { self.menuView.isHidden = false },
+                          completion: nil)
+        
     }
     
     // UITableView Delegate method operates on my UITableView subclass "tableView"
@@ -100,31 +91,37 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
         let job = messageJobs[indexPath.row]
         let jobTitle = job.object(forKey: "title") as! String
         cell.messageTitle.text = jobTitle
-        // get images
-        let reqId = job.object(forKey: "requesterId") as! String
-        // fetch requestor image
-        var requester = PFUser()
-        do {
-            requester = try PFQuery.getUserObject(withId: reqId)
-            
-        } catch _ {
-            
-        }
-        let imageFile = requester.object(forKey: "image") as! PFFile
-        imageFile.getDataInBackground { (data, error) in
-            if let data = data {
-                let imageData = NSData(data: data)
-                cell.reqImage.image = UIImage(data: imageData as Data)
-                
-            }
-        }
         cell.myTableView = tableView
         if cell.ready {
             selectedJob = messageJobs[indexPath.row]
             performSegue(withIdentifier: "toShowMessages", sender: self)
             
         }
+        // get images
+        let reqId = job.object(forKey: "requesterId") as! String
+        // fetch requestor image
+        var requester = PFObject(className: "User")
+        let query: PFQuery = PFUser.query()!
+        query.whereKey("objectId", equalTo: reqId)
+        query.findObjectsInBackground { (users, error) in
+            if let users = users {
+                requester = users[0]
+                let imageFile = requester.object(forKey: "image") as! PFFile
+                imageFile.getDataInBackground { (data, error) in
+                    if let data = data {
+                        let imageData = NSData(data: data)
+                        cell.reqImage.image = UIImage(data: imageData as Data)
+                        
+                    }
+                }
+            }
+        }
         return cell
+        
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        menuView.isHidden = true
         
     }
     

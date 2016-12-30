@@ -15,6 +15,18 @@ class ReceivedTableViewCell: UITableViewCell {
     @IBOutlet weak var receivedCycle: UILabel!
     @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var receivedLabel: UILabel!
+    @IBOutlet weak var matchIcon: UIButton!
+    @IBOutlet weak var matchLabel: UILabel!
+    
+    func recenter () {
+        UIView.animate(withDuration: 1,
+                       delay: 0,
+                       usingSpringWithDamping: 0.6,
+                       initialSpringVelocity: 0.0,
+                       options: .transitionCrossDissolve,
+                       animations: { self.matchIcon.center.y += 20 },
+                       completion: nil)
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -31,11 +43,23 @@ class ReceivedTableViewCell: UITableViewCell {
         // Configure the highlighted color for the selected state
         if selected {
             self.receivedTitle.textColor = UIColor.black
-            
+            matchIcon.isHidden = false
+            matchLabel.isHidden = false
+            UIView.animate(withDuration: 0.25,
+                           delay: 0,
+                           usingSpringWithDamping: 0.6,
+                           initialSpringVelocity: 0.0,
+                           options: .transitionCrossDissolve,
+                           animations: { self.matchIcon.center.y -= 10 },
+                           completion: { (success) in
+                            self.recenter()
+                            
+            })
         } else {
             self.receivedTitle.textColor = UIColor.white
-
+            matchIcon.isHidden = true
+            matchLabel.isHidden = true
+            
         }
     }
-
 }
