@@ -10,7 +10,6 @@ import UIKit
 
 class SelectTableViewCell: UITableViewCell {
 
-    var selectedJob = PFObject(className: "Job")
     var myTableView = UITableView()
     var ready = false
     
@@ -20,7 +19,6 @@ class SelectTableViewCell: UITableViewCell {
     @IBOutlet weak var cellBack: UILabel!
     @IBOutlet weak var swipeIcon: UIButton!
     @IBOutlet weak var selectLabel: UILabel!
-    @IBOutlet weak var viewLabel: UILabel!
     
     func recenter () {
         UIView.animate(withDuration: 0.5,
@@ -28,7 +26,7 @@ class SelectTableViewCell: UITableViewCell {
                        usingSpringWithDamping: 0.6,
                        initialSpringVelocity: 0.0,
                        options: .transitionCrossDissolve,
-                       animations: { self.swipeIcon.center.x -= 30 },
+                       animations: { self.swipeIcon.center.x += 30 },
                        completion: nil)
     }
     
@@ -57,11 +55,9 @@ class SelectTableViewCell: UITableViewCell {
         // Initialization code
         super.awakeFromNib()
         cellBack.layer.masksToBounds = true
-        cellBack.layer.cornerRadius = 7
-        viewProfile.layer.masksToBounds = true
-        viewProfile.layer.cornerRadius = 7
+        cellBack.layer.cornerRadius = 10
         userImage.layer.masksToBounds = true
-        userImage.layer.cornerRadius = 35
+        userImage.layer.cornerRadius = 45
         
     }
 
@@ -76,7 +72,7 @@ class SelectTableViewCell: UITableViewCell {
                            usingSpringWithDamping: 0.6,
                            initialSpringVelocity: 0.0,
                            options: .transitionCrossDissolve,
-                           animations: { self.swipeIcon.center.x += 30 },
+                           animations: { self.swipeIcon.center.x -= 30 },
                            completion: { (success) in
                             self.recenter()
             

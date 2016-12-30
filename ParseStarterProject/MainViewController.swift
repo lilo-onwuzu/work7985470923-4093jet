@@ -56,8 +56,7 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(self.raiseTime), userInfo: nil, repeats: true)
-        
-        UIView.animate(withDuration: 3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.signUpButton.alpha = 1.0
             self.signUpButton.center.y -= 30
             self.loginButton.alpha = 1.0

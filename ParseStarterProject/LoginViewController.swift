@@ -16,8 +16,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var backgroundImage: UIImageView!
     @IBOutlet weak var loginIcon: UIButton!
-    @IBOutlet weak var userIcon: UIButton!
-    @IBOutlet weak var passwordIcon: UIButton!
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
@@ -94,27 +92,21 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         username.alpha = 0
         password.alpha = 0
         loginIcon.alpha = 0
-        userIcon.alpha = 0
-        passwordIcon.alpha = 0
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 2, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.username.alpha = 1.0
             self.username.center.y += 10
             self.password.alpha = 1.0
             self.password.center.y += 10
-            self.userIcon.alpha = 1.0
-            self.userIcon.center.y -= 10
-            self.passwordIcon.alpha = 1.0
-            self.passwordIcon.center.y -= 10
         }, completion: nil)
-        UIView.animate(withDuration: 2, delay: 0.5, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 1, delay: 0.05, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.backgroundImage.alpha = 1.0
             self.backgroundImage.center.y -= 30
         }, completion: nil)
-        UIView.animate(withDuration: 2, delay: 1.5, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+        UIView.animate(withDuration: 1, delay: 0.5, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.loginButton.alpha = 0.9
             self.loginButton.center.y -= 30
             self.loginIcon.alpha = 1

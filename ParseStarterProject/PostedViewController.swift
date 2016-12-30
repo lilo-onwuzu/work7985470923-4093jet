@@ -13,8 +13,8 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var showMenu = false
     var user = PFUser.current()!
     var postedJobs = [PFObject]()
-    var editJob = PFObject(className: "Job")
     var jobsToDelete = [PFObject]()
+    var editJob = PFObject(className: "Job")
     var selectedJob = PFObject(className: "Job")
     var deleting = false
     var refresher: UIRefreshControl!
@@ -123,8 +123,6 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.delegate = self
         tableView.dataSource = self
         menuView.isHidden = true
-        self.emptyLabel.alpha = 0
-        self.emptyLabel.center.x -= 30
         refresher = UIRefreshControl()
         refresher.attributedTitle = NSAttributedString(string: "Refreshing...")
         refresher.addTarget(self, action: #selector(PostedViewController.refresh), for: UIControlEvents.valueChanged)
@@ -159,9 +157,8 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBAction func editJob(_ sender: Any) {
         if let index = tableView.indexPathForSelectedRow?.row {
-            let selectedJob = postedJobs[index]
             // pass selected job to editJob segue
-            editJob = selectedJob
+            editJob = postedJobs[index]
             performSegue(withIdentifier: "toEditJob", sender: self)
 
         } else {
@@ -224,7 +221,9 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.myTableView = tableView
         if cell.ready {
             selectedJob = job
+            print(selectedJob)
             performSegue(withIdentifier: "toSelect", sender: self)
+            
         }
         return cell
         

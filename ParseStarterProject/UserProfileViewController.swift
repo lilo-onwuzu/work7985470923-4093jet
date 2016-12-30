@@ -29,9 +29,12 @@ class UserProfileViewController: UIViewController {
             let firstName = user.object(forKey: "first_name") as! String
             let lastName = user.object(forKey: "last_name") as! String
             userName.text = firstName + " " + lastName
-            let story = user.object(forKey: "story") as! String
-            details.text = story
+            if let story = user.object(forKey: "story") {
+                details.text = String(describing: story)
+                
+            }
             details.sizeToFit()
+
             // get requester image
             let imageFile = user.object(forKey: "image") as! PFFile
             imageFile.getDataInBackground { (data, error) in

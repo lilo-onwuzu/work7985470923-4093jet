@@ -79,6 +79,24 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    override func viewDidLayoutSubviews() {
+        if UIDevice.current.orientation.isLandscape {
+            for view in self.view.subviews {
+                if view.tag == 1 {
+                    view.isHidden = true
+                    
+                }
+            }
+        } else {
+            for view in self.view.subviews {
+                if view.tag == 1 {
+                    view.isHidden = false
+                    
+                }
+            }
+        }
+    }
+    
     @IBAction func confirmCreate(_ sender: AnyObject) {
         addDetails()
         

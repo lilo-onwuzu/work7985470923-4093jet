@@ -12,17 +12,14 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
 
     var editJob = PFObject(className: "Job")
     var cycle = ["Flat", "Hourly", "Weekly", "Monthly", "Annually"]
-    var status = ["Accepted", "In Progress", "Complete"]
     var cycleValue = ""
-    var statusValue = ""
+    var cycleRow = ""
     var cycleSelected = ""
-    var statusSelected = ""
 
     @IBOutlet weak var editTitle: UITextField!
     @IBOutlet weak var editCycle: UIPickerView!
     @IBOutlet weak var editRate: UITextField!
     @IBOutlet weak var editDetails: UITextView!
-    @IBOutlet weak var editStatus: UIPickerView!
     @IBOutlet weak var logo: UILabel!
     
     func errorAlert(title: String, message: String) {
@@ -77,21 +74,14 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
         editTitle.text = (editJob.object(forKey: "title") as! String)
         editRate.text = (editJob.object(forKey: "rate") as! String)
         editDetails.text = (editJob.object(forKey: "details") as! String)
+        self.editCycle.delegate = self
+        self.editCycle.dataSource = self
         // set jobCycle as selected row in cyclePicker
         cycleSelected = editJob.object(forKey: "cycle") as! String
-        // set jobStatus as selected row in statusPicker
-        statusSelected = "Accepted"
         // set picker to job cycle value
         for index in cycle {
             if cycleSelected == index {
                 editCycle.selectRow(cycle.index(of: index)!, inComponent: 0, animated: true)
-                
-            }
-        }
-        // set picker to job status value
-        for index in status {
-            if statusSelected == index {
-                editStatus.selectRow(status.index(of: index)!, inComponent: 0, animated: true)
                 
             }
         }
@@ -126,7 +116,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
         // edit title
         if self.editTitle.text != "" {
             editJob.setValue(self.editTitle.text!, forKey: "title")
-            
+
             // edit cycle
             editJob.setValue(self.cycleValue, forKey: "cycle")
             
@@ -177,32 +167,27 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
     
     // UIPickerViewDelegate method: number of items in picker
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        var count = Int()
-        if (pickerView.tag == 0) {
-            count = cycle.count
-            
-        } else {
-            count = status.count
-            
-        }
-        return count
+        return cycle.count
         
     }
     
-    // UIPickerViewDelegate method: return an item into each row in picker and select picker value
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        var pickerValueAtt = NSAttributedString()
-        if (pickerView.tag == 0) {
-            cycleValue = cycle[row]
-            pickerValueAtt = NSAttributedString(string: cycleValue, attributes: [NSForegroundColorAttributeName: UIColor.black])
-        
+    // UIPickerViewDelegate method: get selected row value
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        cycleValue = cycle[row]
+
+    }
+    
+    // UIPickerViewDelegate method: return an attributed from of each value in cycle array into each row in picker
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var label = view as! UILabel!
+        if label == nil {
+            label = UILabel()
         }
-        if (pickerView.tag == 1) {
-            statusValue = status[row]
-            pickerValueAtt = NSAttributedString(string: statusValue, attributes: [NSForegroundColorAttributeName: UIColor.black])
-        
-        }
-        return pickerValueAtt
+        cycleRow = cycle[row]
+        let title = NSAttributedString(string: cycleRow, attributes: [NSFontAttributeName: UIFont.init(name: "Offside", size: 22.0)! , NSForegroundColorAttributeName: UIColor.black ])
+        label?.attributedText = title
+        label?.textAlignment = .center
+        return label!
         
     }
     

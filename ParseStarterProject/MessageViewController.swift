@@ -21,33 +21,6 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
     @IBOutlet weak var emptyLabel: UILabel!
     @IBOutlet weak var menuView: UIView!
 
-    // drag function is called continuosly from start to end of a pan
-    func dragged (gesture: UIPanGestureRecognizer) {
-        // during drag, if a cell is selected/highlighted, do this, else, pan gesture has no effect nothing
-        if let index = tableView.indexPathForSelectedRow {
-            // get highlighted cell
-            if let cell = tableView.cellForRow(at: index) {
-                // measure translation of gesture in x
-                let translation = gesture.translation(in: cell.contentView)
-                // continue executing dragged() function if pan is to the right, if not, do nothing, function terminates
-                if translation.x > 0 {
-                    cell.center.x = cell.center.x + translation.x
-                    // once pan gesture ends, if selected cell , pass job in highlighted cell to selectVC, perform segue
-                    if gesture.state == UIGestureRecognizerState.ended {
-                        if cell.center.x > (self.view.bounds.width/2) {
-                            selectedJob = messageJobs[index.row]
-                            performSegue(withIdentifier: "toShowMessages", sender: self)
-                            
-                        }
-                        // reset cell center to center of screen
-                        cell.center.x = self.view.center.x
-                        
-                    }
-                }
-            }
-        }
-    }
-    
     func refresh() {
         self.tableView.reloadData()
         self.refresher.endRefreshing()
@@ -147,7 +120,7 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
         }
         cell.myTableView = tableView
         if cell.ready {
-            cell.selectedJob = job
+            selectedJob = messageJobs[indexPath.row]
             performSegue(withIdentifier: "toShowMessages", sender: self)
             
         }

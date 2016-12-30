@@ -12,6 +12,7 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
 
     var selectedJob = PFObject(className: "Job")
     var refresher: UIRefreshControl!
+    var UITableViewAutomaticDimension = CGFloat()
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var logo: UILabel!
@@ -27,11 +28,14 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
         super.viewDidLoad()
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 100
         refresher = UIRefreshControl()
         refresher.attributedTitle = NSAttributedString(string: "Refreshing...")
         refresher.addTarget(self, action: #selector(PostedViewController.refresh), for: UIControlEvents.valueChanged)
         self.tableView.addSubview(refresher)
-        
+        jobTitle.text = selectedJob.object(forKey: "title") as? String
+
     }
     
     @IBAction func back(_ sender: Any) {
@@ -56,7 +60,13 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        if indexPath.section == 0 {
+            return UITableViewAutomaticDimension
+            
+        } else {
+            return 50
+            
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -72,6 +82,7 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
                 let dictionary = messages[indexPath.row]
                 let message = dictionary.object(forKey: "req") as! String
                 cell.message.text = message
+                cell.message.sizeToFit()
                 
             }
             return cell

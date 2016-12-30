@@ -24,8 +24,8 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     // initialize new empty PFUser object
     let user: PFUser = PFUser()
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
-    var loggedIn: Bool = false
-    let facebookButton = LoginButton(readPermissions: [ .publicProfile ])
+    var loggedIn: Bool = Bool()
+    let facebookButton = LoginButton(readPermissions: [ .publicProfile , .email ])
     
     func activity() {
         let rect: CGRect = CGRect(x: 0, y: 0, width: 100, height: 100)
@@ -70,7 +70,12 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
         mainImage.alpha = 0
         facebookButton.alpha = 0
         facebookIcon.alpha = 0
-        
+        PFGeoPoint.geoPointForCurrentLocation { (coordinates, error) in
+            if let coordinates = coordinates {
+                self.user.setValue(coordinates, forKey: "location")
+                
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -106,16 +111,16 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
                     if let firstName = result.object(forKey: "first_name") as? String {
                         if let lastName = result.object(forKey: "last_name") as? String {
                             if let facebookId = result.object(forKey: "id") as? String {
+                                self.facebookButton.isHidden = true
+                                self.facebookIcon.isHidden = true
                                 // add user attributes to PFUser object first
                                 self.user.username = email
                                 self.user.email = email
                                 self.user["first_name"] = firstName
                                 self.user["last_name"] = lastName
                                 self.user["facebookId"] = facebookId
-                                // hide facebook login button
-                                loginButton.isHidden = true
                                 // display welcome message and restore app interactivity
-                                self.name.text = "Welcome, " + firstName + " " + lastName + " !"
+                                self.name.text = "Welcome, " + firstName + " " + lastName + "!"
                                 self.loggedIn = true
                                 // import FB photo if possible
                                 let url = "https://graph.facebook.com/" + facebookId + "/picture?type=large"

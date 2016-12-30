@@ -6,8 +6,6 @@
 //
 
 
-// location
-
 import UIKit
 
 class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
@@ -16,6 +14,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     var showMenu = false
     let image = UIImagePickerController()
     let user = PFUser.current()!
+    var changingPhoto = true
     
     @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var userName: UILabel!
@@ -25,6 +24,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     @IBOutlet weak var userStory: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var menuView: UIView!
+    @IBOutlet weak var cameraButton: UIButton!
+    @IBOutlet weak var photosButton: UIButton!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -61,6 +62,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         super.viewDidLoad()
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
+        cameraButton.isHidden = true
+        photosButton.isHidden = true
         // UIImagePickerController's delegate object is of type UIImagePickerControllerDelegate and UINavigationControllerDelegate
         // a delegate of an object (e.g UITableViewDelegate) is a "protocol" that allows the object (UITableView) to be manipulated by calling functions with the object as an arguments. These functions or methods on the object can now be called anywhere within the delegate (self or settingsVC in this case)
         image.delegate = self
@@ -84,14 +87,57 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
             }
         }
         menuView.isHidden = true
+        let geopoint = user.object(forKey: "location") as! PFGeoPoint
+        let lat = geopoint.latitude
+        let long = geopoint.longitude
+        let location = CLLocation(latitude: lat, longitude: long)
+        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+            if let placemarks = placemarks {
+                let placemark = placemarks[0]
+                if let city = placemark.locality {
+                    if let countryCode = placemark.isoCountryCode {
+                        self.userLocation.text = String(city) + ", " + String(countryCode)
+                        
+                    }
+                }
+            }
+        })
     }
 
     @IBAction func changePhoto(_ sender: Any) {
+        if changingPhoto {
+            cameraButton.isHidden = false
+            photosButton.isHidden = false
+            changingPhoto = false
+            
+        } else {
+            cameraButton.isHidden = true
+            photosButton.isHidden = true
+            changingPhoto = true
+
+        }
+    }
+
+    @IBAction func photos(_ sender: Any) {
         // lets UIImagePickerController object know where to pick image from
         image.sourceType = UIImagePickerControllerSourceType.photoLibrary
         image.allowsEditing = false
         self.present(image, animated: true, completion: nil)
-
+        
+    }
+    
+    @IBAction func camera(_ sender: Any) {
+        image.sourceType = UIImagePickerControllerSourceType.camera
+        image.allowsEditing = false
+        self.present(image, animated: true, completion: nil)
+    }
+    
+    // called on editing did begin
+    @IBAction func beginEdit(_ sender: Any) {
+        if let story = user.object(forKey: "story") {
+            editStory.text = String(describing: story)
+            
+        }
     }
     
     // edit action executes "after editing ends" or return button is tapped
@@ -135,7 +181,11 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
             userImage.image = pickedImage
             
         }
+        // dismiss imagePicker controller
         self.dismiss(animated: true, completion: nil)
+        cameraButton.isHidden = true
+        photosButton.isHidden = true
+        changingPhoto = true
         
     }
 

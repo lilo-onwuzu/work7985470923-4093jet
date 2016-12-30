@@ -52,9 +52,11 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>To find jobs near you</string>
+	<string>...to find jobs near you</string>
+	<key>NSCameraUsageDescription</key>
+	<string>...for user identification</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>self-identification</string>
+	<string>...for user identification</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string></string>

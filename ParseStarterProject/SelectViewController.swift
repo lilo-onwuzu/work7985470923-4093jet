@@ -55,6 +55,7 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(selectedJob)
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
         tableView.delegate = self
@@ -132,7 +133,7 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
         cell.myTableView = tableView
         // once cell is swipped right, cell.ready becomes true and the tableview is reloaded which causes this to load too
         if cell.ready {
-            cell.selectedJob = selectedJob
+            print("ready")
             selectedJob.setValue(users[indexPath.row], forKey: "selectedUser")
             // init messaging when match is made and send message alert to user
             let introValue = "Congratulations! " + requesterName + " picked you for the job. Connect with " + requesterName + " here"
@@ -141,10 +142,8 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
             messages.append(introMessage as NSDictionary)
             selectedJob.setValue(messages, forKey: "messages")
             selectedJob.saveInBackground()
-            self.tableView.reloadData()
             
         }
-
         return cell
         
     }

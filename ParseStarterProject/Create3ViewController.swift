@@ -45,6 +45,24 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    override func viewDidLayoutSubviews() {
+        if UIDevice.current.orientation.isLandscape {
+            for view in self.view.subviews {
+                if view.tag == 1 {
+                    view.isHidden = true
+                    
+                }
+            }
+        } else {
+            for view in self.view.subviews {
+                if view.tag == 1 {
+                    view.isHidden = false
+                    
+                }
+            }
+        }
+    }
+    
     // called on touch up inside. checks to see if rateField has a value that can be converted into a Double
     @IBAction func stepRate(_ sender: UIStepper) {
         var enterRate: Double?

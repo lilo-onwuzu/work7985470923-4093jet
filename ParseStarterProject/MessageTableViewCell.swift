@@ -78,6 +78,9 @@ class MessageTableViewCell: UITableViewCell {
                             self.recenter()
                             
             })
+            // attach pan gesture recognizer to each cell so whenever the selected cell is dragged, the dragged() function runs once
+            let pan = UIPanGestureRecognizer(target: self, action: #selector(self.dragged(gesture:)))
+            addGestureRecognizer(pan)
             
         } else {
             self.messageTitle.textColor = UIColor.white

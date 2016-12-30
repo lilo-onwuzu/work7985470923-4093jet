@@ -11,7 +11,8 @@ import UIKit
 class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     var createJob = PFObject(className: "Job")
-    var cycleValue: String = ""
+    var cycleValue = ""
+    var cycleRow = ""
     // create an array of all the items in the picker
     var cycle = ["Flat", "Hourly", "Weekly", "Monthly", "Annually"]
 
@@ -47,6 +48,24 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
     }
     
+    override func viewDidLayoutSubviews() {
+        if UIDevice.current.orientation.isLandscape {
+            for view in self.view.subviews {
+                if view.tag == 1 {
+                    view.isHidden = true
+                    
+                }
+            }
+        } else {
+            for view in self.view.subviews {
+                if view.tag == 1 {
+                    view.isHidden = false
+                    
+                }
+            }
+        }
+    }
+    
     @IBAction func createButton(_ sender: AnyObject) {
         addCycle()
         
@@ -69,12 +88,24 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     }
     
-    // UIPickerViewDelegate method: return an item into each row in picker and select picker value
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+    // UIPickerViewDelegate method: get selected row value
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         cycleValue = cycle[row]
-        let cycleValueAtt = NSAttributedString(string: cycleValue, attributes: [NSForegroundColorAttributeName:UIColor.white])
-        return cycleValueAtt
-
+        
+    }
+    
+    // UIPickerViewDelegate method: return an attributed from of each value in cycle array into each row in picker
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var label = view as! UILabel!
+        if label == nil {
+            label = UILabel()
+        }
+        cycleRow = cycle[row]
+        let title = NSAttributedString(string: cycleRow, attributes: [NSFontAttributeName: UIFont.init(name: "Offside", size: 22.0)! ,          NSForegroundColorAttributeName: UIColor.white])
+        label?.attributedText = title
+        label?.textAlignment = .center
+        return label!
+        
     }
     
     override func didReceiveMemoryWarning() {

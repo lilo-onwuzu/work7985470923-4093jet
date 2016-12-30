@@ -81,16 +81,6 @@
 		042567431DC31E84008ED3DE /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		042856D81DED1D450091D9BE /* SelectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTableViewCell.swift; sourceTree = "<group>"; };
 		042856DA1DED4C410091D9BE /* ReceivedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReceivedTableViewCell.swift; path = ../ReceivedTableViewCell.swift; sourceTree = "<group>"; };
-		045E82051E0509C400B0C5C9 /* Abel-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Abel-Regular.ttf"; sourceTree = "<group>"; };
-		045E82061E050A5D00B0C5C9 /* Athiti-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Athiti-Bold.ttf"; sourceTree = "<group>"; };
-		045E82071E050A5D00B0C5C9 /* Athiti-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Athiti-ExtraLight.ttf"; sourceTree = "<group>"; };
-		045E82081E050A5D00B0C5C9 /* Athiti-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Athiti-Light.ttf"; sourceTree = "<group>"; };
-		045E82091E050A5D00B0C5C9 /* Athiti-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Athiti-Medium.ttf"; sourceTree = "<group>"; };
-		045E820A1E050A5D00B0C5C9 /* Athiti-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Athiti-Regular.ttf"; sourceTree = "<group>"; };
-		045E820B1E050A5D00B0C5C9 /* Athiti-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Athiti-SemiBold.ttf"; sourceTree = "<group>"; };
-		045E820C1E050A6E00B0C5C9 /* FaunaOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FaunaOne-Regular.ttf"; sourceTree = "<group>"; };
-		045E820D1E050A7E00B0C5C9 /* Flamenco-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Flamenco-Light.ttf"; sourceTree = "<group>"; };
-		045E820E1E050A7E00B0C5C9 /* Flamenco-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Flamenco-Regular.ttf"; sourceTree = "<group>"; };
 		045E82481E0811CD00B0C5C9 /* caseIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = caseIcon.png; sourceTree = "<group>"; };
 		045E824A1E0B599900B0C5C9 /* wineIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wineIcon.png; sourceTree = "<group>"; };
 		045E824C1E0B65C300B0C5C9 /* handIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = handIcon.png; sourceTree = "<group>"; };
@@ -223,16 +213,6 @@
 		81BA81481A49DA1800E65899 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				045E820D1E050A7E00B0C5C9 /* Flamenco-Light.ttf */,
-				045E820E1E050A7E00B0C5C9 /* Flamenco-Regular.ttf */,
-				045E820C1E050A6E00B0C5C9 /* FaunaOne-Regular.ttf */,
-				045E82061E050A5D00B0C5C9 /* Athiti-Bold.ttf */,
-				045E82071E050A5D00B0C5C9 /* Athiti-ExtraLight.ttf */,
-				045E82081E050A5D00B0C5C9 /* Athiti-Light.ttf */,
-				045E82091E050A5D00B0C5C9 /* Athiti-Medium.ttf */,
-				045E820A1E050A5D00B0C5C9 /* Athiti-Regular.ttf */,
-				045E820B1E050A5D00B0C5C9 /* Athiti-SemiBold.ttf */,
-				045E82051E0509C400B0C5C9 /* Abel-Regular.ttf */,
 				049EBB071DD9B54200D76AED /* Dosis-Bold.ttf */,
 				049EBB081DD9B54200D76AED /* Dosis-ExtraBold.ttf */,
 				049EBB091DD9B54200D76AED /* Dosis-ExtraLight.ttf */,
@@ -594,7 +574,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = ParseStarterProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iponwuzu.WorkJet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -621,7 +601,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = ParseStarterProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iponwuzu.WorkJet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
