@@ -168,7 +168,7 @@ class HomeViewController: UIViewController {
         if UIDevice.current.orientation.isLandscape {
             // hide user image when in landscape
             for view in self.view.subviews {
-                if view.tag == 1 {
+                if view.tag == 3 {
                     view.isHidden = true
                     
                 }

@@ -5,19 +5,16 @@
 //  Copyright © 2016 iponwuzu. All rights reserved.
 //
 
-// geopoint issue. sometime gets (0,0). restart computer solves issue
 
 import UIKit
 
 class SearchViewController: UIViewController {
 
-	var showMenu = false
 	var viewedJobId = String()
 	var keepId = String()
 	let user = PFUser.current()!
 	var currentJob = PFObject(className: "Job")
 	
-	@IBOutlet weak var requesterName: UILabel!
 	@IBOutlet weak var jobTitle: UILabel!
 	@IBOutlet weak var jobCycle: UILabel!
 	@IBOutlet weak var jobRate: UILabel!
@@ -30,6 +27,11 @@ class SearchViewController: UIViewController {
 	@IBOutlet weak var menuView: UIView!
 	@IBOutlet weak var menuIcon: UIButton!
 	@IBOutlet weak var reqImage: UIImageView!
+	@IBOutlet weak var titleIcon: UIButton!
+	@IBOutlet weak var cycleIcon: UIButton!
+	@IBOutlet weak var rateIcon: UIButton!
+	@IBOutlet weak var detailsIcon: UIButton!
+	@IBOutlet weak var locationIcon: UIButton!
 	
 	func errorAlert(title: String, message: String) {
 		let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -123,9 +125,9 @@ class SearchViewController: UIViewController {
 						self.keepId = requesterId
 						do {
 							let user = try PFQuery.getUserObject(withId: requesterId)
-							let firstName = user.object(forKey: "first_name") as? String
-							let lastName = user.object(forKey: "last_name") as? String
-							self.requesterName.text = "Requester: " + firstName! + " " + lastName!
+							//let firstName = user.object(forKey: "first_name") as? String
+							//let lastName = user.object(forKey: "last_name") as? String
+							//self.requesterName.text = "Requester: " + firstName! + " " + lastName!
 							let imageFile = user.object(forKey: "image") as! PFFile
 							imageFile.getDataInBackground { (data, error) in
 								if let data = data {
@@ -155,59 +157,142 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		// attach gestureRecognizer/listener to swiping element once view loads
-		//let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag))
-		//wheelbarrow.addGestureRecognizer(pan)
-		//wheelbarrow.isUserInteractionEnabled = true
+		wheelbarrow.isUserInteractionEnabled = true
+		let pan = UIPanGestureRecognizer(target: self, action: #selector(self.drag))
+		wheelbarrow.addGestureRecognizer(pan)
 		logo.layer.masksToBounds = true
 		logo.layer.cornerRadius = 3
-		requesterName.layer.masksToBounds = true
-		requesterName.layer.cornerRadius = 3
-		viewProfile.layer.cornerRadius = 10
+		viewProfile.layer.cornerRadius = 50
 		// disable viewProfile and infoLabel
 		viewProfile.isHidden = true
 		self.infoLabel.isHidden = true
 		// query first job once view loads
 		reqImage.layer.masksToBounds = true
-		reqImage.layer.cornerRadius = 60
+		reqImage.layer.cornerRadius = 50
+		jobTitle.layer.masksToBounds = true
+		jobTitle.layer.cornerRadius = 50
+		jobCycle.layer.masksToBounds = true
+		jobCycle.layer.cornerRadius = 50
+		jobRate.layer.masksToBounds = true
+		jobRate.layer.cornerRadius = 50
+		jobDetails.layer.masksToBounds = true
+		jobDetails.layer.cornerRadius = 20
+		jobLocation.layer.masksToBounds = true
+		jobLocation.layer.cornerRadius = 20
 		getNewJob()
 		menuView.isHidden = true
-		
+		self.reqImage.alpha = 0
+		self.viewProfile.alpha = 0
+		self.jobTitle.alpha = 0
+		self.titleIcon.alpha = 0
+		self.jobCycle.alpha = 0
+		self.cycleIcon.alpha = 0
+		self.jobRate.alpha = 0
+		self.rateIcon.alpha = 0
+		self.jobDetails.alpha = 0
+		self.detailsIcon.alpha = 0
+		self.jobLocation.alpha = 0
+		self.locationIcon.alpha = 0
+
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		UIView.animate(withDuration: 0,
+		               delay: 0,
+		               usingSpringWithDamping: 60,
+		               initialSpringVelocity: 0.0,
+		               options: [],
+		               animations: {
+						self.reqImage.center.x -= 70
+						self.viewProfile.center.x -= 70
+						self.jobTitle.center.x += 70
+						self.titleIcon.center.x += 70
+						self.jobCycle.center.x -= 70
+						self.cycleIcon.center.x -= 70
+						self.jobRate.center.x += 70
+						self.rateIcon.center.x += 70
+						self.jobDetails.center.y += 30
+						self.detailsIcon.center.y += 30
+						self.jobLocation.center.y += 30
+						self.locationIcon.center.y += 30
+		}, completion: nil)
+		UIView.animate(withDuration: 2,
+		               delay: 0,
+		               usingSpringWithDamping: 60,
+		               initialSpringVelocity: 0.0,
+		               options: .transitionCrossDissolve,
+		               animations: {
+						self.reqImage.alpha = 1
+						self.reqImage.center.x += 70
+						self.viewProfile.alpha = 1
+						self.viewProfile.center.x += 70
+						self.jobTitle.alpha = 1
+						self.jobTitle.center.x -= 70
+						self.titleIcon.alpha = 1
+						self.titleIcon.center.x -= 70
+						self.jobCycle.alpha = 1
+						self.jobCycle.center.x += 70
+						self.cycleIcon.alpha = 1
+						self.cycleIcon.center.x += 70
+						self.jobRate.alpha = 1
+						self.jobRate.center.x -= 70
+						self.rateIcon.alpha = 1
+						self.rateIcon.center.x -= 70
+						self.jobDetails.alpha = 1
+						self.jobDetails.center.y -= 30
+						self.detailsIcon.alpha = 1
+						self.detailsIcon.center.y -= 30
+						self.jobLocation.alpha = 1
+						self.jobLocation.center.y -= 30
+						self.locationIcon.alpha = 1
+						self.locationIcon.center.y -= 30
+		}, completion: nil)
+	
+	}
+	
+	override func viewDidLayoutSubviews() {
+		if UIDevice.current.orientation.isLandscape {
+			// reform view when in landscape
+			UIView.animate(withDuration: 0,
+			               delay: 0,
+			               usingSpringWithDamping: 60,
+			               initialSpringVelocity: 0.0,
+			               options: [],
+			               animations: {
+							self.jobTitle.center.y += 75
+							self.titleIcon.center.y += 75
+							self.viewProfile.center.y += 75
+							self.reqImage.center.y += 75
+							self.jobCycle.center.x -= 170
+							self.cycleIcon.center.x -= 170
+							self.jobRate.center.x += 170
+							self.rateIcon.center.x += 170
+							
+			}, completion: nil)
+		}
 	}
 	
 	@IBAction func mainMenu(_ sender: Any) {
-		if showMenu == false {
-			let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-			menuView = vc.view
-			let view = menuView.subviews[1]
-			view.isHidden = true
-			menuView.frame = CGRect(x: 0, y: 69, width: (0.8 * self.view.bounds.width), height: (self.view.bounds.height - 15))
-			menuView.alpha = 0
-			self.view.addSubview(menuView)
-			UIView.transition(with: menuView,
-			                  duration: 0.25,
-			                  options: .curveEaseInOut,
-			                  animations: { self.menuView.alpha = 1 },
-			                  completion: nil)
-			menuView.isHidden = false
-			showMenu = true
-			
-		} else if showMenu == true {
-			let view = self.view.subviews.last!
-			view.removeFromSuperview()
-			showMenu = false
-
-		}
+		let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+		// place home view in menuView
+		menuView = vc.view
+		let view = menuView.subviews[1]
+		// hide logo to prevent logo repeat
+		view.isHidden = true
+		self.view.addSubview(menuView)
+		// menuView is hidden in viewDidLoad, now it is displayed
+		UIView.transition(with: menuView,
+		                  duration: 2,
+		                  options: .transitionFlipFromRight,
+		                  animations: { self.menuView.isHidden = false },
+		                  completion: nil)
+		
 	}
 	
 	@IBAction func toRequester(_ sender: Any) {
 		performSegue(withIdentifier: "toReqProfile", sender: self)
-	
-	}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "toReqProfile" {
@@ -215,6 +300,16 @@ class SearchViewController: UIViewController {
 			vc.reqId = self.keepId
 				
 		}
+	}
+	
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		menuView.isHidden = true
+		
+	}
+	
+	override func didReceiveMemoryWarning() {
+		super.didReceiveMemoryWarning()
+		// Dispose of any resources that can be recreated.
 	}
 	
 }
