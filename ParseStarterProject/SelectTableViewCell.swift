@@ -20,7 +20,7 @@ class SelectTableViewCell: UITableViewCell {
     @IBOutlet weak var swipeIcon: UIButton!
     @IBOutlet weak var selectLabel: UILabel!
     
-    func recenter () {
+    func recenterIcon () {
         UIView.animate(withDuration: 0.5,
                        delay: 0,
                        usingSpringWithDamping: 0.6,
@@ -58,6 +58,7 @@ class SelectTableViewCell: UITableViewCell {
         cellBack.layer.cornerRadius = 10
         userImage.layer.masksToBounds = true
         userImage.layer.cornerRadius = 45
+        viewProfile.layer.cornerRadius = 45
         
     }
 
@@ -74,7 +75,7 @@ class SelectTableViewCell: UITableViewCell {
                            options: .transitionCrossDissolve,
                            animations: { self.swipeIcon.center.x -= 30 },
                            completion: { (success) in
-                            self.recenter()
+                            self.recenterIcon()
             
             })
             // attach pan gesture recognizer to each cell so whenever the selected cell is dragged, the dragged() function runs once

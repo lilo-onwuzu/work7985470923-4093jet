@@ -12,6 +12,7 @@ class PostedTableViewCell: UITableViewCell {
     
     var myTableView = UITableView()
     var ready = false
+    var selectedRow = Int()
     
     @IBOutlet weak var postedTitle: UILabel!
     @IBOutlet weak var postedCycle: UILabel!
@@ -40,9 +41,13 @@ class PostedTableViewCell: UITableViewCell {
             if gesture.state == UIGestureRecognizerState.ended {
                 if self.center.x > (self.bounds.width/2) {
                     ready = true
+                    if let row = myTableView.indexPathForSelectedRow?.row {
+                        self.selectedRow = row
+                        
+                    }
                     // reload tableView to get "SelectVC" segue instruction
                     myTableView.reloadData()
-                
+                    
                 }
                 // reset cell center to center of screen
                 self.center.x = self.bounds.width/2

@@ -156,7 +156,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     }
     
     @IBAction func deleteAccount(_ sender: Any) {
-        confirmAlert(title: "Confirm Delete Account", message: "Are you sure you want to delete your account?", selector: #selector(deleteUser))
+        confirmAlert(title: "Confirm Delete Account", message: "Are you sure you want to delete your account? Deleting your account will delete all jobs you have posted and been accepted for. This action cannot be undone", selector: #selector(deleteUser))
   
     }
 

@@ -33,20 +33,38 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
         tableView.delegate = self
         tableView.dataSource = self
         // query job class for list of jobs with userid as selectedUser
-        let query = PFQuery(className: "Job")
-        query.whereKey("selectedUser", equalTo: user.objectId!)
-        query.findObjectsInBackground { (jobs, error) in
+        let querySelected = PFQuery(className: "Job")
+        querySelected.whereKey("selectedUser", equalTo: user.objectId!)
+        querySelected.findObjectsInBackground { (jobs, error) in
             if let jobs = jobs {
-                if jobs.count > 0 {
-                    for job in jobs {
-                        self.messageJobs.append(job)
-                        
-                    }
-                    // reload data after async query
+                for job in jobs {
+                    self.messageJobs.append(job)
                     self.tableView.reloadData()
-                } else {
-                    self.emptyLabel.isHidden = false
-                    
+                    // query job class for list of posted jobs
+                    let queryAccepted = PFQuery(className: "Job")
+                    queryAccepted.whereKey("requesterId", equalTo: self.user.objectId!)
+                    queryAccepted.findObjectsInBackground { (jobs, error) in
+                        if let jobs = jobs {
+                            if jobs.count > 0 {
+                                for job in jobs {
+                                    if !self.messageJobs.contains(job) {
+                                        self.messageJobs.append(job)
+
+                                        if self.messageJobs.count > 0 {
+                                            // reload data after async query to fill tableView
+                                            self.tableView.reloadData()
+                                        } else {
+                                            self.emptyLabel.isHidden = false
+                                        
+                                        }
+                                    }
+                                }
+                            } else {
+                                self.emptyLabel.isHidden = false
+                                    
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -55,6 +73,11 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
         refresher.attributedTitle = NSAttributedString(string: "Refreshing...")
         refresher.addTarget(self, action: #selector(PostedViewController.refresh), for: UIControlEvents.valueChanged)
         self.tableView.addSubview(refresher)
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        menuView.isHidden = true
         
     }
     

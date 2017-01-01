@@ -10,6 +10,10 @@ import UIKit
 
 class ReceivedTableViewCell: UITableViewCell {
 
+    var ready = false
+    var myTableView = UITableView()
+    var selectedRow = Int()
+    
     @IBOutlet weak var receivedTitle: UILabel!
     @IBOutlet weak var receivedRate: UILabel!
     @IBOutlet weak var receivedCycle: UILabel!
@@ -17,8 +21,9 @@ class ReceivedTableViewCell: UITableViewCell {
     @IBOutlet weak var receivedLabel: UILabel!
     @IBOutlet weak var matchIcon: UIButton!
     @IBOutlet weak var matchLabel: UILabel!
+    @IBOutlet weak var imageFrame: UIButton!
     
-    func recenter () {
+    func recenterIcon () {
         UIView.animate(withDuration: 1,
                        delay: 0,
                        usingSpringWithDamping: 0.6,
@@ -35,6 +40,8 @@ class ReceivedTableViewCell: UITableViewCell {
         receivedLabel.layer.cornerRadius = 7
         userImage.layer.masksToBounds = true
         userImage.layer.cornerRadius = 45
+        imageFrame.layer.masksToBounds = true
+        imageFrame.layer.cornerRadius = 45
         
     }
 
@@ -50,9 +57,9 @@ class ReceivedTableViewCell: UITableViewCell {
                            usingSpringWithDamping: 0.6,
                            initialSpringVelocity: 0.0,
                            options: .transitionCrossDissolve,
-                           animations: { self.matchIcon.center.y -= 10 },
+                           animations: { self.matchIcon.center.y -= 20 },
                            completion: { (success) in
-                            self.recenter()
+                            self.recenterIcon()
                             
             })
         } else {
@@ -62,4 +69,15 @@ class ReceivedTableViewCell: UITableViewCell {
             
         }
     }
+    
+    @IBAction func viewProfile(_ sender: Any) {
+        self.ready = true
+        if let row = myTableView.indexPathForSelectedRow?.row {
+            self.selectedRow = row
+            
+        }
+        myTableView.reloadData()
+    
+    }
+    
 }

@@ -58,11 +58,29 @@ class SearchViewController: UIViewController {
 		if gesture.state == UIGestureRecognizerState.ended {
 			var acceptedOrRejected = ""
 			if xFromCenter > 100 {
-				acceptedOrRejected = "accepted"
-				// add user id to array of users who accepted/swiped right for this job
-				currentJob.addUniqueObject(user.objectId!, forKey: "userAccepted")
-				currentJob.saveInBackground()
+				let userId = user.objectId!
+				let reqId = currentJob.object(forKey: "requesterId") as! String
+				// enable so user cannot accept their own job
+				if userId != reqId {
+					acceptedOrRejected = "accepted"
+					// add user id to array of users who accepted/swiped right for this job
+					currentJob.addUniqueObject(user.objectId!, forKey: "userAccepted")
+					currentJob.saveInBackground()
+					//animate to show success
+					UIView.animate(withDuration: 3,
+					               delay: 0,
+					               usingSpringWithDamping: 0.6,
+					               initialSpringVelocity: 0.0,
+					               options: [],
+					               animations: {
+									self.wheelbarrow.transform = CGAffineTransform(rotationAngle: .pi)
+								
+					}, completion: nil)
 				
+				} else {
+					errorAlert(title: "Swipe Left", message: "WorkJet does not allow its users to accept their own jobs")
+					
+				}
 			} else if xFromCenter < -100 {
 				acceptedOrRejected = "rejected"
 				
@@ -120,29 +138,46 @@ class SearchViewController: UIViewController {
 						let jobDetails = job.object(forKey: "details") as! String
 						self.jobDetails.text = jobDetails
 						
-						// get job requester name and photo
-						let requesterId = job.object(forKey: "requesterId") as! String
-						self.keepId = requesterId
-						do {
-							let user = try PFQuery.getUserObject(withId: requesterId)
-							//let firstName = user.object(forKey: "first_name") as? String
-							//let lastName = user.object(forKey: "last_name") as? String
-							//self.requesterName.text = "Requester: " + firstName! + " " + lastName!
-							let imageFile = user.object(forKey: "image") as! PFFile
-							imageFile.getDataInBackground { (data, error) in
-								if let data = data {
-									let imageData = NSData(data: data)
-									self.reqImage.image = UIImage(data: imageData as Data)
-									
+						// get requester's photo
+						let reqId = job.object(forKey: "requesterId") as! String
+						var requester = PFObject(className: "User")
+						let query: PFQuery = PFUser.query()!
+						query.whereKey("objectId", equalTo: reqId)
+						query.findObjectsInBackground { (users, error) in
+							if let users = users {
+								requester = users[0]
+								let imageFile = requester.object(forKey: "image") as! PFFile
+								imageFile.getDataInBackground { (data, error) in
+									if let data = data {
+										let imageData = NSData(data: data)
+										self.reqImage.image = UIImage(data: imageData as Data)
+										
+									}
+								}
+								// enable viewProfile and infoLabel
+								self.viewProfile.isHidden = false
+								self.infoLabel.isHidden = false
+								
+							}
+						}
+						
+						// get job location
+						let geopoint = job.object(forKey: "location") as! PFGeoPoint
+						let lat = geopoint.latitude
+						let long = geopoint.longitude
+						let location = CLLocation(latitude: lat, longitude: long)
+						CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+							if let placemarks = placemarks {
+								let placemark = placemarks[0]
+								if let city = placemark.locality {
+									if let countryCode = placemark.isoCountryCode {
+										self.jobLocation.text = String(city) + ", " + String(countryCode)
+										
+									}
 								}
 							}
-							// enable viewProfile and infoLabel
-							self.viewProfile.isHidden = false
-							self.infoLabel.isHidden = false
-
-						} catch _ {
-							
-						}
+						})
+						
 					}
 				} else {
 					self.errorAlert(title: "There are no more jobs around your area", message: "Please check again later")
@@ -151,6 +186,57 @@ class SearchViewController: UIViewController {
 			}
 			self.jobDetails.sizeToFit()
 			
+			// animate on getNewJob()
+			UIView.animate(withDuration: 0,
+			               delay: 0,
+			               usingSpringWithDamping: 60,
+			               initialSpringVelocity: 0.0,
+			               options: [],
+			               animations: {
+							self.reqImage.center.x -= 70
+							self.viewProfile.center.x -= 70
+							self.jobTitle.center.x += 70
+							self.titleIcon.center.x += 70
+							self.jobCycle.center.x -= 70
+							self.cycleIcon.center.x -= 70
+							self.jobRate.center.x += 70
+							self.rateIcon.center.x += 70
+							self.jobDetails.center.y += 30
+							self.detailsIcon.center.y += 30
+							self.jobLocation.center.y += 30
+							self.locationIcon.center.y += 30
+			}, completion: nil)
+			UIView.animate(withDuration: 2,
+			               delay: 0,
+			               usingSpringWithDamping: 60,
+			               initialSpringVelocity: 0.0,
+			               options: .transitionCrossDissolve,
+			               animations: {
+							self.reqImage.alpha = 1
+							self.reqImage.center.x += 70
+							self.viewProfile.alpha = 1
+							self.viewProfile.center.x += 70
+							self.jobTitle.alpha = 1
+							self.jobTitle.center.x -= 70
+							self.titleIcon.alpha = 1
+							self.titleIcon.center.x -= 70
+							self.jobCycle.alpha = 1
+							self.jobCycle.center.x += 70
+							self.cycleIcon.alpha = 1
+							self.cycleIcon.center.x += 70
+							self.jobRate.alpha = 1
+							self.jobRate.center.x -= 70
+							self.rateIcon.alpha = 1
+							self.rateIcon.center.x -= 70
+							self.jobDetails.alpha = 1
+							self.jobDetails.center.y -= 30
+							self.detailsIcon.alpha = 1
+							self.detailsIcon.center.y -= 30
+							self.jobLocation.alpha = 1
+							self.jobLocation.center.y -= 30
+							self.locationIcon.alpha = 1
+							self.locationIcon.center.y -= 30
+			}, completion: nil)
 		}
 	}
     
@@ -193,61 +279,7 @@ class SearchViewController: UIViewController {
 		self.detailsIcon.alpha = 0
 		self.jobLocation.alpha = 0
 		self.locationIcon.alpha = 0
-
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		UIView.animate(withDuration: 0,
-		               delay: 0,
-		               usingSpringWithDamping: 60,
-		               initialSpringVelocity: 0.0,
-		               options: [],
-		               animations: {
-						self.reqImage.center.x -= 70
-						self.viewProfile.center.x -= 70
-						self.jobTitle.center.x += 70
-						self.titleIcon.center.x += 70
-						self.jobCycle.center.x -= 70
-						self.cycleIcon.center.x -= 70
-						self.jobRate.center.x += 70
-						self.rateIcon.center.x += 70
-						self.jobDetails.center.y += 30
-						self.detailsIcon.center.y += 30
-						self.jobLocation.center.y += 30
-						self.locationIcon.center.y += 30
-		}, completion: nil)
-		UIView.animate(withDuration: 2,
-		               delay: 0,
-		               usingSpringWithDamping: 60,
-		               initialSpringVelocity: 0.0,
-		               options: .transitionCrossDissolve,
-		               animations: {
-						self.reqImage.alpha = 1
-						self.reqImage.center.x += 70
-						self.viewProfile.alpha = 1
-						self.viewProfile.center.x += 70
-						self.jobTitle.alpha = 1
-						self.jobTitle.center.x -= 70
-						self.titleIcon.alpha = 1
-						self.titleIcon.center.x -= 70
-						self.jobCycle.alpha = 1
-						self.jobCycle.center.x += 70
-						self.cycleIcon.alpha = 1
-						self.cycleIcon.center.x += 70
-						self.jobRate.alpha = 1
-						self.jobRate.center.x -= 70
-						self.rateIcon.alpha = 1
-						self.rateIcon.center.x -= 70
-						self.jobDetails.alpha = 1
-						self.jobDetails.center.y -= 30
-						self.detailsIcon.alpha = 1
-						self.detailsIcon.center.y -= 30
-						self.jobLocation.alpha = 1
-						self.jobLocation.center.y -= 30
-						self.locationIcon.alpha = 1
-						self.locationIcon.center.y -= 30
-		}, completion: nil)
-	
+		
 	}
 	
 	override func viewDidLayoutSubviews() {

@@ -55,7 +55,6 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(selectedJob)
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
         tableView.delegate = self
@@ -107,33 +106,9 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
     // UITableView Delegate method operates on my UITableView subclass "tableView"
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath) as! SelectTableViewCell
-        // fetch user name and image and display
-        do {
-            let user = try PFQuery.getUserObject(withId: users[indexPath.row])
-            let firstName = user.object(forKey: "first_name") as! String
-            requesterName = firstName
-            let lastName = user.object(forKey: "last_name") as! String
-            cell.userName.text = firstName + " " + lastName
-            cell.userName.sizeToFit()
-            let imageFile = user.object(forKey: "image") as! PFFile
-            imageFile.getDataInBackground { (data, error) in
-                if let data = data {
-                    let imageData = NSData(data: data)
-                    cell.userImage.image = UIImage(data: imageData as Data)
-                    
-                } else {
-                    // do nothing. placeholder image remains
-                }
-            }
-            
-        } catch _ {
-            
-        }
-        showSelectedRow(index: indexPath.row, swipeButton: cell.swipeIcon, selectLabel: cell.selectLabel)
-        cell.myTableView = tableView
         // once cell is swipped right, cell.ready becomes true and the tableview is reloaded which causes this to load too
         if cell.ready {
-            print("ready")
+            cell.ready = false
             selectedJob.setValue(users[indexPath.row], forKey: "selectedUser")
             // init messaging when match is made and send message alert to user
             let introValue = "Congratulations! " + requesterName + " picked you for the job. Connect with " + requesterName + " here"
@@ -142,8 +117,31 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
             messages.append(introMessage as NSDictionary)
             selectedJob.setValue(messages, forKey: "messages")
             selectedJob.saveInBackground()
+            tableView.reloadData()
             
         }
+        // fetch user name and image and display
+        var requester = PFObject(className: "User")
+        let query: PFQuery = PFUser.query()!
+        query.whereKey("objectId", equalTo: users[indexPath.row])
+        query.findObjectsInBackground { (users, error) in
+            if let users = users {
+                requester = users[0]
+                let firstName = requester.object(forKey: "first_name") as! String
+                let lastName = requester.object(forKey: "last_name") as! String
+                cell.userName.text = firstName + " " + lastName
+                let imageFile = requester.object(forKey: "image") as! PFFile
+                imageFile.getDataInBackground { (data, error) in
+                    if let data = data {
+                        let imageData = NSData(data: data)
+                        cell.userImage.image = UIImage(data: imageData as Data)
+                        
+                    }
+                }
+            }
+        }
+        showSelectedRow(index: indexPath.row, swipeButton: cell.swipeIcon, selectLabel: cell.selectLabel)
+        cell.myTableView = tableView
         return cell
         
     }

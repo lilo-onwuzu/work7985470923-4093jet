@@ -126,6 +126,11 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         refresher.attributedTitle = NSAttributedString(string: "Refreshing...")
         refresher.addTarget(self, action: #selector(PostedViewController.refresh), for: UIControlEvents.valueChanged)
         self.tableView.addSubview(refresher)
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        menuView.isHidden = true
 
     }
     
@@ -202,6 +207,12 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postedCell", for: indexPath) as! PostedTableViewCell
+        if cell.ready {
+            cell.ready = false
+            selectedJob = postedJobs[cell.selectedRow]
+            performSegue(withIdentifier: "toSelect", sender: self)
+            
+        }
         let job = postedJobs[indexPath.row]
         let jobTitle = job.object(forKey: "title") as! String
         let jobCycle = job.object(forKey: "cycle") as! String
@@ -210,18 +221,11 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.postedCycle?.text = "Cycle : " + jobCycle
         cell.postedRate?.text = "Rate : " + jobRate
         cell.myTableView = tableView
-        if cell.ready {
-            selectedJob = job
-            print(selectedJob)
-            performSegue(withIdentifier: "toSelect", sender: self)
-            
-        }
         return cell
         
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("check this out")
         menuView.isHidden = true
         
     }
@@ -240,7 +244,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if segue.identifier == "toSelect" {
             let vc = segue.destination as! SelectViewController
             vc.selectedJob = self.selectedJob
-            
+
         }
     }
     

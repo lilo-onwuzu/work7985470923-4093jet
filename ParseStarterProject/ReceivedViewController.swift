@@ -13,6 +13,7 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
     var user = PFUser.current()!
     var receivedJobs = [PFObject]()
     var refresher: UIRefreshControl!
+    var jobRequesterId = ""
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var logo: UILabel!
@@ -57,6 +58,11 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
 
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        menuView.isHidden = true
+        
+    }
+    
     @IBAction func mainMenu(_ sender: Any) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
         // place home view in menuView
@@ -87,6 +93,14 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "receivedCell", for: indexPath) as! ReceivedTableViewCell
+        if cell.ready {
+            cell.ready = false
+            let selectedJob = receivedJobs[cell.selectedRow]
+            jobRequesterId = selectedJob.object(forKey: "requesterId") as! String
+            print(jobRequesterId)
+            performSegue(withIdentifier: "toProfile", sender: self)
+            
+        }
         let job = receivedJobs[indexPath.row]
         // get images
         let reqId = job.object(forKey: "requesterId") as! String
@@ -113,6 +127,7 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.receivedTitle.text = jobTitle
         cell.receivedCycle.text = "Cycle : " + jobCycle
         cell.receivedRate.text = "Rate : " + jobRate
+        cell.myTableView = tableView
         return cell
         
     }
@@ -120,6 +135,14 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         menuView.isHidden = true
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toProfile" {
+            let vc = segue.destination as! UserProfileViewController
+            vc.reqId = self.jobRequesterId
+            
+        }
     }
     
     override func didReceiveMemoryWarning() {

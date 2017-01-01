@@ -21,7 +21,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var editStory: UITextField!
     @IBOutlet weak var userStory: UILabel!
-    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var photosButton: UIButton!
@@ -53,7 +52,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
             }
         })
         userStory.sizeToFit()
-        scrollView.sizeToFit()
         
     }
     
@@ -73,9 +71,9 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         // if story already exists for user, convert it to string (if possible- no "!") and display it
         if let story = user.object(forKey: "story") {
             userStory.text = String(describing: story)
-        
+            userStory.sizeToFit()
+            
         }
-        userStory.sizeToFit()
         // display user's saved image. user image data always exists in Parse
         let imageFile = user.object(forKey: "image") as! PFFile
         imageFile.getDataInBackground { (data, error) in

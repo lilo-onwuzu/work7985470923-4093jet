@@ -35,6 +35,8 @@ class UserProfileViewController: UIViewController {
                 self.userName.text = firstName + " " + lastName
                 if let story = user.object(forKey: "story") {
                     self.details.text = String(describing: story)
+                    self.details.sizeToFit()
+                    self.scrollView.sizeToFit()
                     
                 }
                 self.details.sizeToFit()

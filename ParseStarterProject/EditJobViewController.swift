@@ -116,7 +116,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
         // edit title
         if self.editTitle.text != "" {
             editJob.setValue(self.editTitle.text!, forKey: "title")
-
+            print(self.cycleValue)
             // edit cycle
             editJob.setValue(self.cycleValue, forKey: "cycle")
             
@@ -174,6 +174,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
     // UIPickerViewDelegate method: get selected row value
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         cycleValue = cycle[row]
+        print(cycleValue)
 
     }
     
