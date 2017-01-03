@@ -128,6 +128,11 @@ class HomeViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        if UIDevice.current.orientation.isLandscape {
+            // hide userImage when viewDidAppear in landscape mode so it does not overlap view
+            userImage.isHidden = true
+
+        }
         UIView.animate(withDuration: 0.25,
                        delay: 0.025,
                        usingSpringWithDamping: 0.6,

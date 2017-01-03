@@ -10,6 +10,7 @@ import UIKit
 
 class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
+    var showMenu = true
     let text_field_limit = 600
     let image = UIImagePickerController()
     let user = PFUser.current()!
@@ -24,6 +25,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var photosButton: UIButton!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -100,18 +102,50 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
             }
         })
     }
+    
+    override func viewDidLayoutSubviews() {
+        if UIDevice.current.orientation.isLandscape {
+            for view in self.view.subviews {
+                // viewDidLayoutSubviews() runs each time layout changes
+                // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
+                if view.tag == 2 {
+                    let xOfView = self.view.bounds.width
+                    let yOfView = self.view.bounds.height
+                    let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
+                    menuView.frame = rect
+                    
+                }
+            }
+        } else {
+            for view in self.view.subviews {
+                if view.tag == 2 {
+                    let xOfView = self.view.bounds.width
+                    let yOfView = self.view.bounds.height
+                    let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
+                    menuView.frame = rect
+                    
+                }
+            }
+        }
+    }
+
 
     @IBAction func changePhoto(_ sender: Any) {
         if changingPhoto {
-            cameraButton.isHidden = false
-            photosButton.isHidden = false
-            changingPhoto = false
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+                self.scrollView.center.y += 50
+                self.cameraButton.isHidden = false
+                self.photosButton.isHidden = false
+                self.changingPhoto = false
+            }, completion: nil)
             
         } else {
-            cameraButton.isHidden = true
-            photosButton.isHidden = true
-            changingPhoto = true
-
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+                self.scrollView.center.y -= 50
+                self.cameraButton.isHidden = true
+                self.photosButton.isHidden = true
+                self.changingPhoto = true
+            }, completion: nil)
         }
     }
 
@@ -144,20 +178,28 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     }
     
     @IBAction func mainMenu(_ sender: Any) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-        // place home view in menuView
-        menuView = vc.view
-        let view = menuView.subviews[1]
-        // hide logo to prevent logo repeat
-        view.isHidden = true
-        self.view.addSubview(menuView)
-        // menuView is hidden in viewDidLoad, now it is displayed
-        UIView.transition(with: menuView,
-                          duration: 2,
-                          options: .transitionFlipFromRight,
-                          animations: { self.menuView.isHidden = false },
-                          completion: nil)
+        if showMenu {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+            // place home view in menuView
+            menuView = vc.view
+            let view = menuView.subviews[1]
+            // hide logo to prevent logo repeat
+            view.isHidden = true
+            self.view.addSubview(menuView)
+            // size menuView
+            let xOfView = self.view.bounds.width
+            let yOfView = self.view.bounds.height
+            let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
+            menuView.frame = rect
+            // menuView is hidden in viewDidLoad, now it is displayed
+            self.menuView.isHidden = false
+            self.showMenu = false
 
+        } else {
+            menuView.isHidden = true
+            showMenu = true
+            
+        }
     }
 
     // run after UIImagePickerController has succesfully gotten a selected image, updates Parse with new image and changes displayed image
@@ -182,6 +224,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
         menuView.isHidden = true
+        showMenu = true
         
     }
     

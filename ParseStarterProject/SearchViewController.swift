@@ -10,6 +10,7 @@ import UIKit
 
 class SearchViewController: UIViewController {
 
+	var showMenu = true
 	var viewedJobId = String()
 	var keepId = String()
 	let user = PFUser.current()!
@@ -301,24 +302,58 @@ class SearchViewController: UIViewController {
 							self.rateIcon.center.x += 170
 							
 			}, completion: nil)
+			// viewDidLayoutSubviews() runs each time layout changes
+			// resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
+			for view in self.view.subviews {
+				if view.tag == 2 {
+					let xOfView = self.view.bounds.width
+					let yOfView = self.view.bounds.height
+					let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
+					menuView.frame = rect
+					
+				}
+			}
+		} else {
+			// else show createJob Icon in portrait
+			for view in self.view.subviews {
+				if view.tag == 1 {
+					view.isHidden = false
+					
+				}
+				if view.tag == 2 {
+					let xOfView = self.view.bounds.width
+					let yOfView = self.view.bounds.height
+					let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
+					menuView.frame = rect
+					
+				}
+			}
 		}
 	}
 	
 	@IBAction func mainMenu(_ sender: Any) {
-		let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-		// place home view in menuView
-		menuView = vc.view
-		let view = menuView.subviews[1]
-		// hide logo to prevent logo repeat
-		view.isHidden = true
-		self.view.addSubview(menuView)
-		// menuView is hidden in viewDidLoad, now it is displayed
-		UIView.transition(with: menuView,
-		                  duration: 2,
-		                  options: .transitionFlipFromRight,
-		                  animations: { self.menuView.isHidden = false },
-		                  completion: nil)
-		
+		if showMenu {
+			let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+			// place home view in menuView
+			menuView = vc.view
+			let view = menuView.subviews[1]
+			// hide logo to prevent logo repeat
+			view.isHidden = true
+			self.view.addSubview(menuView)
+			// size menuView
+			let xOfView = self.view.bounds.width
+			let yOfView = self.view.bounds.height
+			let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
+			menuView.frame = rect
+			// menuView is hidden in viewDidLoad, now it is displayed
+			self.menuView.isHidden = false
+			self.showMenu = false
+
+		} else {
+			menuView.isHidden = true
+			showMenu = true
+			
+		}
 	}
 	
 	@IBAction func toRequester(_ sender: Any) {
@@ -336,7 +371,8 @@ class SearchViewController: UIViewController {
 	
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		menuView.isHidden = true
-		
+		showMenu = true
+
 	}
 	
 	override func didReceiveMemoryWarning() {
