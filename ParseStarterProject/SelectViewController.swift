@@ -42,7 +42,7 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
         } else {
             let buttonImage = UIImage(named: "handIcon.png")
             swipeButton.setImage(buttonImage, for: .normal)
-            selectLabel.text = "SELECT"
+            selectLabel.text = "SWIPE TO SELECT"
             
         }
     }

@@ -103,6 +103,13 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         })
     }
     
+    // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden
+    override func viewDidAppear(_ animated: Bool) {
+        menuView.isHidden = true
+        showMenu = true
+        
+    }
+    
     override func viewDidLayoutSubviews() {
         if UIDevice.current.orientation.isLandscape {
             for view in self.view.subviews {

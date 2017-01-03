@@ -85,6 +85,13 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
     
+    // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden
+    override func viewDidAppear(_ animated: Bool) {
+        menuView.isHidden = true
+        showMenu = true
+        
+    }
+    
     @IBAction func mainMenu(_ sender: Any) {
         if showMenu {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
@@ -127,7 +134,6 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.ready = false
             let selectedJob = receivedJobs[cell.selectedRow]
             jobRequesterId = selectedJob.object(forKey: "requesterId") as! String
-            print(jobRequesterId)
             performSegue(withIdentifier: "toProfile", sender: self)
             
         }
@@ -155,8 +161,8 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
         let jobCycle = job.object(forKey: "cycle") as! String
         let jobRate = job.object(forKey: "rate") as! String
         cell.receivedTitle.text = jobTitle
-        cell.receivedCycle.text = "Cycle : " + jobCycle
-        cell.receivedRate.text = "Rate : " + jobRate
+        cell.receivedCycle.text = jobCycle
+        cell.receivedRate.text = jobRate
         cell.myTableView = tableView
         return cell
         

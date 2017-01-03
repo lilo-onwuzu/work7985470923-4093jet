@@ -8,17 +8,17 @@
 
 import UIKit
 
-class MesssageViewController: UIViewController , UITableViewDelegate, UITableViewDataSource {
+class MesssageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var showMenu = true
     let user = PFUser.current()!
-    var messageJobs = [PFObject]()
+    var postedJobs = [PFObject]()
+    var matchedJobs = [PFObject]()
     var selectedJob = PFObject(className: "Job")
     var refresher: UIRefreshControl!
     
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var emptyLabel: UILabel!
     @IBOutlet weak var menuView: UIView!
 
     func refresh() {
@@ -36,44 +36,45 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
         // query job class for list of jobs with userid as selectedUser
         let querySelected = PFQuery(className: "Job")
         querySelected.whereKey("selectedUser", equalTo: user.objectId!)
-        querySelected.findObjectsInBackground { (jobs, error) in
-            if let jobs = jobs {
-                for job in jobs {
-                    self.messageJobs.append(job)
+        querySelected.findObjectsInBackground { (selectedForJobs, error) in
+            if let selectedForJobs = selectedForJobs {
+                for selectedForjob in selectedForJobs {
+                    self.matchedJobs.append(selectedForjob)
                     self.tableView.reloadData()
-                    // query job class for list of posted jobs
-                    let queryAccepted = PFQuery(className: "Job")
-                    queryAccepted.whereKey("requesterId", equalTo: self.user.objectId!)
-                    queryAccepted.findObjectsInBackground { (jobs, error) in
-                        if let jobs = jobs {
-                            if jobs.count > 0 {
-                                for job in jobs {
-                                    if !self.messageJobs.contains(job) {
-                                        self.messageJobs.append(job)
-
-                                        if self.messageJobs.count > 0 {
-                                            // reload data after async query to fill tableView
-                                            self.tableView.reloadData()
-                                        } else {
-                                            self.emptyLabel.isHidden = false
-                                        
-                                        }
-                                    }
-                                }
-                            } else {
-                                self.emptyLabel.isHidden = false
-                                    
-                            }
-                        }
+                
+                }
+            }
+        }
+        
+        // query job class for list of posted jobs
+        let queryAccepted = PFQuery(className: "Job")
+        queryAccepted.whereKey("requesterId", equalTo: self.user.objectId!)
+        queryAccepted.findObjectsInBackground { (postedJobs, error) in
+            if let postedJobs = postedJobs {
+                for postedJob in postedJobs {
+                    let selectedUser = postedJob.object(forKey: "selectedUser") as! String
+                    if selectedUser != "" {
+                        self.postedJobs.append(postedJob)
+                        // reload data after async query to fill tableView
+                        self.tableView.reloadData()
+                   
                     }
                 }
             }
         }
+        
         menuView.isHidden = true
         refresher = UIRefreshControl()
         refresher.attributedTitle = NSAttributedString(string: "Refreshing...")
         refresher.addTarget(self, action: #selector(PostedViewController.refresh), for: UIControlEvents.valueChanged)
         self.tableView.addSubview(refresher)
+        
+    }
+    
+    // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden
+    override func viewDidAppear(_ animated: Bool) {
+        menuView.isHidden = true
+        showMenu = true
         
     }
     
@@ -130,47 +131,97 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
     
     // UITableView Delegate method operates on my UITableView subclass "tableView"
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
         
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messageJobs.count
-        
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell", for: indexPath) as! MessageTableViewCell
-        let job = messageJobs[indexPath.row]
-        let jobTitle = job.object(forKey: "title") as! String
-        cell.messageTitle.text = jobTitle
-        cell.myTableView = tableView
-        if cell.ready {
-            selectedJob = messageJobs[indexPath.row]
-            performSegue(withIdentifier: "toShowMessages", sender: self)
+        if section == 0 {
+            return postedJobs.count
+
+        } else {
+            return matchedJobs.count
             
         }
-        // get images
-        let reqId = job.object(forKey: "requesterId") as! String
-        // fetch requestor image
-        var requester = PFObject(className: "User")
-        let query: PFQuery = PFUser.query()!
-        query.whereKey("objectId", equalTo: reqId)
-        query.findObjectsInBackground { (users, error) in
-            if let users = users {
-                requester = users[0]
-                let imageFile = requester.object(forKey: "image") as! PFFile
-                imageFile.getDataInBackground { (data, error) in
-                    if let data = data {
-                        let imageData = NSData(data: data)
-                        cell.reqImage.image = UIImage(data: imageData as Data)
-                        
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return "Jobs I Posted"
+            
+        } else {
+            return "Jobs I've Been Matched With"
+            
+        }
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! MessageTableViewCell
+            if cell.ready {
+                cell.ready = false
+                selectedJob = postedJobs[indexPath.row]
+                performSegue(withIdentifier: "toShowMessages", sender: self)
+                
+            }
+            let job = postedJobs[indexPath.row]
+            let jobTitle = job.object(forKey: "title") as! String
+            cell.messageTitle.text = jobTitle
+            cell.myTableView = tableView
+            // get images
+            let reqId = job.object(forKey: "requesterId") as! String
+            // fetch requestor image
+            var requester = PFObject(className: "User")
+            let query: PFQuery = PFUser.query()!
+            query.whereKey("objectId", equalTo: reqId)
+            query.findObjectsInBackground { (users, error) in
+                if let users = users {
+                    requester = users[0]
+                    let imageFile = requester.object(forKey: "image") as! PFFile
+                    imageFile.getDataInBackground { (data, error) in
+                        if let data = data {
+                            let imageData = NSData(data: data)
+                            cell.reqImage.image = UIImage(data: imageData as Data)
+                            
+                        }
                     }
                 }
             }
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "matchCell", for: indexPath) as! MessageTableViewCell
+            if cell.ready {
+                cell.ready = false
+                selectedJob = matchedJobs[indexPath.row]
+                performSegue(withIdentifier: "toShowMessages", sender: self)
+                
+            }
+            let job = matchedJobs[indexPath.row]
+            let jobTitle = job.object(forKey: "title") as! String
+            cell.messageTitle.text = jobTitle
+            cell.myTableView = tableView
+            // get images
+            let reqId = job.object(forKey: "requesterId") as! String
+            // fetch requestor image
+            var requester = PFObject(className: "User")
+            let query: PFQuery = PFUser.query()!
+            query.whereKey("objectId", equalTo: reqId)
+            query.findObjectsInBackground { (users, error) in
+                if let users = users {
+                    requester = users[0]
+                    let imageFile = requester.object(forKey: "image") as! PFFile
+                    imageFile.getDataInBackground { (data, error) in
+                        if let data = data {
+                            let imageData = NSData(data: data)
+                            cell.reqImage.image = UIImage(data: imageData as Data)
+                            
+                        }
+                    }
+                }
+            }
+            return cell
+            
         }
-        return cell
-        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -188,7 +239,8 @@ class MesssageViewController: UIViewController , UITableViewDelegate, UITableVie
         if segue.identifier == "toShowMessages" {
             let vc = segue.destination as! ShowMessagesViewController
             vc.selectedJob = selectedJob
-            
+            print(selectedJob)
+            print(vc.selectedJob)
         }
     }
     

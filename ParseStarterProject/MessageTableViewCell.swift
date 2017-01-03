@@ -19,6 +19,7 @@ class MessageTableViewCell: UITableViewCell {
     @IBOutlet weak var swipeIcon: UIButton!
     @IBOutlet weak var connectLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var imageFrame: UIButton!
     
     func recenter () {
         UIView.animate(withDuration: 0.5,
@@ -27,7 +28,8 @@ class MessageTableViewCell: UITableViewCell {
                        initialSpringVelocity: 0.0,
                        options: .transitionCrossDissolve,
                        animations: { self.swipeIcon.center.x -= 30 },
-                       completion: nil)
+                       completion: nil
+        )
     }
     
     // drag function is called continuosly from start to end of a pan
@@ -57,7 +59,8 @@ class MessageTableViewCell: UITableViewCell {
         messageLabel.layer.masksToBounds = true
         messageLabel.layer.cornerRadius = 5
         reqImage.layer.masksToBounds = true
-        reqImage.layer.cornerRadius = 30
+        reqImage.layer.cornerRadius = 45
+        imageFrame.layer.cornerRadius = 45
         
     }
 
@@ -75,7 +78,7 @@ class MessageTableViewCell: UITableViewCell {
                            options: .transitionCrossDissolve,
                            animations: { self.swipeIcon.center.x += 30 },
                            completion: { (success) in
-                            self.recenter()
+                                        self.recenter()
                             
             })
             // attach pan gesture recognizer to each cell so whenever the selected cell is dragged, the dragged() function runs once

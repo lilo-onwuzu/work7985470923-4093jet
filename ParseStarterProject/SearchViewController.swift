@@ -44,6 +44,17 @@ class SearchViewController: UIViewController {
 		
 	}
 	
+	func alertWithSegue(title: String, message: String) {
+		let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+			alert.dismiss(animated: true, completion: nil)
+			self.performSegue(withIdentifier: "toHome", sender: self)
+			
+		}))
+		present(alert, animated: true, completion: nil)
+		
+	}
+	
 	func drag(gesture: UIPanGestureRecognizer) {
 		// translation measures the distance of a pan. It can be positive or negative
 		let translation = gesture.translation(in: self.view)
@@ -181,7 +192,7 @@ class SearchViewController: UIViewController {
 						
 					}
 				} else {
-					self.errorAlert(title: "There are no more jobs around your area", message: "Please check again later")
+					self.alertWithSegue(title: "There are no more jobs around your area", message: "Please check again later")
 					
 				}
 			}
@@ -329,6 +340,13 @@ class SearchViewController: UIViewController {
 				}
 			}
 		}
+	}
+	
+	// hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden
+	override func viewDidAppear(_ animated: Bool) {
+		menuView.isHidden = true
+		showMenu = true
+		
 	}
 	
 	@IBAction func mainMenu(_ sender: Any) {

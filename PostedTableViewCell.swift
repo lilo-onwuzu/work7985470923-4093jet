@@ -20,6 +20,8 @@ class PostedTableViewCell: UITableViewCell {
     @IBOutlet weak var postedLabel: UILabel!
     @IBOutlet weak var swipeIcon: UIButton!
     @IBOutlet weak var swipeLabel: UILabel!
+    @IBOutlet weak var imageFrame: UIButton!
+    @IBOutlet weak var userImage: UIImageView!
     
     func recenter () {
         UIView.animate(withDuration: 0.5,
@@ -41,10 +43,6 @@ class PostedTableViewCell: UITableViewCell {
             if gesture.state == UIGestureRecognizerState.ended {
                 if self.center.x > (self.bounds.width/2) {
                     ready = true
-                    if let row = myTableView.indexPathForSelectedRow?.row {
-                        self.selectedRow = row
-                        
-                    }
                     // reload tableView to get "SelectVC" segue instruction
                     myTableView.reloadData()
                     
@@ -61,6 +59,9 @@ class PostedTableViewCell: UITableViewCell {
         // Initialization code
         postedLabel.layer.masksToBounds = true
         postedLabel.layer.cornerRadius = 7
+        userImage.layer.masksToBounds = true
+        userImage.layer.cornerRadius = 45
+        imageFrame.layer.cornerRadius = 45
         
     }
 

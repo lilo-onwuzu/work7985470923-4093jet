@@ -20,6 +20,7 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var homeButton: UIButton!
     @IBOutlet weak var formLabel: UILabel!
     @IBOutlet weak var createIcon: UIButton!
+    @IBOutlet weak var backButton: UIButton!
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
@@ -41,6 +42,7 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
                     if success {
                         // wait till finish is true or createJob object is saved in async call before confirming
                         // hide background
+                        self.backButton.isHidden = true
                         self.jobDetails.isHidden = true
                         self.formLabel.isHidden = true
                         self.createButton.isHidden = true

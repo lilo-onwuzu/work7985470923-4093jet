@@ -65,14 +65,11 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                             queryReceivedJobs.findObjectsInBackground { (objects, error) in
                                 if let objects = objects {
                                     for object in objects {
-                                        object.deleteInBackground(block: { (success, error) in
+                                        object.setValue("", forKey: "selectedUser")
+                                        object.saveInBackground(block: { (success, error) in
                                             if success {
-                                                self.user.deleteInBackground { (success, error) in
-                                                    if success {
-                                                        self.performSegue(withIdentifier: "toHome", sender: self)
-                                                        
-                                                    }
-                                                }
+                                                self.performSegue(withIdentifier: "toHome", sender: self)
+                                                
                                             }
                                         })
                                     }
@@ -132,6 +129,13 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         menuView.isHidden = true
         self.password.delegate = self
     
+    }
+    
+    // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden
+    override func viewDidAppear(_ animated: Bool) {
+        menuView.isHidden = true
+        showMenu = true
+        
     }
     
     override func viewDidLayoutSubviews() {

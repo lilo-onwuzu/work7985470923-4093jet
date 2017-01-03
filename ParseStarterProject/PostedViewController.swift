@@ -130,6 +130,13 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
+    // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden
+    override func viewDidAppear(_ animated: Bool) {
+        menuView.isHidden = true
+        showMenu = true
+        
+    }
+    
     override func viewDidLayoutSubviews() {
         if UIDevice.current.orientation.isLandscape {
             for view in self.view.subviews {
@@ -243,13 +250,22 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
             performSegue(withIdentifier: "toSelect", sender: self)
             
         }
+        // get images
+        let imageFile = user.object(forKey: "image") as! PFFile
+        imageFile.getDataInBackground { (data, error) in
+            if let data = data {
+                let imageData = NSData(data: data)
+                cell.userImage.image = UIImage(data: imageData as Data)
+                
+            }
+        }
         let job = postedJobs[indexPath.row]
         let jobTitle = job.object(forKey: "title") as! String
         let jobCycle = job.object(forKey: "cycle") as! String
         let jobRate = job.object(forKey: "rate") as! String
         cell.postedTitle?.text = jobTitle
-        cell.postedCycle?.text = "Cycle : " + jobCycle
-        cell.postedRate?.text = "Rate : " + jobRate
+        cell.postedCycle?.text = jobCycle
+        cell.postedRate?.text = jobRate
         cell.myTableView = tableView
         return cell
         
