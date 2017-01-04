@@ -12,7 +12,7 @@ class EnterMessageTableViewCell: UITableViewCell, UITextFieldDelegate {
 
     var selectedJob = PFObject(className: "Job")
     var myTableView = UITableView()
-
+    
     @IBOutlet weak var entertextField: UITextField!
     @IBOutlet weak var sendButton: UIButton!
     
@@ -21,10 +21,15 @@ class EnterMessageTableViewCell: UITableViewCell, UITextFieldDelegate {
             let enteredText = entertextField.text!
             let newMessage: [String : String] = ["req" : enteredText]
             selectedJob.add(newMessage, forKey: "messages")
-            selectedJob.saveInBackground()
-            myTableView.reloadData()
-            entertextField.text = ""
-            
+            selectedJob.saveInBackground(block: { (success, error) in
+                if success {
+                    self.myTableView.reloadData()
+                    self.entertextField.text = ""
+                    
+                } else {
+                    
+                }
+            })
         }
     }
     
@@ -45,10 +50,14 @@ class EnterMessageTableViewCell: UITableViewCell, UITextFieldDelegate {
         
     }
     
-    // tap anywhere to escape keyboard
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        endEditing(true)
+    @IBAction func startTyping(_ sender: Any) {
+        myTableView.contentInset.bottom = CGFloat(300)
         
+    }
+    
+    @IBAction func stopTyping(_ sender: Any) {
+        myTableView.contentInset.bottom = CGFloat(0)
+
     }
     
     // hit return to escape keyboard

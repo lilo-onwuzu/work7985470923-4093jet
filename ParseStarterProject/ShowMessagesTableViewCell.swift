@@ -19,8 +19,8 @@ class ShowMessagesTableViewCell: UITableViewCell {
         message.layer.masksToBounds = true
         message.layer.cornerRadius = 5
         userImage.layer.masksToBounds = true
-        userImage.layer.cornerRadius = 28        
-        
+        userImage.layer.cornerRadius = 28
+    
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

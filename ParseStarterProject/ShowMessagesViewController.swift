@@ -10,9 +10,10 @@ import UIKit
 
 class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    var cellHeight = CGFloat()
     var selectedJob = PFObject(className: "Job")
     var refresher: UIRefreshControl!
-    var UITableViewAutomaticDimension = CGFloat()
+    var messages = [NSDictionary]()
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var logo: UILabel!
@@ -28,14 +29,15 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
         super.viewDidLoad()
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 100
         refresher = UIRefreshControl()
         refresher.attributedTitle = NSAttributedString(string: "Refreshing...")
         refresher.addTarget(self, action: #selector(PostedViewController.refresh), for: UIControlEvents.valueChanged)
         self.tableView.addSubview(refresher)
         jobTitle.text = selectedJob.object(forKey: "title") as? String
-
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 100
+        
     }
     
     @IBAction func back(_ sender: Any) {
@@ -60,19 +62,14 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return UITableViewAutomaticDimension
-            
-        } else {
-            return 50
-            
-        }
+        return UITableViewAutomaticDimension
+
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! ShowMessagesTableViewCell
-            let messages = selectedJob.object(forKey: "messages") as! [NSDictionary]
+            messages = selectedJob.object(forKey: "messages") as! [NSDictionary]
             if indexPath.row == 0 {
                 let dictionary = messages[0]
                 let introMessage = dictionary.object(forKey: "intro") as! String
@@ -83,7 +80,7 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
                 let message = dictionary.object(forKey: "req") as! String
                 cell.message.text = message
                 cell.message.sizeToFit()
-                
+
             }
             return cell
             
@@ -94,6 +91,11 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
             return cell
             
         }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+        
     }
 
     override func didReceiveMemoryWarning() {

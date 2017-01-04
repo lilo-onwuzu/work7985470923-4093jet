@@ -239,8 +239,7 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
         if segue.identifier == "toShowMessages" {
             let vc = segue.destination as! ShowMessagesViewController
             vc.selectedJob = selectedJob
-            print(selectedJob)
-            print(vc.selectedJob)
+
         }
     }
     

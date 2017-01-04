@@ -15,6 +15,7 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
     var userId = ""
     var requesterName = ""
     var refresher: UIRefreshControl!
+    var user = PFUser.current()!
     
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -106,31 +107,17 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
     // UITableView Delegate method operates on my UITableView subclass "tableView"
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath) as! SelectTableViewCell
-        // once cell is swipped right, cell.ready becomes true and the tableview is reloaded which causes this to load too
-        if cell.ready {
-            cell.ready = false
-            selectedJob.setValue(users[indexPath.row], forKey: "selectedUser")
-            // init messaging when match is made and send message alert to user
-            let introValue = "Congratulations! " + requesterName + " picked you for the job. Connect with " + requesterName + " here"
-            let introMessage: [String : String] = ["intro" : introValue]
-            var messages = [NSDictionary]()
-            messages.append(introMessage as NSDictionary)
-            selectedJob.setValue(messages, forKey: "messages")
-            selectedJob.saveInBackground()
-            tableView.reloadData()
-            
-        }
         // fetch user name and image and display
-        var requester = PFObject(className: "User")
+        var userAccepted = PFObject(className: "User")
         let query: PFQuery = PFUser.query()!
         query.whereKey("objectId", equalTo: users[indexPath.row])
         query.findObjectsInBackground { (users, error) in
             if let users = users {
-                requester = users[0]
-                let firstName = requester.object(forKey: "first_name") as! String
-                let lastName = requester.object(forKey: "last_name") as! String
+                userAccepted = users[0]
+                let firstName = userAccepted.object(forKey: "first_name") as! String
+                let lastName = userAccepted.object(forKey: "last_name") as! String
                 cell.userName.text = firstName + " " + lastName
-                let imageFile = requester.object(forKey: "image") as! PFFile
+                let imageFile = userAccepted.object(forKey: "image") as! PFFile
                 imageFile.getDataInBackground { (data, error) in
                     if let data = data {
                         let imageData = NSData(data: data)
@@ -139,6 +126,21 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
                     }
                 }
             }
+        }
+        // once cell is swiped right, cell.ready becomes true and the tableview is reloaded which causes this to load too
+        if cell.ready {
+            cell.ready = false
+            selectedJob.setValue(users[indexPath.row], forKey: "selectedUser")
+            // init messaging when match is made and send message alert to user
+            let firstName = user.object(forKey: "first_name") as! String
+            let introValue = "Congratulations! " + firstName + " picked you for the job. Connect with " + firstName + " here"
+            let introMessage: [String : String] = ["intro" : introValue]
+            var messages = [NSDictionary]()
+            messages.append(introMessage as NSDictionary)
+            selectedJob.setValue(messages, forKey: "messages")
+            selectedJob.saveInBackground()
+            tableView.reloadData()
+            
         }
         showSelectedRow(index: indexPath.row, swipeButton: cell.swipeIcon, selectLabel: cell.selectLabel)
         cell.myTableView = tableView

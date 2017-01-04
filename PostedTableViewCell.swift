@@ -43,9 +43,12 @@ class PostedTableViewCell: UITableViewCell {
             if gesture.state == UIGestureRecognizerState.ended {
                 if self.center.x > (self.bounds.width/2) {
                     ready = true
-                    // reload tableView to get "SelectVC" segue instruction
-                    myTableView.reloadData()
+                    if let row = myTableView.indexPathForSelectedRow?.row {
+                        selectedRow = row
+                        // reload tableView to get "SelectVC" segue instruction
+                        myTableView.reloadData()
                     
+                    }
                 }
                 // reset cell center to center of screen
                 self.center.x = self.bounds.width/2
