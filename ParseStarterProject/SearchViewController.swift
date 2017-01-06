@@ -97,6 +97,8 @@ class SearchViewController: UIViewController {
 						
 						// get requester's photo
 						let reqId = job.object(forKey: "requesterId") as! String
+						// keep requester id for segue
+						self.keepId = reqId
 						var requester = PFObject(className: "User")
 						let query: PFQuery = PFUser.query()!
 						query.whereKey("objectId", equalTo: reqId)
@@ -385,7 +387,7 @@ class SearchViewController: UIViewController {
 		if segue.identifier == "toReqProfile" {
 			let vc = segue.destination as! UserProfileViewController
 			vc.reqId = self.keepId
-				
+
 		}
 	}
 	
