@@ -132,7 +132,7 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
         let cell = tableView.dequeueReusableCell(withIdentifier: "receivedCell", for: indexPath) as! ReceivedTableViewCell
         if cell.ready {
             cell.ready = false
-            let selectedJob = receivedJobs[cell.selectedRow]
+            let selectedJob = receivedJobs[indexPath.row]
             jobRequesterId = selectedJob.object(forKey: "requesterId") as! String
             performSegue(withIdentifier: "toProfile", sender: self)
             
@@ -162,7 +162,7 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
         let jobRate = job.object(forKey: "rate") as! String
         cell.receivedTitle.text = jobTitle
         cell.receivedCycle.text = jobCycle
-        cell.receivedRate.text = jobRate
+        cell.receivedRate.text = "$" + jobRate
         cell.myTableView = tableView
         return cell
         

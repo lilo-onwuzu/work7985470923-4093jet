@@ -10,6 +10,7 @@ import UIKit
 
 class SelectTableViewCell: UITableViewCell {
 
+    var selectedJob = PFObject(className: "Job")
     var myTableView = UITableView()
     var ready = false
     
@@ -36,7 +37,7 @@ class SelectTableViewCell: UITableViewCell {
         // continue executing dragged() function if pan is to the right, if not, do nothing, function terminates
         if translation.x > 0 {
             self.center.x = self.center.x + translation.x
-            // once pan gesture ends, if selected cell , pass job in highlighted cell to selectVC, perform segue
+            // once pan gesture ends, if selected cell, pass job in highlighted cell to selectVC, perform segue
             if gesture.state == UIGestureRecognizerState.ended {
                 if self.center.x > (self.bounds.width/2) {
                     ready = true
@@ -59,7 +60,7 @@ class SelectTableViewCell: UITableViewCell {
         userImage.layer.masksToBounds = true
         userImage.layer.cornerRadius = 45
         viewProfile.layer.cornerRadius = 45
-        
+    
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

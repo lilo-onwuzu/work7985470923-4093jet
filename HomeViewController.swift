@@ -10,6 +10,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
+    // once logged in, you can access current PFUser
     let user = PFUser.current()!
     let first_image = UIImage(named: "work.jpg")!
     let second_image = UIImage(named:"work_1.jpeg")!
@@ -50,6 +51,7 @@ class HomeViewController: UIViewController {
                             self.mainImage.alpha = 1
                             self.mainImage.contentMode = UIViewContentMode.scaleAspectFill },
                           completion: { (success) in
+                            // run viewDidAppear to restart mainImage change
                             self.viewDidAppear(true)
         })
     }
@@ -95,19 +97,21 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        logo.layer.masksToBounds = true
+        logo.layer.cornerRadius = 3
         searchButton.layer.cornerRadius = 10
         createButton.layer.cornerRadius = 10
         profileButton.layer.cornerRadius = 10
         settingsButton.layer.cornerRadius = 10
         jobsButton.layer.cornerRadius = 10
-        logo.layer.masksToBounds = true
-        logo.layer.cornerRadius = 3
+        // hide UI elements to prepare for animation in viewDidAppear
         searchButton.alpha = 0
         createButton.alpha = 0
         jobsButton.alpha = 0
         profileButton.alpha = 0
         settingsButton.alpha = 0
         userImage.alpha = 0
+        // load user's image in main page
         let imageFile = user.object(forKey: "image") as! PFFile
         imageFile.getDataInBackground { (data, error) in
             if let data = data {
@@ -128,8 +132,8 @@ class HomeViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        // hide userImage when viewDidAppear in landscape mode so it does not overlap view
         if UIDevice.current.orientation.isLandscape {
-            // hide userImage when viewDidAppear in landscape mode so it does not overlap view
             userImage.isHidden = true
 
         }
@@ -181,17 +185,12 @@ class HomeViewController: UIViewController {
         } else {
             // else show user image in portrait
             for view in self.view.subviews {
-                if view.tag == 1 {
+                if view.tag == 3 {
                     view.isHidden = false
                     
                 }
             }
         }
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
 }

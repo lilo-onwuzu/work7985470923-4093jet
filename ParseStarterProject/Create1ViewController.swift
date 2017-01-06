@@ -11,6 +11,7 @@ import UIKit
 class CreateViewController: UIViewController, UITextFieldDelegate {
 
     var showMenu = true
+    //text field limit for title text
     let text_field_limit = 64
     var finish: Bool = false
     // new createJob object is initialized with vc
@@ -42,13 +43,15 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                     // PFUser.current() must exist here because the login screen comes before this
                     let user = PFUser.current()!
                     let userId = (user.objectId)!
-                    let facebookId = (user.object(forKey: "facebookId"))!
+                    let facebookId = user.object(forKey: "facebookId") as! String
                     // add attributes to createJob PFObject first
                     // .setValue() sets value of a type while .add() create an array type column and adds to it
                     createJob.setValue(self.jobTitle.text!, forKey: "title")
                     createJob.setValue(userId, forKey: "requesterId")
                     createJob.setValue(facebookId, forKey: "requesterFid")
+                    // set empty array for users who have accepted the job on job creation
                     createJob.setValue([], forKey: "userAccepted")
+                    // set empty string for user who has been selected for the job on job creation
                     createJob.setValue("", forKey: "selectedUser")
                     performSegue(withIdentifier: "toCreate2", sender: self)
                 
@@ -65,13 +68,12 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // allows view controller to control the keyboard using a text field delegate
         self.jobTitle.delegate = self
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
         menuView.isHidden = true
-        // add job location (latitude & longitude) with PFGeoPoint
-        // async call, use block and handshake boolean "finish"
+        // add job location for job (latitude & longitude) with PFGeoPoint
+        // use block for async call and handshake boolean "finish" to confirm that location was gotten if not show errorAlert
         PFGeoPoint.geoPointForCurrentLocation { (coordinates, error) in
             if let coordinates = coordinates {
                 self.createJob.setValue(coordinates, forKey: "location")
@@ -91,6 +93,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    // viewDidLayoutSubviews() runs each time layout changes
     override func viewDidLayoutSubviews() {
         if UIDevice.current.orientation.isLandscape {
             for view in self.view.subviews {
@@ -99,7 +102,6 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                     view.isHidden = true
                     
                 }
-                // viewDidLayoutSubviews() runs each time layout changes
                 // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
                 if view.tag == 2 {
                     let xOfView = self.view.bounds.width
@@ -157,7 +159,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
 
     }
     
-    // tap anywhere to escape keyboard
+    // tap anywhere to escape keyboard, hide menu and set showMenu to true so that double tap is not needed to display menuView again
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
         menuView.isHidden = true
@@ -165,7 +167,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
 
     }
     
-    // hit return to escape keyboard
+    // hit return to escape keyboard and add title
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         addTitle()
@@ -173,18 +175,14 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
 
     }
     
+    // textfield delegate so characters greater than the text field limit cannot be entered
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return (textField.text?.utf16.count ?? 0) + string.utf16.count - range.length <= text_field_limit
 
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // pass PFObject through segue without saving to Parse
+        // pass PFObject in creation through segue without saving to Parse yet
         if segue.identifier == "toCreate2" {
             let nextVC = segue.destination as! Create2ViewController
             nextVC.createJob = self.createJob

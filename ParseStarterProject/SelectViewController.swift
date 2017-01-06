@@ -33,6 +33,18 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
         
     }
     
+    func tossDownIcon (swipeIcon: UIButton) {
+        UIView.animate(withDuration: 0.1,
+                       delay: 0,
+                       usingSpringWithDamping: 0.6,
+                       initialSpringVelocity: 0.0,
+                       options: .transitionCrossDissolve,
+                       animations: { swipeIcon.center.y += 5 },
+                       completion: nil)
+    
+    }
+    
+    // when cell in select vc is swiped, this function will cause changes to the UI that show that a user has been selected
     func showSelectedRow(index: Int, swipeButton: UIButton, selectLabel: UILabel) {
         let selected = selectedJob.object(forKey: "selectedUser") as! String
         if selected == users[index] {
@@ -45,6 +57,19 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
             swipeButton.setImage(buttonImage, for: .normal)
             selectLabel.text = "SWIPE TO SELECT"
             
+        }
+        // if selectedUser id matches row of user, animate and toss swipeIcon up +30 then toss back down -30
+        if selected == users[index] {
+            UIView.animate(withDuration: 0.1,
+                           delay: 1,
+                           usingSpringWithDamping: 0.6,
+                           initialSpringVelocity: 0.0,
+                           options: .transitionCrossDissolve,
+                           animations: { swipeButton.center.y -= 5 },
+                           completion: { (success) in
+                            self.tossDownIcon(swipeIcon: swipeButton)
+                            
+            })
         }
     }
     
@@ -107,6 +132,23 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
     // UITableView Delegate method operates on my UITableView subclass "tableView"
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath) as! SelectTableViewCell
+        // once cell is swiped right, cell.ready becomes true and the tableview is reloaded which causes this to load too
+        if cell.ready {
+            cell.ready = false
+            // set swiped user as selectedUser
+            selectedJob.setValue(users[indexPath.row], forKey: "selectedUser")
+            // init messaging when match is made and add new message to array
+            let firstName = user.object(forKey: "first_name") as! String
+            let introValue = "Congratulations! " + firstName + " picked you for the job. Connect with " + firstName + " here"
+            let introMessage: [String : String] = ["intro" : introValue]
+            var messages = [NSDictionary]()
+            messages.append(introMessage as NSDictionary)
+            selectedJob.setValue(messages, forKey: "messages")
+            selectedJob.saveInBackground()
+            // reload table view to show new user selection
+            tableView.reloadData()
+            
+        }
         // fetch user name and image and display
         var userAccepted = PFObject(className: "User")
         let query: PFQuery = PFUser.query()!
@@ -127,30 +169,12 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
                 }
             }
         }
-        // once cell is swiped right, cell.ready becomes true and the tableview is reloaded which causes this to load too
-        if cell.ready {
-            cell.ready = false
-            selectedJob.setValue(users[indexPath.row], forKey: "selectedUser")
-            // init messaging when match is made and send message alert to user
-            let firstName = user.object(forKey: "first_name") as! String
-            let introValue = "Congratulations! " + firstName + " picked you for the job. Connect with " + firstName + " here"
-            let introMessage: [String : String] = ["intro" : introValue]
-            var messages = [NSDictionary]()
-            messages.append(introMessage as NSDictionary)
-            selectedJob.setValue(messages, forKey: "messages")
-            selectedJob.saveInBackground()
-            tableView.reloadData()
-            
-        }
+        // when cell in select vc is swiped, this function will cause changes to the UI that show that a user has been selected
         showSelectedRow(index: indexPath.row, swipeButton: cell.swipeIcon, selectLabel: cell.selectLabel)
         cell.myTableView = tableView
+        cell.selectedJob = selectedJob
         return cell
         
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

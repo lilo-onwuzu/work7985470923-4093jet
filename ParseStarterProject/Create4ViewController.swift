@@ -40,8 +40,8 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
                 // saveInBackground is an asychronous call that does not wait to execute before continuing so save it with block if you need data that is returned from the async call
                 createJob.saveInBackground(block: { (success, error) in
                     if success {
-                        // wait till finish is true or createJob object is saved in async call before confirming
-                        // hide background
+                        // wait till createJob object is saved in async call before confirming
+                        // hide background first
                         self.backButton.isHidden = true
                         self.jobDetails.isHidden = true
                         self.formLabel.isHidden = true
@@ -52,6 +52,7 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
                         self.confirmLabel.layer.masksToBounds = true
                         self.confirmLabel.layer.cornerRadius = 5
                         self.homeButton.layer.cornerRadius = 5
+                        // animate createIcon to change its image and flip horizontally
                         UIView.transition(with: self.createIcon, duration: 2,
                                           options: .transitionFlipFromLeft,
                                           animations: {
@@ -64,11 +65,11 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
                     }
                 })
             } else {
-                errorAlert(title: "Invalid Form Entry", message: "Please enter valid details")
+                errorAlert(title: "Invalid Entry", message: "Please enter valid details")
                 
             }
         } else {
-            errorAlert(title: "Invalid Form Entry", message: "Please add some more details")
+            errorAlert(title: "Invalid Entry", message: "Please add some more details")
             
         }
     }
@@ -83,6 +84,7 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLayoutSubviews() {
         if UIDevice.current.orientation.isLandscape {
+            // hide createJob Icon when in landscape
             for view in self.view.subviews {
                 if view.tag == 1 {
                     view.isHidden = true
@@ -90,6 +92,7 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         } else {
+            // unhide createJob Icon when in portrait
             for view in self.view.subviews {
                 if view.tag == 1 {
                     view.isHidden = false
@@ -125,14 +128,10 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
 
     }
 
+    // textfield delegate so characters greater than the text field limit cannot be entered
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return (textField.text?.utf16.count ?? 0) + string.utf16.count - range.length <= text_field_limit
     
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }

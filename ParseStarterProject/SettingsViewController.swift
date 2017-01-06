@@ -12,6 +12,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
 
     var showMenu = true
     let user = PFUser.current()!
+    var userId = ""
     
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -41,7 +42,6 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         }))
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
-
             self.perform(selector)
             
         }))
@@ -49,36 +49,21 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         
     }
     
-    func deleteUser() {
-        // first delete all user's posted jobs
-        let userId = user.objectId!
-        let queryPostedJobs = PFQuery(className: "Job")
-        queryPostedJobs.whereKey("requesterId", equalTo: userId)
-        queryPostedJobs.findObjectsInBackground { (objects, error) in
-            if let objects = objects {
-                for object in objects {
-                    object.deleteInBackground(block: { (success, error) in
-                        if success {
-                            // then delete user as selectedUser for all jobs
-                            let queryReceivedJobs = PFQuery(className: "Job")
-                            queryReceivedJobs.whereKey("selectedUser", equalTo: userId)
-                            queryReceivedJobs.findObjectsInBackground { (objects, error) in
-                                if let objects = objects {
-                                    for object in objects {
-                                        object.setValue("", forKey: "selectedUser")
-                                        object.saveInBackground(block: { (success, error) in
-                                            if success {
-                                                self.performSegue(withIdentifier: "toHome", sender: self)
-                                                
-                                            }
-                                        })
-                                    }
-                                }
-                            }
-                        }
-                    })
-                }
+    func confirmPasswordChange() {
+        let getPassword = self.password.text!
+        let confirmPassword = self.confirmPassword.text!
+        // password character length must be greater than 5
+        if getPassword.characters.count >= 6 {
+            if getPassword == confirmPassword {
+                confirmAlert(title: "Confirm Password Change", message: "Are you sure you want to change your password?", selector: #selector(savePassword))
+                
+            } else {
+                errorAlert(title: "Invalid Password", message: "Your entered passwords must match. Please try again")
+                
             }
+        } else {
+            errorAlert(title: "Invalid Password", message: "Your password must have at least 6 characters")
+            
         }
     }
     
@@ -100,21 +85,98 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         }
     }
     
-    func changeAction() {
-        let getPassword = self.password.text!
-        let confirmPassword = self.confirmPassword.text!
-        // password character length must be greater than 5
-        if getPassword.characters.count >= 6 {
-            if getPassword == confirmPassword {
-                confirmAlert(title: "Confirm Password Change", message: "Are you sure you want to change your password?", selector: #selector(savePassword))
-                
-            } else {
-                errorAlert(title: "Invalid Password", message: "Your entered passwords must match. Please try again")
+    func finallyDeleteUser() {
+        self.user.deleteInBackground(block: { (success, error) in
+            if success {
+                PFUser.logOut()
+                self.performSegue(withIdentifier: "toHome", sender: self)
                 
             }
-        } else {
-            errorAlert(title: "Invalid Password", message: "Your password must have at least 6 characters")
-            
+        })
+    }
+    
+    func deleteAsAccepted () {
+        // then delete user as selectedUser for all jobs
+        let queryReceivedJobs = PFQuery(className: "Job")
+        queryReceivedJobs.whereKey("userAccepted", contains: userId)
+        queryReceivedJobs.findObjectsInBackground { (objects, error) in
+            if let objects = objects {
+                if objects.count > 0 {
+                    for object in objects {
+                        var userAccepted = object.object(forKey: "userAccepted") as! [String]
+                        // remove userId from every jobs array of acceptedUsers
+                        for id in userAccepted {
+                            if id == self.userId {
+                                userAccepted.remove(at: userAccepted.index(of: id)!)
+                                object.setValue(userAccepted, forKey: "userAccepted")
+                                object.saveInBackground(block: { (success, error) in
+                                    if success {
+                                        self.finallyDeleteUser()
+                                        
+                                    }
+                                })
+                            }
+                        }
+                    }
+                } else {
+                    // go to next step even if there are no objects
+                    self.finallyDeleteUser()
+
+                }
+            }
+        }
+    }
+    
+    func deleteAsSelected () {
+        // then delete user as selectedUser for all jobs
+        let queryReceivedJobs = PFQuery(className: "Job")
+        queryReceivedJobs.whereKey("selectedUser", equalTo: userId)
+        queryReceivedJobs.findObjectsInBackground { (objects, error) in
+            if let objects = objects {
+                if objects.count > 0 {
+                    for object in objects {
+                        // empty selected user
+                        object.setValue("", forKey: "selectedUser")
+                        // empty messages too since messages only initiates with handshake agreement
+                        // this job will no longer be listed in message vc until another match is made
+                        object.remove(forKey: "messages")
+                        object.saveInBackground(block: { (success, error) in
+                            if success {
+                                self.deleteAsAccepted()
+                                
+                            }
+                        })
+                    }
+                } else {
+                    // go to next step even if there are no objects
+                    self.deleteAsAccepted()
+                    
+                }
+            }
+        }
+    }
+    
+    func deleteUser() {
+        // first delete all user's posted jobs
+        let queryPostedJobs = PFQuery(className: "Job")
+        queryPostedJobs.whereKey("requesterId", equalTo: userId)
+        queryPostedJobs.findObjectsInBackground { (objects, error) in
+            if let objects = objects {
+                if objects.count > 0 {
+                    for object in objects {
+                        object.deleteInBackground(block: { (success, error) in
+                            if success {
+                                self.deleteAsSelected()
+                                
+                            }
+                        })
+                    }
+                } else {
+                    // go to next step even if there are no objects
+                    self.deleteAsSelected()
+                    
+                }
+            }
         }
     }
     
@@ -128,20 +190,21 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         confirmPassword.attributedPlaceholder = NSAttributedString(string:"Confirm Password", attributes:[NSForegroundColorAttributeName: UIColor.lightGray])
         menuView.isHidden = true
         self.password.delegate = self
-    
+        userId = user.objectId!
+
     }
     
-    // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden
+    // hide menuView on viewDidAppear so if user presses back to return to this view, menuView is hidden. showMenu prevents the need for a double tap before menuView can be displayed again
     override func viewDidAppear(_ animated: Bool) {
         menuView.isHidden = true
         showMenu = true
         
     }
     
+    // viewDidLayoutSubviews() runs each time layout changes
     override func viewDidLayoutSubviews() {
         if UIDevice.current.orientation.isLandscape {
             for view in self.view.subviews {
-                // viewDidLayoutSubviews() runs each time layout changes
                 // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
                 if view.tag == 2 {
                     let xOfView = self.view.bounds.width
@@ -152,6 +215,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                 }
             }
         } else {
+            // resize menuView in portrait
             for view in self.view.subviews {
                 if view.tag == 2 {
                     let xOfView = self.view.bounds.width
@@ -190,16 +254,16 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     }
     
     @IBAction func changePassword(_ sender: Any) {
-        changeAction()
+        confirmPasswordChange()
         
     }
     
     @IBAction func deleteAccount(_ sender: Any) {
-        confirmAlert(title: "Confirm Delete Account", message: "Are you sure you want to delete your account? Deleting your account will delete all jobs you have posted and been accepted for. This action cannot be undone", selector: #selector(deleteUser))
+        confirmAlert(title: "Confirm Delete Account", message: "Are you sure you want to delete your account? Deleting your account will delete all jobs you have posted and have been accepted for. This action cannot be undone", selector: #selector(deleteUser))
   
     }
 
-    // tap anywhere to escape keyboard
+    // tap anywhere to escape keyboard. showMenu prevents the need for a double tap before menuView can be displayed again
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
         menuView.isHidden = true
@@ -212,11 +276,6 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         textField.resignFirstResponder()
         return true
         
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
 }

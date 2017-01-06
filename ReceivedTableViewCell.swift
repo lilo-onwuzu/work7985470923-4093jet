@@ -72,12 +72,8 @@ class ReceivedTableViewCell: UITableViewCell {
     
     @IBAction func viewProfile(_ sender: Any) {
         self.ready = true
-        if let row = myTableView.indexPathForSelectedRow?.row {
-            self.selectedRow = row
-            
-        }
         myTableView.reloadData()
-    
+   
     }
     
 }

@@ -14,6 +14,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     let text_field_limit = 600
     let image = UIImagePickerController()
     let user = PFUser.current()!
+    // setting changingPhoto to false allows the camera and photos button to be displayed and the overlapping view to slide down
     var changingPhoto = true
     
     @IBOutlet weak var userImage: UIImageView!
@@ -37,24 +38,24 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         
     }
     
+    // saves new story for user
     func runEdit() {
         let editStory = self.editStory.text!
         // update displayed user story
         userStory.text = editStory
         // update user story in Parse
         user["story"] = editStory
-        // save
+        // save to Parse
         user.saveInBackground(block: { (success, error) in
             if let error = error?.localizedDescription {
                 self.errorAlert(title: "Database Error", message: error)
         
             } else {
                 self.editStory.text = "Your story has been updated!"
-        
+                self.userStory.sizeToFit()
+
             }
         })
-        userStory.sizeToFit()
-        
     }
     
     override func viewDidLoad() {
@@ -63,6 +64,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         logo.layer.cornerRadius = 3
         cameraButton.isHidden = true
         photosButton.isHidden = true
+        menuView.isHidden = true
         // UIImagePickerController's delegate object is of type UIImagePickerControllerDelegate and UINavigationControllerDelegate
         // a delegate of an object (e.g UITableViewDelegate) is a "protocol" that allows the object (UITableView) to be manipulated by calling functions with the object as an arguments. These functions or methods on the object can now be called anywhere within the delegate (self or settingsVC in this case)
         image.delegate = self
@@ -70,7 +72,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         let firstName = user.object(forKey: "first_name") as! String
         let lastName = user.object(forKey: "last_name") as! String
         userName.text = firstName + " " + lastName
-        // if story already exists for user, convert it to string (if possible- no "!") and display it
+        // if story already exists for user, convert it to string (if possible- no "!" in typecast) and display it
         if let story = user.object(forKey: "story") {
             userStory.text = String(describing: story)
             userStory.sizeToFit()
@@ -85,11 +87,11 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
             
             }
         }
-        menuView.isHidden = true
         let geopoint = user.object(forKey: "location") as! PFGeoPoint
         let lat = geopoint.latitude
         let long = geopoint.longitude
         let location = CLLocation(latitude: lat, longitude: long)
+        // use function to get user's physical location from saved PFGeoPoint coordinates
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
             if let placemarks = placemarks {
                 let placemark = placemarks[0]
@@ -103,18 +105,21 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         })
     }
     
-    // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden
+    // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden. showMenu prevents the need for a double tap before menuView can be displayed again
     override func viewDidAppear(_ animated: Bool) {
         menuView.isHidden = true
         showMenu = true
         
     }
     
+    // viewDidLayoutSubviews() runs each time layout changes
     override func viewDidLayoutSubviews() {
+        cameraButton.isHidden = true
+        photosButton.isHidden = true
+        changingPhoto = true
         if UIDevice.current.orientation.isLandscape {
+            // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
             for view in self.view.subviews {
-                // viewDidLayoutSubviews() runs each time layout changes
-                // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
                 if view.tag == 2 {
                     let xOfView = self.view.bounds.width
                     let yOfView = self.view.bounds.height
@@ -124,6 +129,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
                 }
             }
         } else {
+            // resize menuView in portrait
             for view in self.view.subviews {
                 if view.tag == 2 {
                     let xOfView = self.view.bounds.width
@@ -227,7 +233,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         
     }
 
-    // tap anywhere to escape keyboard
+    // tap anywhere to escape keyboard. showMenu prevents the need for a double tap before menuView can be displayed again
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
         menuView.isHidden = true

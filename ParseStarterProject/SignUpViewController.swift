@@ -21,20 +21,25 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     @IBOutlet weak var mainImage: UIImageView!
     @IBOutlet weak var facebookIcon: UIButton!
     
-    // initialize new empty PFUser object
+    // initialize new empty PFUser object for new user
     let user: PFUser = PFUser()
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    // initialize new boolean to verify successful login and facebook user detail collection
     var loggedIn: Bool = Bool()
+    // initialize facebook login delegate button (permissions the delegate to get info in [] array
     let facebookButton = LoginButton(readPermissions: [ .publicProfile , .email ])
     
     func activity() {
+        // position rect to receive activity indicator
         let rect: CGRect = CGRect(x: 0, y: 0, width: 100, height: 100)
         activityIndicator = UIActivityIndicatorView(frame: rect)
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        // add initialized activity indicator object to view
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
+        // ignore all user interactions during login activity
         UIApplication.shared.beginIgnoringInteractionEvents()
         
     }
@@ -48,37 +53,62 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            // once user clicks the action button "OK", dismiss the UIAlertController and its corresponding view
             alert.dismiss(animated: true, completion: nil)
         
         }))
+        // present UIAlertController view controller to current view's view controller
         present(alert, animated: true, completion: nil)
         
     }
     
+    func signedUpAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Login", style: .default, handler: { (action) in
+            // once user clicks the action button "OK", dismiss the UIAlertController and its corresponding view and segue to login screen
+            self.performSegue(withIdentifier: "toMain", sender: self)
+            alert.dismiss(animated: true, completion: nil)
+            
+        }))
+        // present UIAlertController view controller to current view's view controller
+        present(alert, animated: true, completion: nil)
+        
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        // assign textfield's delegate to view controller to allow view controller to control the password textfield
+        // view controller as already been subclassed as a UITextFieldDelegate
         self.password.delegate = self
-        // display Facebook login button
+        // display Facebook login button and position rect to receive login button
         facebookButton.frame = CGRect(x: (self.view.bounds.width / 2) - 25, y: (self.view.bounds.height / 2) - 13, width: 50, height: 50)
+        // facebookButton does not exist in MainStoryboard so add it to view
         view.addSubview(facebookButton)
+        // assign login button's delegate to view controller to allow view controller to log in to facebook
+        // view controller as already been subclassed as a LoginButtonDelegate
         facebookButton.delegate = self
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-        bar.alpha = 0
-        signUpButton.alpha = 0
-        enterPassword.alpha = 0
-        mainImage.alpha = 0
-        facebookButton.alpha = 0
-        facebookIcon.alpha = 0
+        // get new user's location 
+        // there is no error checking in this block of code so remember to use "if let" during get a user location operation to prevent crash
         PFGeoPoint.geoPointForCurrentLocation { (coordinates, error) in
             if let coordinates = coordinates {
                 self.user.setValue(coordinates, forKey: "location")
                 
             }
         }
+        // hide UI elements to prepare for animation
+        bar.alpha = 0
+        signUpButton.alpha = 0
+        enterPassword.alpha = 0
+        mainImage.alpha = 0
+        facebookButton.alpha = 0
+        facebookIcon.alpha = 0
+    
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        // UIAnimation bypasses constraints and moves the view as defined
         UIView.animate(withDuration: 1, delay: 0.025, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.mainImage.alpha = 1.0
             self.bar.alpha = 1.0
@@ -121,11 +151,12 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
                                 self.user["facebookId"] = facebookId
                                 // display welcome message and restore app interactivity
                                 self.name.text = "Welcome, " + firstName + " " + lastName + "!"
+                                // once user has logged in and details collected, set Boolean to true
                                 self.loggedIn = true
                                 // import FB photo if possible
                                 let url = "https://graph.facebook.com/" + facebookId + "/picture?type=large"
                                 let imageUrl = NSURL(string: url)!
-                                // try to make imageData object  but do not force cast with "!". This result is an optional NSData object
+                                // try to make imageData object  but do not force cast with "!". The result is an optional NSData object. It will be ignored it unsuccessful
                                 let imageData = NSData(contentsOf: imageUrl as URL)
                                 // use "if let" conditional to prevent crash if imageData object is not successully cast. The result of the  "if let" conditional below is "imageData": a non-optional NSData object
                                 if let imageData = imageData {
@@ -149,23 +180,23 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     }
     
     @IBAction func signUp(_ sender: AnyObject) {
-        // add initialized PFUser object to Parse
-        // signup allowed only when password is true and FB login is successful else show error alert
+        // signup allowed only when password is valid and FB login is successful else show error alert
         if password.text != "" {
             self.activity()
             user.password = password.text
             // check if facebook login was successful and details retrieved
             if self.loggedIn {
-                // save PFUser object to Parse. Save will happen only if all the keys are present
+                // save PFUser object to Parse. Save will happen only if all the keys are present else display error
                 user.signUpInBackground(block: { (success, error) in
                     self.restore()
                     if success {
-                        self.performSegue(withIdentifier: "toMain", sender: self)
+                        self.signedUpAlert(title: "Successful!", message: "Thanks for signing up.")
                         
                     } else {
                         if let error = error?.localizedDescription {
                             // display sign up error message
                             self.errorAlert(title: "Failed Sign Up", message: error)
+                            
                         }
                     }
                 })

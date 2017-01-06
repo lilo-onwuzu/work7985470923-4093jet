@@ -22,6 +22,7 @@
 		042567441DC31E84008ED3DE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042567431DC31E84008ED3DE /* LoginViewController.swift */; };
 		042856D91DED1D450091D9BE /* SelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042856D81DED1D450091D9BE /* SelectTableViewCell.swift */; };
 		042856DB1DED4C410091D9BE /* ReceivedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042856DA1DED4C410091D9BE /* ReceivedTableViewCell.swift */; };
+		042922871E1EF293000799BB /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 042922861E1EF293000799BB /* appIcon.png */; };
 		045E82491E0811CD00B0C5C9 /* caseIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 045E82481E0811CD00B0C5C9 /* caseIcon.png */; };
 		045E824B1E0B599900B0C5C9 /* wineIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 045E824A1E0B599900B0C5C9 /* wineIcon.png */; };
 		045E824D1E0B65C400B0C5C9 /* handIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 045E824C1E0B65C300B0C5C9 /* handIcon.png */; };
@@ -81,6 +82,7 @@
 		042567431DC31E84008ED3DE /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		042856D81DED1D450091D9BE /* SelectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTableViewCell.swift; sourceTree = "<group>"; };
 		042856DA1DED4C410091D9BE /* ReceivedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReceivedTableViewCell.swift; path = ../ReceivedTableViewCell.swift; sourceTree = "<group>"; };
+		042922861E1EF293000799BB /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appIcon.png; sourceTree = "<group>"; };
 		045E82481E0811CD00B0C5C9 /* caseIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = caseIcon.png; sourceTree = "<group>"; };
 		045E824A1E0B599900B0C5C9 /* wineIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wineIcon.png; sourceTree = "<group>"; };
 		045E824C1E0B65C300B0C5C9 /* handIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = handIcon.png; sourceTree = "<group>"; };
@@ -185,15 +187,15 @@
 				04DECE161DB0951F0087B887 /* SettingsViewController.swift */,
 				0408BC521DEDC14D0075D8D2 /* TabBarViewController.swift */,
 				04158B9F1DE33B5000D741C4 /* PostedViewController.swift */,
+				04F6DA741DD5F8D900AB8643 /* PostedTableViewCell.swift */,
 				04158B9B1DE324BE00D741C4 /* SelectViewController.swift */,
+				042856D81DED1D450091D9BE /* SelectTableViewCell.swift */,
 				04158B991DE3249900D741C4 /* EditJobViewController.swift */,
 				04158BA11DE33BEF00D741C4 /* ReceivedViewController.swift */,
-				04DECE0E1DB094A60087B887 /* MessageViewController.swift */,
-				0408BC501DED97530075D8D2 /* ShowMessagesViewController.swift */,
-				04F6DA741DD5F8D900AB8643 /* PostedTableViewCell.swift */,
-				042856D81DED1D450091D9BE /* SelectTableViewCell.swift */,
 				042856DA1DED4C410091D9BE /* ReceivedTableViewCell.swift */,
+				04DECE0E1DB094A60087B887 /* MessageViewController.swift */,
 				0408BC4C1DED83DE0075D8D2 /* MessageTableViewCell.swift */,
+				0408BC501DED97530075D8D2 /* ShowMessagesViewController.swift */,
 				0408BC4E1DED95BB0075D8D2 /* ShowMessagesTableViewCell.swift */,
 				045E824E1E0BD0AB00B0C5C9 /* EnterMessageTableViewCell.swift */,
 				04DECE031DAF3B670087B887 /* work.jpg */,
@@ -202,6 +204,7 @@
 				045E824C1E0B65C300B0C5C9 /* handIcon.png */,
 				045E824A1E0B599900B0C5C9 /* wineIcon.png */,
 				045E82481E0811CD00B0C5C9 /* caseIcon.png */,
+				042922861E1EF293000799BB /* appIcon.png */,
 				04DECE061DAF77D80087B887 /* placeholder.svg.png */,
 				0400DFD41DBC7CD0006E7E75 /* LaunchScreen.storyboard */,
 				0400DFD21DBC7B95006E7E75 /* Assets.xcassets */,
@@ -337,6 +340,7 @@
 				04B525E91DF6CC9500A284A0 /* work_1.jpeg in Resources */,
 				049EBB631DD9B54300D76AED /* Dosis-Bold.ttf in Resources */,
 				049EBB651DD9B54300D76AED /* Dosis-ExtraLight.ttf in Resources */,
+				042922871E1EF293000799BB /* appIcon.png in Resources */,
 				81BA81501A49DA1800E65899 /* Main.storyboard in Resources */,
 				04B525EA1DF6CC9500A284A0 /* work_2.jpeg in Resources */,
 				049EBB681DD9B54300D76AED /* Dosis-Regular.ttf in Resources */,

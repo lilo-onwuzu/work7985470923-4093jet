@@ -47,6 +47,7 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLayoutSubviews() {
         if UIDevice.current.orientation.isLandscape {
+            // hide createJob Icon when in landscape
             for view in self.view.subviews {
                 if view.tag == 1 {
                     view.isHidden = true
@@ -54,6 +55,7 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         } else {
+            // unhide createJob Icon when in portrait
             for view in self.view.subviews {
                 if view.tag == 1 {
                     view.isHidden = false
@@ -66,7 +68,7 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
     // called on touch up inside. checks to see if rateField has a value that can be converted into a Double
     @IBAction func stepRate(_ sender: UIStepper) {
         var enterRate: Double?
-        // if a double
+        // if a double, save to enterRate
         if isADouble(rateField.text) != nil {
             // if isADouble(), add to the stepper value (+ve or -ve)
             enterRate = isADouble(rateField.text)! + sender.value
@@ -113,11 +115,6 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

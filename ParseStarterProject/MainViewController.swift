@@ -11,6 +11,7 @@ import UIKit
 class MainViewController: UIViewController {
     
     var timer = Timer()
+    // make font, fontSize and countBySeconds global functions so they dont initialize whenever raiseTime is called
     var countBySeconds = 0
     var font = UIFont()
     var fontSize = 70.0
@@ -37,24 +38,16 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // hide UI elements to prepare for animation
         signUpButton.alpha = 0.0
         loginButton.alpha = 0.0
         registeredLabel.alpha = 0.0
         mainImage.alpha = 0.0
-        
-    }
-    
-    @IBAction func signUpButton(_ sender: UIButton) {
-        performSegue(withIdentifier: "toSignUp", sender: self)
-        
-    }
-    
-    @IBAction func login(_ sender: AnyObject) {
-        performSegue(withIdentifier: "toLogin", sender: self)
 
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        // start timer on viewDidAppear and execute func "raiseTime()" at each timeInterval period
         timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(self.raiseTime), userInfo: nil, repeats: true)
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.signUpButton.alpha = 1.0
@@ -66,13 +59,17 @@ class MainViewController: UIViewController {
             self.mainImage.alpha = 1.0
             self.mainImage.center.y -= 30
         }, completion: nil)
+    }
+    
+    @IBAction func signUpButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "toSignUp", sender: self)
         
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func login(_ sender: AnyObject) {
+        performSegue(withIdentifier: "toLogin", sender: self)
+
     }
-    
+
 }
 

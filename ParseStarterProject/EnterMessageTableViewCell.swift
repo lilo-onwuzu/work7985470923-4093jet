@@ -12,14 +12,25 @@ class EnterMessageTableViewCell: UITableViewCell, UITextFieldDelegate {
 
     var selectedJob = PFObject(className: "Job")
     var myTableView = UITableView()
-    
+    var key = ""
+
     @IBOutlet weak var entertextField: UITextField!
     @IBOutlet weak var sendButton: UIButton!
     
     func sendText() {
         if entertextField.text! != "" {
             let enteredText = entertextField.text!
-            let newMessage: [String : String] = ["req" : enteredText]
+            let reqId = selectedJob.object(forKey: "requesterId") as! String
+            let userId = PFUser.current()?.objectId!
+            // if requester id matches userId, send text as the requester with key "req" else send as "user"
+            if reqId == userId {
+                key = "req"
+                
+            } else {
+                key = "user"
+                
+            }
+            let newMessage: [String : String] = [key : enteredText]
             selectedJob.add(newMessage, forKey: "messages")
             selectedJob.saveInBackground(block: { (success, error) in
                 if success {

@@ -23,7 +23,7 @@ class UserProfileViewController: UIViewController {
         super.viewDidLoad()
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
-        // fetch requestor image
+        // fetch user image
         var user = PFObject(className: "User")
         let query: PFQuery = PFUser.query()!
         query.whereKey("objectId", equalTo: reqId)
@@ -35,8 +35,6 @@ class UserProfileViewController: UIViewController {
                 self.userName.text = firstName + " " + lastName
                 if let story = user.object(forKey: "story") {
                     self.details.text = String(describing: story)
-                    self.details.sizeToFit()
-                    self.scrollView.sizeToFit()
                     
                 }
                 self.details.sizeToFit()

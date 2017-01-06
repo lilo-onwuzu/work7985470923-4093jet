@@ -33,6 +33,12 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
         logo.layer.cornerRadius = 3
         tableView.delegate = self
         tableView.dataSource = self
+        menuView.isHidden = true
+        refresher = UIRefreshControl()
+        refresher.attributedTitle = NSAttributedString(string: "Refreshing...")
+        refresher.addTarget(self, action: #selector(PostedViewController.refresh), for: UIControlEvents.valueChanged)
+        self.tableView.addSubview(refresher)
+        
         // query job class for list of jobs with userid as selectedUser
         let querySelected = PFQuery(className: "Job")
         querySelected.whereKey("selectedUser", equalTo: user.objectId!)
@@ -63,12 +69,6 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
         
-        menuView.isHidden = true
-        refresher = UIRefreshControl()
-        refresher.attributedTitle = NSAttributedString(string: "Refreshing...")
-        refresher.addTarget(self, action: #selector(PostedViewController.refresh), for: UIControlEvents.valueChanged)
-        self.tableView.addSubview(refresher)
-        
     }
     
     // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden
@@ -78,11 +78,11 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    // viewDidLayoutSubviews() runs each time layout changes
     override func viewDidLayoutSubviews() {
         if UIDevice.current.orientation.isLandscape {
+            // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
             for view in self.view.subviews {
-                // viewDidLayoutSubviews() runs each time layout changes
-                // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
                 if view.tag == 2 {
                     let xOfView = self.view.bounds.width
                     let yOfView = self.view.bounds.height
@@ -92,6 +92,7 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
                 }
             }
         } else {
+            // resize menuView for portrait
             for view in self.view.subviews {
                 if view.tag == 2 {
                     let xOfView = self.view.bounds.width
@@ -158,6 +159,7 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! MessageTableViewCell
+            // if cell.ready is true, cell has been swiped and ready for segue to showMessages vc
             if cell.ready {
                 cell.ready = false
                 selectedJob = postedJobs[indexPath.row]
@@ -167,10 +169,11 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
             let job = postedJobs[indexPath.row]
             let jobTitle = job.object(forKey: "title") as! String
             cell.messageTitle.text = jobTitle
+            // pass tableView to cell so we can reload tableview from within cell
             cell.myTableView = tableView
             // get images
             let reqId = job.object(forKey: "requesterId") as! String
-            // fetch requestor image
+            // fetch user's image
             var requester = PFObject(className: "User")
             let query: PFQuery = PFUser.query()!
             query.whereKey("objectId", equalTo: reqId)
@@ -200,9 +203,8 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
             let jobTitle = job.object(forKey: "title") as! String
             cell.messageTitle.text = jobTitle
             cell.myTableView = tableView
-            // get images
-            let reqId = job.object(forKey: "requesterId") as! String
             // fetch requestor image
+            let reqId = job.object(forKey: "requesterId") as! String
             var requester = PFObject(className: "User")
             let query: PFQuery = PFUser.query()!
             query.whereKey("objectId", equalTo: reqId)
@@ -228,11 +230,6 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
         menuView.isHidden = true
         showMenu = true
         
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

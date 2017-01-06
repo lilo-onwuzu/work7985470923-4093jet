@@ -12,9 +12,13 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var showMenu = false
     var user = PFUser.current()!
+    // all user's posted jobs
     var postedJobs = [PFObject]()
+    // saves selected job(s) so it can be deleted
     var jobsToDelete = [PFObject]()
+    // saves selected job so it can be passed along before segue to edit vc
     var editJob = PFObject(className: "Job")
+    // saves selected job so it can be passed along before segue to select vc
     var selectedJob = PFObject(className: "Job")
     var deleting = false
     var refresher: UIRefreshControl!
@@ -74,8 +78,10 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                             self.errorAlert(title: "Error Deleting Job", message: error.localizedDescription)
                                             
                                         } else {
+                                            // reload table after deleting cells
                                             self.tableView.reloadData()
-                                            self.deleteJobs.setTitle("Delete x", for: UIControlState.normal)
+                                            // remove "DELETE SELECTED" label next to delete button
+                                            self.deleteLabel.isHidden = true
                                             self.tableView.allowsMultipleSelection = false
                                             
                                         }
@@ -130,18 +136,18 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
-    // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden
+    // hide menuView on viewDidAppear so if user presses back to return to this view, menuView is hidden. showMenu prevents the need for a double tap before menuView can be displayed again
     override func viewDidAppear(_ animated: Bool) {
         menuView.isHidden = true
         showMenu = true
         
     }
     
+    // viewDidLayoutSubviews() runs each time layout changes
     override func viewDidLayoutSubviews() {
         if UIDevice.current.orientation.isLandscape {
+            // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
             for view in self.view.subviews {
-                // viewDidLayoutSubviews() runs each time layout changes
-                // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
                 if view.tag == 2 {
                     let xOfView = self.view.bounds.width
                     let yOfView = self.view.bounds.height
@@ -151,6 +157,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
             }
         } else {
+            // resize menuView for portrait
             for view in self.view.subviews {
                 if view.tag == 2 {
                     let xOfView = self.view.bounds.width
@@ -190,10 +197,11 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     @IBAction func editJob(_ sender: Any) {
         if let index = tableView.indexPathForSelectedRow?.row {
-            // pass selected job to editJob segue
+            // pass selected job to editJob segue once editJob is clicked
             editJob = postedJobs[index]
             performSegue(withIdentifier: "toEditJob", sender: self)
 
+        // if no jobs are selected, show error/guide
         } else {
             errorAlert(title: "Select a job to edit", message: "You have not selected any jobs")
             
@@ -237,20 +245,25 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
+    // UITableView Delegate method operates on my UITableView subclass "tableView"
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return postedJobs.count
         
     }
     
+    // UITableView Delegate method operates on my UITableView subclass "tableView"
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postedCell", for: indexPath) as! PostedTableViewCell
+        // this performs segue when cell is swiped tableview is reloaded and this function terminates here
         if cell.ready {
+            // reset ready variable
             cell.ready = false
+            // save selectedJon for select vc
             selectedJob = postedJobs[cell.selectedRow]
             performSegue(withIdentifier: "toSelect", sender: self)
             
         }
-        // get images
+        // get user's images
         let imageFile = user.object(forKey: "image") as! PFFile
         imageFile.getDataInBackground { (data, error) in
             if let data = data {
@@ -265,21 +278,18 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let jobRate = job.object(forKey: "rate") as! String
         cell.postedTitle?.text = jobTitle
         cell.postedCycle?.text = jobCycle
-        cell.postedRate?.text = jobRate
+        cell.postedRate?.text = "$" + jobRate
+        // given to cell to allow us to reload the tableview from inside cell
         cell.myTableView = tableView
         return cell
         
     }
     
+    //  touch anywhere to hide menuView. showMenu prevents the need for a double tap before menuView can be displayed again
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         menuView.isHidden = true
         showMenu = true
 
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

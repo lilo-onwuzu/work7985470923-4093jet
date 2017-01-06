@@ -11,8 +11,8 @@ import UIKit
 class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     var createJob = PFObject(className: "Job")
-    var cycleValue = ""
-    var cycleRow = ""
+    // set initial value to flat because UIPickerView delegate's method didSelectRow is only called when there is a change from the initial value 
+    var cycleValue = "Flat"
     // create an array of all the items in the picker
     var cycle = ["Flat", "Hourly", "Weekly", "Monthly", "Annually"]
 
@@ -50,6 +50,7 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     override func viewDidLayoutSubviews() {
         if UIDevice.current.orientation.isLandscape {
+            // hide createJob Icon when in landscape
             for view in self.view.subviews {
                 if view.tag == 1 {
                     view.isHidden = true
@@ -57,6 +58,7 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 }
             }
         } else {
+            // unhide createJob Icon when in portrait
             for view in self.view.subviews {
                 if view.tag == 1 {
                     view.isHidden = false
@@ -82,24 +84,14 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
     }
     
-    // UIPickerViewDelegate method: number of items in picker
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return cycle.count
-    
-    }
-    
-    // UIPickerViewDelegate method: get selected row value
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        cycleValue = cycle[row]
-        
-    }
-    
-    // UIPickerViewDelegate method: return an attributed from of each value in cycle array into each row in picker
+    // UIPickerViewDelegate method: return an attributed form of each value in cycle array into each row in picker
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         var label = view as! UILabel!
         if label == nil {
             label = UILabel()
+            
         }
+        var cycleRow = ""
         cycleRow = cycle[row]
         let title = NSAttributedString(string: cycleRow, attributes: [NSFontAttributeName: UIFont.init(name: "Offside", size: 22.0)! ,          NSForegroundColorAttributeName: UIColor.white])
         label?.attributedText = title
@@ -108,13 +100,20 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    // UIPickerViewDelegate method: number of items in picker
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return cycle.count
+    
+    }
+    
+    // UIPickerViewDelegate method: get selected row value. Save selected cycle in variable "cycleValue"
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        cycleValue = cycle[row]
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // pass PFObject through segue without saving to Parse
+        // pass PFObject through segue without saving to Parse yet
         if segue.identifier == "toCreate3" {
             let nextVC = segue.destination as! Create3ViewController
             nextVC.createJob = self.createJob
