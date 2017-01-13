@@ -13,6 +13,8 @@ class MessageTableViewCell: UITableViewCell {
     var selectedJob = PFObject(className: "Job")
     var myTableView = UITableView()
     var ready = false
+    var newReqCount = Int()
+    var newUserCount = Int()
     
     @IBOutlet weak var reqImage: UIImageView!
     @IBOutlet weak var messageTitle: UILabel!
@@ -20,6 +22,7 @@ class MessageTableViewCell: UITableViewCell {
     @IBOutlet weak var connectLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var imageFrame: UIButton!
+    @IBOutlet weak var notification: UILabel!
     
     func recenter () {
         UIView.animate(withDuration: 0.5,
@@ -49,6 +52,101 @@ class MessageTableViewCell: UITableViewCell {
                 // reset cell center to center of screen
                 self.center.x = self.bounds.width/2
                 
+            }
+        }
+    }
+    
+    func getCount() {
+        let messages = selectedJob.object(forKey: "messages") as! [NSDictionary]
+        var i = 0
+        var j = 0
+        let userid = PFUser.current()?.objectId!
+        let requesterId = selectedJob.object(forKey: "requesterId") as! String
+        for message in messages {
+            // save for req
+            if userid == requesterId {
+                if (message.object(forKey: "user") as? String) != nil {
+                    i += 1
+                    selectedJob.setValue(i, forKey: "userSaveForReq")
+                    selectedJob.saveInBackground()
+                    
+                }
+            // save for user
+            } else {
+                if (message.object(forKey: "req") as? String) != nil {
+                    j += 1
+                    selectedJob.setValue(j, forKey: "reqSaveForUser")
+                    selectedJob.saveInBackground()
+                    
+                }
+            }
+        }
+    }
+    
+    func newCount() {
+        // get number of messages from user and req now
+        let messages = selectedJob.object(forKey: "messages") as! [NSDictionary]
+        let userid = PFUser.current()?.objectId!
+        let requesterId = selectedJob.object(forKey: "requesterId") as! String
+        let selectedId = selectedJob.object(forKey: "selectedUser") as! String
+        // if this is the req interacting, pull requester notification data
+        if userid == requesterId {
+            // get number of messages from user and req previously stored the last time viewDidLoad for req
+            let i0 = selectedJob.object(forKey: "userSaveForReq") as! Int
+            // get number of messages from user and req now
+            var i = 0
+            for message in messages {
+                if (message.object(forKey: "user") as? String) != nil {
+                    i += 1
+                    newUserCount = i - i0
+                    // fetch selected user's name
+                    var selectedName = ""
+                    var userSelected = PFObject(className: "User")
+                    let query: PFQuery = PFUser.query()!
+                    query.whereKey("objectId", equalTo: selectedId)
+                    query.findObjectsInBackground { (users, error) in
+                        if let users = users {
+                            userSelected = users[0]
+                            selectedName = userSelected.object(forKey: "first_name") as! String
+                            if self.newUserCount == 1 {
+                                self.notification.text = String(self.newUserCount) + " new message from " + selectedName
+                                
+                            } else {
+                                self.notification.text = String(self.newUserCount) + " new messages from " + selectedName
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        // if this is the selected user interacting, pull user notification data
+        } else {
+            // get number of messages from user and req previously stored the last time viewDidLoad for user
+            let i0 = selectedJob.object(forKey: "reqSaveForUser") as! Int
+            var i = 0
+            for message in messages {
+                if (message.object(forKey: "req") as? String) != nil {
+                    i += 1
+                    newReqCount = i - i0
+                    // fetch requester's name
+                    var reqName = ""
+                    var requester = PFObject(className: "User")
+                    let query: PFQuery = PFUser.query()!
+                    query.whereKey("objectId", equalTo: requesterId)
+                    query.findObjectsInBackground { (users, error) in
+                        if let users = users {
+                            requester = users[0]
+                            reqName = requester.object(forKey: "first_name") as! String
+                            if self.newReqCount == 1 {
+                                self.notification.text = String(self.newReqCount) + " new message from " + reqName
+                                
+                            } else {
+                                self.notification.text = String(self.newReqCount) + " new messages from " + reqName
+                                
+                            }
+                        }
+                    }
+                }
             }
         }
     }

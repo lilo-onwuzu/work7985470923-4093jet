@@ -62,6 +62,50 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
         
     }
     
+    func signInAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Yes, I agree", style: .default, handler: { (action) in
+            // signup allowed only when password is valid and FB login is successful else show error alert
+            if self.password.text != "" {
+                self.activity()
+                self.user.password = self.password.text
+                // check if facebook login was successful and details retrieved
+                if self.loggedIn {
+                    // save PFUser object to Parse. Save will happen only if all the keys are present else display error
+                    self.user.signUpInBackground(block: { (success, error) in
+                        self.restore()
+                        if success {
+                            self.signedUpAlert(title: "Successful!", message: "Thanks for signing up.")
+                            
+                        } else {
+                            if let error = error?.localizedDescription {
+                                // display sign up error message
+                                self.errorAlert(title: "Failed Sign Up", message: error)
+                                
+                            }
+                        }
+                    })
+                } else {
+                    self.restore()
+                    self.errorAlert(title: "Invalid Facebook Login", message: "You need to log in with Facebook to sign up with WorkJet")
+                    
+                }
+            } else {
+                self.errorAlert(title: "Invalid Password", message: "Please enter a valid password")
+                
+            }
+            alert.dismiss(animated: true, completion: nil)
+            
+        }))
+        
+        alert.addAction(UIAlertAction(title: "No, I do not agree", style: .default, handler: { (action) in
+            self.errorAlert(title: "Agree to Terms of Use", message: "You must read and agree to the terms of use before signing up")
+            alert.dismiss(animated: true, completion: nil)
+            
+        }))
+        present(alert, animated: true, completion: nil)
+    }
+    
     func signedUpAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Login", style: .default, handler: { (action) in
@@ -180,35 +224,9 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     }
     
     @IBAction func signUp(_ sender: AnyObject) {
-        // signup allowed only when password is valid and FB login is successful else show error alert
-        if password.text != "" {
-            self.activity()
-            user.password = password.text
-            // check if facebook login was successful and details retrieved
-            if self.loggedIn {
-                // save PFUser object to Parse. Save will happen only if all the keys are present else display error
-                user.signUpInBackground(block: { (success, error) in
-                    self.restore()
-                    if success {
-                        self.signedUpAlert(title: "Successful!", message: "Thanks for signing up.")
-                        
-                    } else {
-                        if let error = error?.localizedDescription {
-                            // display sign up error message
-                            self.errorAlert(title: "Failed Sign Up", message: error)
-                            
-                        }
-                    }
-                })
-            } else {
-                self.restore()
-                errorAlert(title: "Invalid Facebook Login", message: "You need to log in with Facebook to sign up with WorkJet")
-                
-            }
-        } else {
-            errorAlert(title: "Invalid Password", message: "Please enter a valid password")
-            
-        }
+        // agree to terms of use
+        signInAlert(title: "Terms of Use", message: "You may not post content that is violent, discriminatory, abusive, illegal or sexually explicit. WorkJet retains the right to delete a violating user account or at a minimum the violating content itself")
+    
     }
   
     @IBAction func back(_ sender: UIButton) {

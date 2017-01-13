@@ -67,8 +67,15 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func login(_ sender: AnyObject) {
-        performSegue(withIdentifier: "toLogin", sender: self)
+        let user = PFUser.current()!
+        if user.email != nil {
+            // if user is signed in. direct to home
+            performSegue(withIdentifier: "toHome", sender: self)
 
+        } else {
+            performSegue(withIdentifier: "toLogin", sender: self)
+
+        }
     }
 
 }

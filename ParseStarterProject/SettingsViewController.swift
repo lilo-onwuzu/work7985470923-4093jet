@@ -180,6 +180,31 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         }
     }
     
+    func displayMenu() {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+        // place home view in menuView
+        menuView = vc.view
+        let view = menuView.subviews[1]
+        // hide logo to prevent logo repeat
+        view.isHidden = true
+        self.view.addSubview(menuView)
+        // size menuView
+        let xOfView = self.view.bounds.width
+        let yOfView = self.view.bounds.height
+        let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
+        menuView.frame = rect
+        // menuView is hidden in viewDidLoad, now it is displayed
+        self.menuView.isHidden = false
+        self.showMenu = false
+
+    }
+
+    func removeMenu() {
+        menuView.isHidden = true
+        showMenu = true
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         logo.layer.masksToBounds = true
@@ -196,8 +221,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     
     // hide menuView on viewDidAppear so if user presses back to return to this view, menuView is hidden. showMenu prevents the need for a double tap before menuView can be displayed again
     override func viewDidAppear(_ animated: Bool) {
-        menuView.isHidden = true
-        showMenu = true
+        removeMenu()
         
     }
     
@@ -230,25 +254,10 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     
     @IBAction func openMenu(_ sender: Any) {
         if showMenu {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-            // place home view in menuView
-            menuView = vc.view
-            let view = menuView.subviews[1]
-            // hide logo to prevent logo repeat
-            view.isHidden = true
-            self.view.addSubview(menuView)
-            // size menuView
-            let xOfView = self.view.bounds.width
-            let yOfView = self.view.bounds.height
-            let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
-            menuView.frame = rect
-            // menuView is hidden in viewDidLoad, now it is displayed
-            self.menuView.isHidden = false
-            self.showMenu = false
-
+            displayMenu()
+            
         } else {
-            menuView.isHidden = true
-            showMenu = true
+            removeMenu()
             
         }
     }
@@ -266,8 +275,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     // tap anywhere to escape keyboard. showMenu prevents the need for a double tap before menuView can be displayed again
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
-        menuView.isHidden = true
-        showMenu = true
+        removeMenu()
 
     }
     

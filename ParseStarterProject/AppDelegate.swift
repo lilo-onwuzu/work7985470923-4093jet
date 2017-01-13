@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             ParseMutableClientConfiguration.applicationId = "workjet8943032pfdlksj"
             ParseMutableClientConfiguration.clientKey = "rtkjjtreopiwerui948034"
             ParseMutableClientConfiguration.server = "http://workjet.herokuapp.com/parse"
-        
+            
         })
         Parse.initialize(with: parseConfiguration)
         PFUser.enableAutomaticUser()

@@ -58,6 +58,53 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         })
     }
     
+    func showPhotoBar() {
+        if changingPhoto {
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+                self.scrollView.center.y += 50
+                self.cameraButton.isHidden = false
+                self.photosButton.isHidden = false
+                self.changingPhoto = false
+            }, completion: nil)
+        }
+    }
+    
+    func hidePhotoBar() {
+        if !changingPhoto {
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
+                self.scrollView.center.y -= 50
+                self.cameraButton.isHidden = true
+                self.photosButton.isHidden = true
+                self.changingPhoto = true
+            }, completion: nil)
+        }
+    }
+    
+    func displayMenu() {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+        // place home view in menuView
+        menuView = vc.view
+        let view = menuView.subviews[1]
+        // hide logo to prevent logo repeat
+        view.isHidden = true
+        self.view.addSubview(menuView)
+        // size menuView
+        let xOfView = self.view.bounds.width
+        let yOfView = self.view.bounds.height
+        let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
+        menuView.frame = rect
+        // menuView is hidden in viewDidLoad, now it is displayed
+        self.menuView.isHidden = false
+        self.showMenu = false
+        
+    }
+    
+    func hideMenu() {
+        menuView.isHidden = true
+        showMenu = true
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         logo.layer.masksToBounds = true
@@ -107,16 +154,13 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     
     // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden. showMenu prevents the need for a double tap before menuView can be displayed again
     override func viewDidAppear(_ animated: Bool) {
-        menuView.isHidden = true
-        showMenu = true
+        hideMenu()
         
     }
     
     // viewDidLayoutSubviews() runs each time layout changes
     override func viewDidLayoutSubviews() {
-        cameraButton.isHidden = true
-        photosButton.isHidden = true
-        changingPhoto = true
+        hidePhotoBar()
         if UIDevice.current.orientation.isLandscape {
             // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
             for view in self.view.subviews {
@@ -145,20 +189,11 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
 
     @IBAction func changePhoto(_ sender: Any) {
         if changingPhoto {
-            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-                self.scrollView.center.y += 50
-                self.cameraButton.isHidden = false
-                self.photosButton.isHidden = false
-                self.changingPhoto = false
-            }, completion: nil)
+            showPhotoBar()
             
         } else {
-            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
-                self.scrollView.center.y -= 50
-                self.cameraButton.isHidden = true
-                self.photosButton.isHidden = true
-                self.changingPhoto = true
-            }, completion: nil)
+           hidePhotoBar()
+            
         }
     }
 
@@ -192,25 +227,10 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     
     @IBAction func mainMenu(_ sender: Any) {
         if showMenu {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-            // place home view in menuView
-            menuView = vc.view
-            let view = menuView.subviews[1]
-            // hide logo to prevent logo repeat
-            view.isHidden = true
-            self.view.addSubview(menuView)
-            // size menuView
-            let xOfView = self.view.bounds.width
-            let yOfView = self.view.bounds.height
-            let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
-            menuView.frame = rect
-            // menuView is hidden in viewDidLoad, now it is displayed
-            self.menuView.isHidden = false
-            self.showMenu = false
+            displayMenu()
 
         } else {
-            menuView.isHidden = true
-            showMenu = true
+            hideMenu()
             
         }
     }
@@ -227,9 +247,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         }
         // dismiss imagePicker controller
         self.dismiss(animated: true, completion: nil)
-        cameraButton.isHidden = true
-        photosButton.isHidden = true
-        changingPhoto = true
+        hidePhotoBar()
         
     }
 
@@ -237,8 +255,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
-        menuView.isHidden = true
-        showMenu = true
+        hideMenu()
         
     }
     

@@ -103,6 +103,32 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     }
     
+    func displayMenu() {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+        // place home view in menuView
+        menuView = vc.view
+        let view = menuView.subviews[1]
+        // hide logo to prevent logo repeat
+        view.isHidden = true
+        self.view.addSubview(menuView)
+        // size menuView
+        let xOfView = self.view.bounds.width
+        let yOfView = self.view.bounds.height
+        let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
+        menuView.frame = rect
+        // menuView is hidden in viewDidLoad, now it is displayed
+        self.menuView.isHidden = false
+        self.showMenu = false
+        
+    }
+    
+    // hide menuView on viewDidAppear so if user presses back to return to this view, menuView is hidden. showMenu prevents the need for a double tap before menuView can be displayed again
+    func removeMenu() {
+        menuView.isHidden = true
+        showMenu = true
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // collect user's posted jobs from a query to "Job" class
@@ -136,10 +162,10 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
-    // hide menuView on viewDidAppear so if user presses back to return to this view, menuView is hidden. showMenu prevents the need for a double tap before menuView can be displayed again
     override func viewDidAppear(_ animated: Bool) {
-        menuView.isHidden = true
-        showMenu = true
+        removeMenu()
+        // reload tableView to remove gesture recognizers
+        tableView.reloadData()
         
     }
     
@@ -172,25 +198,10 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBAction func mainMenu(_ sender: Any) {
         if showMenu {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-            // place home view in menuView
-            menuView = vc.view
-            let view = menuView.subviews[1]
-            // hide logo to prevent logo repeat
-            view.isHidden = true
-            self.view.addSubview(menuView)
-            // size menuView
-            let xOfView = self.view.bounds.width
-            let yOfView = self.view.bounds.height
-            let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
-            menuView.frame = rect
-            // menuView is hidden in viewDidLoad, now it is displayed
-            self.menuView.isHidden = false
-            self.showMenu = false
+            displayMenu()
 
         } else {
-            menuView.isHidden = true
-            self.showMenu = true
+            removeMenu()
         
         }
     }
@@ -287,8 +298,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     //  touch anywhere to hide menuView. showMenu prevents the need for a double tap before menuView can be displayed again
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        menuView.isHidden = true
-        showMenu = true
+        removeMenu()
 
     }
 

@@ -66,6 +66,31 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func displayMenu() {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+        // place home view in menuView
+        menuView = vc.view
+        let view = menuView.subviews[1]
+        // hide logo to prevent logo repeat
+        view.isHidden = true
+        self.view.addSubview(menuView)
+        // size menuView
+        let xOfView = self.view.bounds.width
+        let yOfView = self.view.bounds.height
+        let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
+        menuView.frame = rect
+        // menuView is hidden in viewDidLoad, now it is displayed
+        self.menuView.isHidden = false
+        self.showMenu = false
+        
+    }
+    
+    func removeMenu() {
+        menuView.isHidden = true
+        self.showMenu = true
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.jobTitle.delegate = self
@@ -88,8 +113,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     
     // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden
     override func viewDidAppear(_ animated: Bool) {
-        menuView.isHidden = true
-        showMenu = true
+        removeMenu()
         
     }
     
@@ -131,25 +155,10 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func mainMenu(_ sender: Any) {
         if showMenu {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-            // place home view in menuView
-            menuView = vc.view
-            let view = menuView.subviews[1]
-            // hide logo to prevent logo repeat
-            view.isHidden = true
-            self.view.addSubview(menuView)
-            // size menuView
-            let xOfView = self.view.bounds.width
-            let yOfView = self.view.bounds.height
-            let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
-            menuView.frame = rect
-            // menuView is hidden in viewDidLoad, now it is displayed
-            self.menuView.isHidden = false
-            self.showMenu = false
+            displayMenu()
 
         } else {
-            menuView.isHidden = true
-            self.showMenu = true
+            removeMenu()
             
         }
     }
@@ -162,8 +171,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     // tap anywhere to escape keyboard, hide menu and set showMenu to true so that double tap is not needed to display menuView again
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
-        menuView.isHidden = true
-        showMenu = true
+        removeMenu()
 
     }
     

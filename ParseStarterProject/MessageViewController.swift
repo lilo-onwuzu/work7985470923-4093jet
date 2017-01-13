@@ -27,6 +27,32 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    func displayMenu() {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
+        // place home view in menuView
+        menuView = vc.view
+        let view = menuView.subviews[1]
+        // hide logo to prevent logo repeat
+        view.isHidden = true
+        self.view.addSubview(menuView)
+        // size menuView
+        let xOfView = self.view.bounds.width
+        let yOfView = self.view.bounds.height
+        let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
+        menuView.frame = rect
+        // menuView is hidden in viewDidLoad, now it is displayed
+        self.menuView.isHidden = false
+        showMenu = false
+
+    }
+    
+    // hide menuView on viewDidAppear so if user presses back to return to this view, menuView is hidden
+    func removeMenu() {
+        menuView.isHidden = true
+        showMenu = true
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         logo.layer.masksToBounds = true
@@ -71,10 +97,9 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
-    // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden
     override func viewDidAppear(_ animated: Bool) {
-        menuView.isHidden = true
-        showMenu = true
+        tableView.reloadData()
+        removeMenu()
         
     }
     
@@ -107,25 +132,10 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func mainMenu(_ sender: Any) {
         if showMenu {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
-            // place home view in menuView
-            menuView = vc.view
-            let view = menuView.subviews[1]
-            // hide logo to prevent logo repeat
-            view.isHidden = true
-            self.view.addSubview(menuView)
-            // size menuView
-            let xOfView = self.view.bounds.width
-            let yOfView = self.view.bounds.height
-            let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
-            menuView.frame = rect
-            // menuView is hidden in viewDidLoad, now it is displayed
-            self.menuView.isHidden = false
-            showMenu = false
+            displayMenu()
             
         } else {
-            menuView.isHidden = true
-            showMenu = true
+            removeMenu()
             
         }
     }
@@ -190,7 +200,13 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
                     }
                 }
             }
+            cell.selectedJob = job
+            // newCount() subtracts the current message count from the previous messageCount to get number of new messages
+            cell.newCount()
+            // save user and requester message count so we can use it in the future
+            cell.getCount()
             return cell
+            
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "matchCell", for: indexPath) as! MessageTableViewCell
             if cell.ready {
@@ -221,6 +237,11 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
                     }
                 }
             }
+            cell.selectedJob = job
+            // newCount() subtracts the current message count from the previous messageCount to get number of new messages
+            cell.newCount()
+            // save user and requester message count so we can use it in the future
+            cell.getCount()
             return cell
             
         }

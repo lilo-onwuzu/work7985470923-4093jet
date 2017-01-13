@@ -15,7 +15,7 @@ class SearchViewController: UIViewController {
 	var keepId = String()
 	let user = PFUser.current()!
 	var currentJob = PFObject(className: "Job")
-	
+
 	@IBOutlet weak var jobTitle: UILabel!
 	@IBOutlet weak var jobCycle: UILabel!
 	@IBOutlet weak var jobRate: UILabel!
@@ -33,10 +33,160 @@ class SearchViewController: UIViewController {
 	@IBOutlet weak var rateIcon: UIButton!
 	@IBOutlet weak var detailsIcon: UIButton!
 	@IBOutlet weak var locationIcon: UIButton!
+	@IBOutlet weak var flagIcon: UIButton!
 	
 	func errorAlert(title: String, message: String) {
 		let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
 		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+			alert.dismiss(animated: true, completion: nil)
+			
+		}))
+		present(alert, animated: true, completion: nil)
+		
+	}
+
+	func finallyDeleteUser() {
+		var requester = PFObject(className: "User")
+		let query: PFQuery = PFUser.query()!
+		query.whereKey("objectId", equalTo: self.keepId)
+		query.findObjectsInBackground { (users, error) in
+			if let users = users {
+				requester = users[0]
+				requester.deleteInBackground(block: { (success, error) in
+					if success {
+						self.getNewJob()
+						
+					}
+				})
+			}
+		}
+	}
+	
+	func deleteAsAccepted () {
+		// then delete user as selectedUser for all jobs
+		let queryReceivedJobs = PFQuery(className: "Job")
+		queryReceivedJobs.whereKey("userAccepted", contains: keepId)
+		queryReceivedJobs.findObjectsInBackground { (objects, error) in
+			if let objects = objects {
+				if objects.count > 0 {
+					for object in objects {
+						var userAccepted = object.object(forKey: "userAccepted") as! [String]
+						// remove userId from every jobs array of acceptedUsers
+						for id in userAccepted {
+							if id == self.keepId {
+								userAccepted.remove(at: userAccepted.index(of: id)!)
+								object.setValue(userAccepted, forKey: "userAccepted")
+								object.saveInBackground(block: { (success, error) in
+									if success {
+										self.finallyDeleteUser()
+										
+									}
+								})
+							}
+						}
+					}
+				} else {
+					// go to next step even if there are no objects
+					self.finallyDeleteUser()
+					
+				}
+			}
+		}
+	}
+	
+	func deleteAsSelected () {
+		// then delete user as selectedUser for all jobs
+		let queryReceivedJobs = PFQuery(className: "Job")
+		queryReceivedJobs.whereKey("selectedUser", equalTo: keepId)
+		queryReceivedJobs.findObjectsInBackground { (objects, error) in
+			if let objects = objects {
+				if objects.count > 0 {
+					for object in objects {
+						// empty selected user
+						object.setValue("", forKey: "selectedUser")
+						// empty messages too since messages only initiates with handshake agreement
+						// this job will no longer be listed in message vc until another match is made
+						object.remove(forKey: "messages")
+						object.saveInBackground(block: { (success, error) in
+							if success {
+								self.deleteAsAccepted()
+								
+							}
+						})
+					}
+				} else {
+					// go to next step even if there are no objects
+					self.deleteAsAccepted()
+					
+				}
+			}
+		}
+	}
+	
+	func deleteUser() {
+		// first delete all user's posted jobs
+		let queryPostedJobs = PFQuery(className: "Job")
+		queryPostedJobs.whereKey("requesterId", equalTo: keepId)
+		queryPostedJobs.findObjectsInBackground { (objects, error) in
+			if let objects = objects {
+				if objects.count > 0 {
+					for object in objects {
+						object.deleteInBackground(block: { (success, error) in
+							if success {
+								self.deleteAsSelected()
+								
+							}
+						})
+					}
+				} else {
+					// go to next step even if there are no objects
+					self.deleteAsSelected()
+					
+				}
+			}
+		}
+	}
+	
+    func flagAlert(title: String, message: String) {
+		let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+		alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+			var number = Int()
+			// check if flagCount already exist for this job and has a value convertible to Int()
+			if let flagCount = self.currentJob.object(forKey: "flagCount") as? Int {
+				// if flagCount exists then flaggers array must exist in PFObject
+				let ids = self.currentJob.object(forKey: "flaggers") as! [String]
+				let id = self.user.objectId!
+				// check if user has already flaged this content, if so, do nothing
+				if ids.contains(id) {
+					self.errorAlert(title: "Stay With Us...", message: "You have already flagged this post. A minimum of 2 flags is needed to erase this post permanently")
+
+                // if this is a unique flagger, continue to flag
+				} else {
+                    self.errorAlert(title: "Thank you!", message: "Your flag has been reported to Workjet")
+					// add user/flagger id to array of unique objects of flagger ids
+					self.currentJob.addUniqueObject(self.user.objectId!, forKey: "flaggers")
+					// if flagCount's exists and its value is greater than or equal to 1
+					if flagCount >= 1 {
+						// delete the job
+						self.currentJob.deleteInBackground()
+						//self.deleteUser()
+						
+					}
+				}
+			// if flagCount does not exist for current job , set its value to 1
+			} else {
+				self.errorAlert(title: "Thank you!", message: "Your flag has been reported to Workjet")
+				number = 1
+				self.currentJob.setValue(number, forKey: "flagCount")
+				self.currentJob.addUniqueObject(self.user.objectId!, forKey: "flaggers")
+				self.currentJob.saveInBackground()
+				
+			}
+            alert.dismiss(animated: true, completion: nil)
+			
+		}))
+		
+		alert.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
 			alert.dismiss(animated: true, completion: nil)
 			
 		}))
@@ -144,9 +294,8 @@ class SearchViewController: UIViewController {
 					
 				}
 			}
-			self.jobDetails.sizeToFit()
 			
-			// animate UI elements on getNewJob() to slide in from the edges
+			// prepare for UI Animation
 			UIView.animate(withDuration: 0,
 			               delay: 0,
 			               usingSpringWithDamping: 60,
@@ -166,6 +315,7 @@ class SearchViewController: UIViewController {
 							self.jobLocation.center.y += 30
 							self.locationIcon.center.y += 30
 			}, completion: nil)
+			// animate UI elements on getNewJob() to slide in from the edges
 			UIView.animate(withDuration: 2,
 			               delay: 0,
 			               usingSpringWithDamping: 60,
@@ -196,11 +346,11 @@ class SearchViewController: UIViewController {
 							self.jobLocation.center.y -= 30
 							self.locationIcon.alpha = 1
 							self.locationIcon.center.y -= 30
+							self.flagIcon.alpha = 1
 			}, completion: nil)
 		}
 	}
-    
-    
+	
     func drag(gesture: UIPanGestureRecognizer) {
         // translation measures the distance of a pan. It can be positive or negative
         let translation = gesture.translation(in: self.view)
@@ -258,7 +408,7 @@ class SearchViewController: UIViewController {
             
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 		// attach gestureRecognizer/listener to swiping element once view loads
@@ -299,7 +449,9 @@ class SearchViewController: UIViewController {
 		self.detailsIcon.alpha = 0
 		self.jobLocation.alpha = 0
 		self.locationIcon.alpha = 0
-
+		self.flagIcon.alpha = 0
+        jobDetails.textContainerInset.left = 40
+        
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -376,6 +528,12 @@ class SearchViewController: UIViewController {
 			showMenu = true
 			
 		}
+	}
+	
+	// method for users to flag explicit content
+	@IBAction func flagContent(_ sender: Any) {
+		flagAlert(title: "Explicit Content", message: "Are you sure you want to flag this job for explicit content?")
+		
 	}
 	
 	@IBAction func toRequester(_ sender: Any) {
