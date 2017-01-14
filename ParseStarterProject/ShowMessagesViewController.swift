@@ -71,8 +71,10 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
             // for section with rows of messages from selectedJob PFObject
             let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! ShowMessagesTableViewCell
             messages = selectedJob.object(forKey: "messages") as! [NSDictionary]
+            
+            // pass details to listCell
+            // place workjet's intro message in first indexpath
             if indexPath.row == 0 {
-                // place workjet's intro message in first indexpath
                 let dictionary = messages[0]
                 let introMessage = dictionary.object(forKey: "intro") as! String
                 cell.message.text = introMessage
@@ -126,15 +128,19 @@ class ShowMessagesViewController: UIViewController, UITableViewDelegate, UITable
                     }
                 }
             }
+            
             return cell
             
         } else {
             // for section with entry message textfield and send button
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "entryCell", for: indexPath) as! EnterMessageTableViewCell
+            
+            // pass details to entryCell
             // pass selectedJob to cell so we can add new messages when send is tapped
             cell.selectedJob = selectedJob
             // pass tableView so we can reload tableView from within cell whenever send is tapped
             cell.myTableView = tableView
+            
             return cell
             
         }

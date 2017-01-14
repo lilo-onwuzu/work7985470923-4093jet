@@ -52,11 +52,14 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             // once user clicks the action button "OK", dismiss the UIAlertController and its corresponding view
             alert.dismiss(animated: true, completion: nil)
         
         }))
+        
         // present UIAlertController view controller to current view's view controller
         present(alert, animated: true, completion: nil)
         
@@ -64,6 +67,8 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     
     func signInAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "Yes, I agree", style: .default, handler: { (action) in
             // signup allowed only when password is valid and FB login is successful else show error alert
             if self.password.text != "" {
@@ -98,22 +103,29 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
             
         }))
         
+        // add alert action
         alert.addAction(UIAlertAction(title: "No, I do not agree", style: .default, handler: { (action) in
             self.errorAlert(title: "Agree to Terms of Use", message: "You must read and agree to the terms of use before signing up")
             alert.dismiss(animated: true, completion: nil)
             
         }))
+        
+        // present alert view controller and its view
         present(alert, animated: true, completion: nil)
+        
     }
     
     func signedUpAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "Login", style: .default, handler: { (action) in
             // once user clicks the action button "OK", dismiss the UIAlertController and its corresponding view and segue to login screen
             self.performSegue(withIdentifier: "toMain", sender: self)
             alert.dismiss(animated: true, completion: nil)
             
         }))
+        
         // present UIAlertController view controller to current view's view controller
         present(alert, animated: true, completion: nil)
         
@@ -124,6 +136,7 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
         // assign textfield's delegate to view controller to allow view controller to control the password textfield
         // view controller as already been subclassed as a UITextFieldDelegate
         self.password.delegate = self
+        
         // display Facebook login button and position rect to receive login button
         facebookButton.frame = CGRect(x: (self.view.bounds.width / 2) - 25, y: (self.view.bounds.height / 2) - 13, width: 50, height: 50)
         // facebookButton does not exist in MainStoryboard so add it to view
@@ -133,14 +146,15 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
         facebookButton.delegate = self
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
+        
         // get new user's location 
-        // there is no error checking in this block of code so remember to use "if let" during get a user location operation to prevent crash
         PFGeoPoint.geoPointForCurrentLocation { (coordinates, error) in
             if let coordinates = coordinates {
                 self.user.setValue(coordinates, forKey: "location")
                 
             }
         }
+        
         // hide UI elements to prepare for animation
         bar.alpha = 0
         signUpButton.alpha = 0
@@ -176,6 +190,8 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         activity()
         let parameters = ["fields": "email, first_name, last_name"]
+        
+        // facebook graph request
         FBSDKGraphRequest(graphPath: "me", parameters: parameters).start { (connection, result, error) in
             // be careful with "let" statement. Only use them for certainly controllable events
             // when communicating with an external SDK, try to use the "if let" block where necessary so app does not crash if SDK changes and requests are unsuccessful

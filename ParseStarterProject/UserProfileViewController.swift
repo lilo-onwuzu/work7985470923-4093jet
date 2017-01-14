@@ -23,6 +23,7 @@ class UserProfileViewController: UIViewController {
         super.viewDidLoad()
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
+        
         // fetch user image
         var user = PFObject(className: "User")
         let query: PFQuery = PFUser.query()!
@@ -30,6 +31,8 @@ class UserProfileViewController: UIViewController {
         query.findObjectsInBackground { (users, error) in
             if let users = users {
                 user = users[0]
+                
+                // get details
                 let firstName = user.object(forKey: "first_name") as! String
                 let lastName = user.object(forKey: "last_name") as! String
                 self.userName.text = firstName + " " + lastName
@@ -38,6 +41,8 @@ class UserProfileViewController: UIViewController {
                     
                 }
                 self.details.sizeToFit()
+                
+                // get image
                 let imageFile = user.object(forKey: "image") as! PFFile
                 imageFile.getDataInBackground { (data, error) in
                     if let data = data {
@@ -46,6 +51,7 @@ class UserProfileViewController: UIViewController {
                         
                     }
                 }
+                
             }
         }
     }

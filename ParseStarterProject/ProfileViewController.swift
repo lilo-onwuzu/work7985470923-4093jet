@@ -30,10 +30,14 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
         
         }))
+        
+        // present
         present(alert, animated: true, completion: nil)
         
     }
@@ -60,6 +64,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     
     func showPhotoBar() {
         if changingPhoto {
+            // slide view down to display photo editing bar
             UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
                 self.scrollView.center.y += 50
                 self.cameraButton.isHidden = false
@@ -71,6 +76,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     
     func hidePhotoBar() {
         if !changingPhoto {
+            // slide view back up
             UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
                 self.scrollView.center.y -= 50
                 self.cameraButton.isHidden = true
@@ -112,6 +118,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         cameraButton.isHidden = true
         photosButton.isHidden = true
         menuView.isHidden = true
+        
         // UIImagePickerController's delegate object is of type UIImagePickerControllerDelegate and UINavigationControllerDelegate
         // a delegate of an object (e.g UITableViewDelegate) is a "protocol" that allows the object (UITableView) to be manipulated by calling functions with the object as an arguments. These functions or methods on the object can now be called anywhere within the delegate (self or settingsVC in this case)
         image.delegate = self
@@ -119,12 +126,14 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         let firstName = user.object(forKey: "first_name") as! String
         let lastName = user.object(forKey: "last_name") as! String
         userName.text = firstName + " " + lastName
+        
         // if story already exists for user, convert it to string (if possible- no "!" in typecast) and display it
         if let story = user.object(forKey: "story") {
             userStory.text = String(describing: story)
             userStory.sizeToFit()
             
         }
+        
         // display user's saved image. user image data always exists in Parse
         let imageFile = user.object(forKey: "image") as! PFFile
         imageFile.getDataInBackground { (data, error) in
@@ -134,6 +143,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
             
             }
         }
+        
+        // get user location
         let geopoint = user.object(forKey: "location") as! PFGeoPoint
         let lat = geopoint.latitude
         let long = geopoint.longitude
@@ -157,35 +168,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         hideMenu()
         
     }
-    
-    // viewDidLayoutSubviews() runs each time layout changes
-    override func viewDidLayoutSubviews() {
-        hidePhotoBar()
-        if UIDevice.current.orientation.isLandscape {
-            // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
-            for view in self.view.subviews {
-                if view.tag == 2 {
-                    let xOfView = self.view.bounds.width
-                    let yOfView = self.view.bounds.height
-                    let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
-                    menuView.frame = rect
-                    
-                }
-            }
-        } else {
-            // resize menuView in portrait
-            for view in self.view.subviews {
-                if view.tag == 2 {
-                    let xOfView = self.view.bounds.width
-                    let yOfView = self.view.bounds.height
-                    let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
-                    menuView.frame = rect
-                    
-                }
-            }
-        }
-    }
-
 
     @IBAction func changePhoto(_ sender: Any) {
         if changingPhoto {
@@ -211,9 +193,11 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
         self.present(image, animated: true, completion: nil)
     }
     
-    // called on editing did begin
+    // add inset below to allow tect field to be visible during editing
     @IBAction func beginEdit(_ sender: Any) {
         scrollView.contentInset.bottom += CGFloat(300)
+        
+        // populate entry field with already stored story before editing
         if let story = user.object(forKey: "story") {
             editStory.text = String(describing: story)
             
@@ -221,6 +205,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     }
     
     @IBAction func endEditing(_ sender: Any) {
+        // remove inset once editing ends
         scrollView.contentInset.bottom -= CGFloat(300)
         
     }

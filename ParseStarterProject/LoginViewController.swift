@@ -39,10 +39,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
         
         }))
+        
+        // present controller
         present(alert, animated: true, completion: nil)
         
     }
@@ -53,6 +57,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             if password.text != "" {
                 activity()
                 let username_decap = username.text!.lowercased()
+                
+                // log in with Parse
                 PFUser.logInWithUsername(inBackground: username_decap, password: password.text!, block: { (user, error) in
                     self.restore()
                     // show error alerts only after restore() function to allow interactivity
@@ -64,6 +70,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         
                     }
                 })
+                
             } else {
                 errorAlert(title: "Invalid Password", message: "Enter a valid password")
                 
@@ -90,6 +97,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        // animate to present view with effects
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.username.alpha = 1.0
             self.username.center.y += 10

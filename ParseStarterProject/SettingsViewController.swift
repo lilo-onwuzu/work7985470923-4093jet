@@ -26,25 +26,35 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
             
         }))
+        
+        // present
         present(alert, animated: true, completion: nil)
         
     }
     
     func confirmAlert(title: String, message: String, selector: Selector ) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
             
         }))
+    
+        // add alert action
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
             self.perform(selector)
             
         }))
+        
+        // present
         present(alert, animated: true, completion: nil)
         
     }
@@ -52,6 +62,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     func confirmPasswordChange() {
         let getPassword = self.password.text!
         let confirmPassword = self.confirmPassword.text!
+        
         // password character length must be greater than 5
         if getPassword.characters.count >= 6 {
             if getPassword == confirmPassword {
@@ -65,10 +76,12 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
             errorAlert(title: "Invalid Password", message: "Your password must have at least 6 characters")
             
         }
+        
     }
     
     func savePassword() {
         user.password = self.password.text!
+        
         user.saveInBackground { (success, error) in
             if success {
                 self.changedPassword.text = "Your password has been updated!"
@@ -83,6 +96,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
             self.password.text = ""
             
         }
+        
     }
     
     func finallyDeleteUser() {
@@ -101,9 +115,12 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         queryReceivedJobs.whereKey("userAccepted", contains: userId)
         queryReceivedJobs.findObjectsInBackground { (objects, error) in
             if let objects = objects {
+                
                 if objects.count > 0 {
+                    
                     for object in objects {
                         var userAccepted = object.object(forKey: "userAccepted") as! [String]
+                        
                         // remove userId from every jobs array of acceptedUsers
                         for id in userAccepted {
                             if id == self.userId {
@@ -117,12 +134,15 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                                 })
                             }
                         }
+                        
                     }
+                    
                 } else {
                     // go to next step even if there are no objects
                     self.finallyDeleteUser()
 
                 }
+                
             }
         }
     }
@@ -133,7 +153,9 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         queryReceivedJobs.whereKey("selectedUser", equalTo: userId)
         queryReceivedJobs.findObjectsInBackground { (objects, error) in
             if let objects = objects {
+                
                 if objects.count > 0 {
+                    
                     for object in objects {
                         // empty selected user
                         object.setValue("", forKey: "selectedUser")
@@ -147,11 +169,13 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                             }
                         })
                     }
+                    
                 } else {
                     // go to next step even if there are no objects
                     self.deleteAsAccepted()
                     
                 }
+                
             }
         }
     }
@@ -162,7 +186,9 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         queryPostedJobs.whereKey("requesterId", equalTo: userId)
         queryPostedJobs.findObjectsInBackground { (objects, error) in
             if let objects = objects {
+                
                 if objects.count > 0 {
+                    
                     for object in objects {
                         object.deleteInBackground(block: { (success, error) in
                             if success {
@@ -171,11 +197,13 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                             }
                         })
                     }
+                    
                 } else {
                     // go to next step even if there are no objects
                     self.deleteAsSelected()
                     
                 }
+                
             }
         }
     }
@@ -223,33 +251,6 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     override func viewDidAppear(_ animated: Bool) {
         removeMenu()
         
-    }
-    
-    // viewDidLayoutSubviews() runs each time layout changes
-    override func viewDidLayoutSubviews() {
-        if UIDevice.current.orientation.isLandscape {
-            for view in self.view.subviews {
-                // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
-                if view.tag == 2 {
-                    let xOfView = self.view.bounds.width
-                    let yOfView = self.view.bounds.height
-                    let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
-                    menuView.frame = rect
-                    
-                }
-            }
-        } else {
-            // resize menuView in portrait
-            for view in self.view.subviews {
-                if view.tag == 2 {
-                    let xOfView = self.view.bounds.width
-                    let yOfView = self.view.bounds.height
-                    let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
-                    menuView.frame = rect
-                    
-                }
-            }
-        }
     }
     
     @IBAction func openMenu(_ sender: Any) {

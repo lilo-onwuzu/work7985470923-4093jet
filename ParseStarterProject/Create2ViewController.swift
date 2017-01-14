@@ -23,10 +23,14 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
         
         }))
+        
+        // present
         present(alert, animated: true, completion: nil)
         
     }
@@ -46,26 +50,6 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         cyclePicker.layer.masksToBounds = true
         cyclePicker.layer.cornerRadius = 7
         
-    }
-    
-    override func viewDidLayoutSubviews() {
-        if UIDevice.current.orientation.isLandscape {
-            // hide createJob Icon when in landscape
-            for view in self.view.subviews {
-                if view.tag == 1 {
-                    view.isHidden = true
-                    
-                }
-            }
-        } else {
-            // unhide createJob Icon when in portrait
-            for view in self.view.subviews {
-                if view.tag == 1 {
-                    view.isHidden = false
-                    
-                }
-            }
-        }
     }
     
     @IBAction func createButton(_ sender: AnyObject) {

@@ -26,10 +26,14 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
 
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
         
         }))
+
+        // present
         present(alert, animated: true, completion: nil)
         
     }
@@ -97,6 +101,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
         menuView.isHidden = true
+        
         // add job location for job (latitude & longitude) with PFGeoPoint
         // use block for async call and handshake boolean "finish" to confirm that location was gotten if not show errorAlert
         PFGeoPoint.geoPointForCurrentLocation { (coordinates, error) in
@@ -109,48 +114,13 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                 
             }
         }
+        
     }
     
     // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden
     override func viewDidAppear(_ animated: Bool) {
         removeMenu()
         
-    }
-    
-    // viewDidLayoutSubviews() runs each time layout changes
-    override func viewDidLayoutSubviews() {
-        if UIDevice.current.orientation.isLandscape {
-            for view in self.view.subviews {
-                // hide createJob Icon when in landscape
-                if view.tag == 1 {
-                    view.isHidden = true
-                    
-                }
-                // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
-                if view.tag == 2 {
-                    let xOfView = self.view.bounds.width
-                    let yOfView = self.view.bounds.height
-                    let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
-                    menuView.frame = rect
-                    
-                }
-            }
-        } else {
-            for view in self.view.subviews {
-                // else show createJob Icon in portrait
-                if view.tag == 1 {
-                    view.isHidden = false
-                    
-                }
-                if view.tag == 2 {
-                    let xOfView = self.view.bounds.width
-                    let yOfView = self.view.bounds.height
-                    let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
-                    menuView.frame = rect
-                    
-                }
-            }
-        }
     }
     
     @IBAction func mainMenu(_ sender: Any) {

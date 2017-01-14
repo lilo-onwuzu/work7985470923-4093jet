@@ -33,46 +33,61 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // get rows selected for deleting and returns the job objects
     func getRowsToDelete() -> [PFObject] {
         var deleteRows = [PFObject]()
+        
         if let indexPaths = tableView.indexPathsForSelectedRows {
             for indexPath in indexPaths {
                 deleteRows.append(postedJobs[indexPath.row])
                 
             }
         }
+        
         return deleteRows
         
     }
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
             
         }))
+        
+        // present
         present(alert, animated: true, completion: nil)
         
     }
     
     func deleteAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "Go back", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
             
         }))
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "Yes Delete", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
             // run delete process if "Yes Delete" is selected
+            
             for job in self.jobsToDelete {
                 let id = job.objectId!
                 // for loop within for loop to compare each row/job selected for deletion with the current list of posted jobs
+                
                 for postedJob in self.postedJobs {
                     if id == postedJob.objectId {
                         self.postedJobs.remove(at: (self.postedJobs.index(of: postedJob))!)
+                        
                         let query = PFQuery(className: "Job")
                         query.whereKey("objectId", equalTo: id)
                         query.findObjectsInBackground(block: { (objects, error) in
                             if let objects = objects {
+                                
                                 for object in objects {
+                                    
                                     object.deleteInBackground(block: { (success, error) in
                                         if let error = error {
                                             self.errorAlert(title: "Error Deleting Job", message: error.localizedDescription)
@@ -86,12 +101,17 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                             
                                         }
                                     })
+                                    
                                 }
+                                
                             }
                         })
+                        
                     }
                 }
+                
             }
+            
         }))
         present(alert, animated: true, completion: nil)
         
@@ -131,6 +151,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // collect user's posted jobs from a query to "Job" class
         let userFid = user.object(forKey: "facebookId") as! String
         let query = PFQuery(className: "Job")
@@ -169,33 +190,6 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
-    // viewDidLayoutSubviews() runs each time layout changes
-    override func viewDidLayoutSubviews() {
-        if UIDevice.current.orientation.isLandscape {
-            // resize menuView (if present in view i.e if menuView is already being displayed) whenever orientation changes. this calculates the variable "rect" based on the new bounds
-            for view in self.view.subviews {
-                if view.tag == 2 {
-                    let xOfView = self.view.bounds.width
-                    let yOfView = self.view.bounds.height
-                    let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
-                    menuView.frame = rect
-                    
-                }
-            }
-        } else {
-            // resize menuView for portrait
-            for view in self.view.subviews {
-                if view.tag == 2 {
-                    let xOfView = self.view.bounds.width
-                    let yOfView = self.view.bounds.height
-                    let rect = CGRect(x: 0, y: 0.1*yOfView, width: 0.75*xOfView, height: 0.9*yOfView)
-                    menuView.frame = rect
-                    
-                }
-            }
-        }
-    }
-    
     @IBAction func mainMenu(_ sender: Any) {
         if showMenu {
             displayMenu()
@@ -225,15 +219,18 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
             deleteLabel.isHidden = true
             deleting = false
             var jobTitles = ""
+            
             // get the array of PFObjects selected for deletion, could be empty if no selection was made
             jobsToDelete = getRowsToDelete()
             let deleteCount = jobsToDelete.count
+            
             // if there were rows selected for deletion, display deleteAlert. Else dont show alert
             if deleteCount > 0 {
                 // delete jobs in Parse
                 for job in jobsToDelete {
                     let jobTitle = job.object(forKey: "title") as! String
                     jobTitles += jobTitle + " \n"
+                    
                 }
                 // deletes "object" in "objects" then reloads tableview, resets deleteButton title and stops allowing multiple selections
                 self.deleteAlert(title: "Are you sure you want to delete these jobs?", message: jobTitles)
@@ -265,6 +262,7 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // UITableView Delegate method operates on my UITableView subclass "tableView"
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postedCell", for: indexPath) as! PostedTableViewCell
+        
         // this performs segue when cell is swiped tableview is reloaded and this function terminates here
         if cell.ready {
             // reset ready variable
@@ -274,7 +272,8 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
             performSegue(withIdentifier: "toSelect", sender: self)
             
         }
-        // get user's images
+        
+        // get user's images and other cell details
         let imageFile = user.object(forKey: "image") as! PFFile
         imageFile.getDataInBackground { (data, error) in
             if let data = data {
@@ -290,8 +289,9 @@ class PostedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.postedTitle?.text = jobTitle
         cell.postedCycle?.text = jobCycle
         cell.postedRate?.text = "$" + jobRate
-        // given to cell to allow us to reload the tableview from inside cell
+        // return some other variables needed for operations within the respective cells for instance, tableView is given to cell to allow us to reload the tableview from inside cell
         cell.myTableView = tableView
+        
         return cell
         
     }

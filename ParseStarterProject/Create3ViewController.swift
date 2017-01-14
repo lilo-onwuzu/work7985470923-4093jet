@@ -19,10 +19,14 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
         
         }))
+        
+        // present
         present(alert, animated: true, completion: nil)
         
     }
@@ -30,10 +34,12 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
     // if the argument "entry" is successfully converted to an optionalDouble return the optionalDouble, else, the function terminates and isADouble() has nil value)
     func isADouble(_ entry: String?) -> Double? {
         var exit: Double?
+        
         if let entry = Double(entry!) {
             exit = entry
             
         }
+        
         return exit
         
     }
@@ -45,29 +51,10 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    override func viewDidLayoutSubviews() {
-        if UIDevice.current.orientation.isLandscape {
-            // hide createJob Icon when in landscape
-            for view in self.view.subviews {
-                if view.tag == 1 {
-                    view.isHidden = true
-                    
-                }
-            }
-        } else {
-            // unhide createJob Icon when in portrait
-            for view in self.view.subviews {
-                if view.tag == 1 {
-                    view.isHidden = false
-                    
-                }
-            }
-        }
-    }
-    
     // called on touch up inside. checks to see if rateField has a value that can be converted into a Double
     @IBAction func stepRate(_ sender: UIStepper) {
         var enterRate: Double?
+        
         // if a double, save to enterRate
         if isADouble(rateField.text) != nil {
             // if isADouble(), add to the stepper value (+ve or -ve)
@@ -81,6 +68,7 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
             sender.value = 0.00
             
         }
+        
         // display enterRate value in textField on every tap
         rateField.text = String(format: "%.2f", enterRate!)
         
@@ -88,6 +76,7 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func next(_ sender: Any) {
         let rate = String(format: "%.2f", isADouble(rateField.text)!)
+        
         // before redirecting, confirm that rate still has a valid number that is non-negative
         if isADouble(rateField.text) != nil && isADouble(rateField.text)! > 0 {
             createJob.setValue(rate, forKey: "rate")
@@ -97,6 +86,7 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
             errorAlert(title: "Invalid Entry", message: "Please enter a valid rate")
             
         }
+        
     }
     
     @IBAction func back(_ sender: Any) {

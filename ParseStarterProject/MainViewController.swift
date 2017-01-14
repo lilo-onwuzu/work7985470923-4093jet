@@ -49,6 +49,8 @@ class MainViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         // start timer on viewDidAppear and execute func "raiseTime()" at each timeInterval period
         timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(self.raiseTime), userInfo: nil, repeats: true)
+        
+        // animate to bring in button from edges of the view
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.signUpButton.alpha = 1.0
             self.signUpButton.center.y -= 30
@@ -59,6 +61,7 @@ class MainViewController: UIViewController {
             self.mainImage.alpha = 1.0
             self.mainImage.center.y -= 30
         }, completion: nil)
+        
     }
     
     @IBAction func signUpButton(_ sender: UIButton) {

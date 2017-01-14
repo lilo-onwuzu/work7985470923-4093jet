@@ -169,6 +169,7 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! MessageTableViewCell
+            
             // if cell.ready is true, cell has been swiped and ready for segue to showMessages vc
             if cell.ready {
                 cell.ready = false
@@ -178,6 +179,8 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
                 performSegue(withIdentifier: "toShowMessages", sender: self)
                 
             }
+            
+            // give postCell details
             let job = postedJobs[indexPath.row]
             let jobTitle = job.object(forKey: "title") as! String
             cell.messageTitle.text = jobTitle
@@ -205,10 +208,13 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
             cell.selectedJob = job
             // newCount() subtracts the current message count from the previous messageCount to get number of new messages
             cell.newCount()
+            
             return cell
             
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "matchCell", for: indexPath) as! MessageTableViewCell
+            
+            // if cell.ready is true, cell has been swiped and ready for segue to showMessages vc
             if cell.ready {
                 cell.ready = false
                 selectedJob = matchedJobs[indexPath.row]
@@ -217,6 +223,8 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
                 performSegue(withIdentifier: "toShowMessages", sender: self)
                 
             }
+            
+            // give matchCell details
             let job = matchedJobs[indexPath.row]
             let jobTitle = job.object(forKey: "title") as! String
             cell.messageTitle.text = jobTitle
@@ -242,6 +250,7 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
             cell.selectedJob = job
             // newCount() subtracts the current message count from the previous messageCount to get number of new messages
             cell.newCount()
+            
             return cell
             
         }

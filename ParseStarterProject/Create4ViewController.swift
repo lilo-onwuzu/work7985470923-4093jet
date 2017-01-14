@@ -24,10 +24,14 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
     
     func errorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add alert action
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
        
         }))
+        
+        // present
         present(alert, animated: true, completion: nil)
         
     }
@@ -46,12 +50,14 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
                         self.jobDetails.isHidden = true
                         self.formLabel.isHidden = true
                         self.createButton.isHidden = true
+                        
                         // display confirmation
                         self.confirmLabel.isHidden = false
                         self.homeButton.isHidden = false
                         self.confirmLabel.layer.masksToBounds = true
                         self.confirmLabel.layer.cornerRadius = 5
                         self.homeButton.layer.cornerRadius = 5
+                        
                         // animate createIcon to change its image and flip horizontally
                         UIView.transition(with: self.createIcon, duration: 2,
                                           options: .transitionFlipFromLeft,
@@ -80,26 +86,6 @@ class Create4ViewController: UIViewController, UITextFieldDelegate {
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
         
-    }
-    
-    override func viewDidLayoutSubviews() {
-        if UIDevice.current.orientation.isLandscape {
-            // hide createJob Icon when in landscape
-            for view in self.view.subviews {
-                if view.tag == 1 {
-                    view.isHidden = true
-                    
-                }
-            }
-        } else {
-            // unhide createJob Icon when in portrait
-            for view in self.view.subviews {
-                if view.tag == 1 {
-                    view.isHidden = false
-                    
-                }
-            }
-        }
     }
     
     @IBAction func confirmCreate(_ sender: AnyObject) {

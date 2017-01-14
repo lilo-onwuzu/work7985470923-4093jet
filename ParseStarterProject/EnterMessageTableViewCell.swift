@@ -22,6 +22,7 @@ class EnterMessageTableViewCell: UITableViewCell, UITextFieldDelegate {
             let enteredText = entertextField.text!
             let reqId = selectedJob.object(forKey: "requesterId") as! String
             let userId = PFUser.current()?.objectId!
+            
             // if requester id matches userId, send text as the requester with key "req" else send as "user"
             if reqId == userId {
                 key = "req"
@@ -30,6 +31,8 @@ class EnterMessageTableViewCell: UITableViewCell, UITextFieldDelegate {
                 key = "user"
                 
             }
+            
+            // save entered text with key "req" or "user"
             let newMessage: [String : String] = [key : enteredText]
             selectedJob.add(newMessage, forKey: "messages")
             selectedJob.saveInBackground(block: { (success, error) in
@@ -41,6 +44,7 @@ class EnterMessageTableViewCell: UITableViewCell, UITextFieldDelegate {
                     
                 }
             })
+            
         }
     }
     

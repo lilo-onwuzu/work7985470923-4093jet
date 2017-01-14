@@ -44,22 +44,15 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
     
     }
     
-    // when cell in select vc is swiped, this function will cause changes to the UI that show that a user has been selected
     func showSelectedRow(index: Int, swipeButton: UIButton, selectLabel: UILabel) {
         let selected = selectedJob.object(forKey: "selectedUser") as! String
+        
+        // when cell in select vc is swiped, this function will cause changes to the UI that show that a user has been selected
         if selected == users[index] {
             let buttonImage = UIImage(named: "wineIcon.png")
             swipeButton.setImage(buttonImage, for: .normal)
             selectLabel.text = "MATCHED!"
-        
-        } else {
-            let buttonImage = UIImage(named: "handIcon.png")
-            swipeButton.setImage(buttonImage, for: .normal)
-            selectLabel.text = "SWIPE TO SELECT"
-            
-        }
-        // if selectedUser id matches row of user, animate and toss swipeIcon up +30 then toss back down -30
-        if selected == users[index] {
+            // if selectedUser id matches row of user, animate and toss swipeIcon up +30 then toss back down -30
             UIView.animate(withDuration: 0.1,
                            delay: 0,
                            usingSpringWithDamping: 0.6,
@@ -70,6 +63,11 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
                             self.tossDownIcon(swipeIcon: swipeButton)
                             
             })
+        } else {
+            let buttonImage = UIImage(named: "handIcon.png")
+            swipeButton.setImage(buttonImage, for: .normal)
+            selectLabel.text = "SWIPE TO SELECT"
+            
         }
     }
     
@@ -133,34 +131,40 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath) as! SelectTableViewCell
         // once cell is swiped right, cell.ready becomes true and the tableview is reloaded which causes this to load too
+        
         if cell.ready {
             cell.ready = false
             // set swiped user as selectedUser
-            selectedJob.setValue(users[indexPath.row], forKey: "selectedUser")
-            // init messaging when match is made and add new message to array
-            let firstName = user.object(forKey: "first_name") as! String
-            // fetch selected user's name
-            var selectedName = ""
-            var userSelected = PFObject(className: "User")
-            let query: PFQuery = PFUser.query()!
-            query.whereKey("objectId", equalTo: users[indexPath.row])
-            query.findObjectsInBackground { (users, error) in
-                if let users = users {
-                    userSelected = users[0]
-                    selectedName = userSelected.object(forKey: "first_name") as! String
-                    let introValue = "Congratulations " + selectedName + "! " + firstName + " picked you for the job. Connect with " + firstName + " here"
-                    let introMessage: [String : String] = ["intro" : introValue]
-                    var messages = [NSDictionary]()
-                    messages.append(introMessage as NSDictionary)
-                    self.selectedJob.setValue(messages, forKey: "messages")
-                    self.selectedJob.saveInBackground()
-                    // reload table view to show new user selection
-                    tableView.reloadData()
-                    
+            let initiallySelectedId = selectedJob.object(forKey: "selectedUser") as! String
+            // but only if the selectedUser is different from the initially selected one
+            if initiallySelectedId != users[indexPath.row] {
+                selectedJob.setValue(users[indexPath.row], forKey: "selectedUser")
+                // init messaging when match is made and add new message to array
+                let firstName = user.object(forKey: "first_name") as! String
+                // fetch selected user's name
+                var selectedName = ""
+                var userSelected = PFObject(className: "User")
+                let query: PFQuery = PFUser.query()!
+                query.whereKey("objectId", equalTo: users[indexPath.row])
+                query.findObjectsInBackground { (users, error) in
+                    if let users = users {
+                        userSelected = users[0]
+                        selectedName = userSelected.object(forKey: "first_name") as! String
+                        let introValue = "Congratulations " + selectedName + "! " + firstName + " picked you for the job. Connect with " + firstName + " here"
+                        let introMessage: [String : String] = ["intro" : introValue]
+                        var messages = [NSDictionary]()
+                        messages.append(introMessage as NSDictionary)
+                        self.selectedJob.setValue(messages, forKey: "messages")
+                        self.selectedJob.saveInBackground()
+                        // reload table view to show new user selection
+                        tableView.reloadData()
+                        
+                    }
                 }
             }
         }
-        // fetch user name and image and display
+        
+        // fetch user name and image and display 
         var userAccepted = PFObject(className: "User")
         let query: PFQuery = PFUser.query()!
         query.whereKey("objectId", equalTo: users[indexPath.row])
@@ -182,8 +186,10 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
         }
         // when cell in select vc is swiped, this function will cause changes to the UI that show that a user has been selected
         showSelectedRow(index: indexPath.row, swipeButton: cell.swipeIcon, selectLabel: cell.selectLabel)
+        // return some other variables needed for operations within the respective cells
         cell.myTableView = tableView
         cell.selectedJob = selectedJob
+        
         return cell
         
     }

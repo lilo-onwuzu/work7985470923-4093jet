@@ -97,6 +97,7 @@ class HomeViewController: UIViewController {
     
     @IBAction func logOut(_ sender: AnyObject) {
         let empty = [String]()
+        // clear viewed jobs from user's filtering list then logout user
         user["accepted"] = empty
         user["rejected"] = empty
         user.saveInBackground(block: { (success, error) in
@@ -118,6 +119,7 @@ class HomeViewController: UIViewController {
         profileButton.layer.cornerRadius = 10
         settingsButton.layer.cornerRadius = 10
         jobsButton.layer.cornerRadius = 10
+        
         // hide UI elements to prepare for animation in viewDidAppear
         searchButton.alpha = 0
         createButton.alpha = 0
@@ -125,6 +127,7 @@ class HomeViewController: UIViewController {
         profileButton.alpha = 0
         settingsButton.alpha = 0
         userImage.alpha = 0
+        
         // load user's image in main page
         let imageFile = user.object(forKey: "image") as! PFFile
         imageFile.getDataInBackground { (data, error) in
@@ -134,6 +137,7 @@ class HomeViewController: UIViewController {
                 
             }
         }
+        
         userImage.layer.masksToBounds = true
         userImage.layer.cornerRadius = 60
         searchIcon.alpha = 0
@@ -146,11 +150,7 @@ class HomeViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        // hide userImage when viewDidAppear in landscape mode so it does not overlap view
-        if UIDevice.current.orientation.isLandscape {
-            userImage.isHidden = true
-
-        }
+        // animate to present view with effects
         UIView.animate(withDuration: 0.25,
                        delay: 0.025,
                        usingSpringWithDamping: 0.6,
@@ -186,25 +186,4 @@ class HomeViewController: UIViewController {
                             self.getSecondImage()
         })
     }
-    
-    override func viewDidLayoutSubviews() {
-        if UIDevice.current.orientation.isLandscape {
-            // hide user image when in landscape
-            for view in self.view.subviews {
-                if view.tag == 3 {
-                    view.isHidden = true
-                    
-                }
-            }
-        } else {
-            // else show user image in portrait
-            for view in self.view.subviews {
-                if view.tag == 3 {
-                    view.isHidden = false
-                    
-                }
-            }
-        }
-    }
-    
 }
