@@ -98,7 +98,7 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        tableView.reloadData()
+        //tableView.reloadData()
         removeMenu()
         
     }
@@ -173,6 +173,8 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
             if cell.ready {
                 cell.ready = false
                 selectedJob = postedJobs[indexPath.row]
+                // save user/requester message count whenever cell is swiped right and ShowMessagesTableView is instantiated so we can use it in the future
+                cell.getCount()
                 performSegue(withIdentifier: "toShowMessages", sender: self)
                 
             }
@@ -203,8 +205,6 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
             cell.selectedJob = job
             // newCount() subtracts the current message count from the previous messageCount to get number of new messages
             cell.newCount()
-            // save user and requester message count so we can use it in the future
-            cell.getCount()
             return cell
             
         } else {
@@ -212,6 +212,8 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
             if cell.ready {
                 cell.ready = false
                 selectedJob = matchedJobs[indexPath.row]
+                // save user/requester message count whenever cell is swiped right and ShowMessagesTableView is instantiated so we can use it in the future
+                cell.getCount()
                 performSegue(withIdentifier: "toShowMessages", sender: self)
                 
             }
@@ -240,8 +242,6 @@ class MesssageViewController: UIViewController, UITableViewDelegate, UITableView
             cell.selectedJob = job
             // newCount() subtracts the current message count from the previous messageCount to get number of new messages
             cell.newCount()
-            // save user and requester message count so we can use it in the future
-            cell.getCount()
             return cell
             
         }
