@@ -15,6 +15,7 @@ class HomeViewController: UIViewController {
     let first_image = UIImage(named: "work.jpg")!
     let second_image = UIImage(named:"work_1.jpeg")!
     let third_image = UIImage(named: "work_2.jpeg")!
+    let fourth_image = UIImage(named: "work_3.jpeg")!
     
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var createButton: UIButton!
@@ -48,6 +49,19 @@ class HomeViewController: UIViewController {
                           duration: 7,
                           options: .transitionCrossDissolve,
                           animations: { self.mainImage.image = self.third_image
+                            self.mainImage.alpha = 1
+                            self.mainImage.contentMode = UIViewContentMode.scaleAspectFill },
+                          completion: { (success) in
+                            // run viewDidAppear to restart mainImage change
+                            self.getFourthImage()
+        })
+    }
+    
+    func getFourthImage() {
+        UIView.transition(with: self.mainImage,
+                          duration: 7,
+                          options: .transitionCrossDissolve,
+                          animations: { self.mainImage.image = self.fourth_image
                             self.mainImage.alpha = 1
                             self.mainImage.contentMode = UIViewContentMode.scaleAspectFill },
                           completion: { (success) in

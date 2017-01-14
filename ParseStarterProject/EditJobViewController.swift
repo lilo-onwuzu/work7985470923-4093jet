@@ -12,8 +12,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
 
     var editJob = PFObject(className: "Job")
     var cycle = ["Flat", "Hourly", "Weekly", "Monthly", "Annually"]
-    var cycleValue = ""
-    var cycleRow = ""
+    var cycleValue = "Flat"
     var cycleSelected = ""
 
     @IBOutlet weak var editTitle: UITextField!
@@ -116,7 +115,6 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
         // edit title
         if self.editTitle.text != "" {
             editJob.setValue(self.editTitle.text!, forKey: "title")
-            print(self.cycleValue)
             // edit cycle
             editJob.setValue(self.cycleValue, forKey: "cycle")
             
@@ -174,7 +172,6 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
     // UIPickerViewDelegate method: get selected row value
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         cycleValue = cycle[row]
-        print(cycleValue)
 
     }
     
@@ -184,6 +181,7 @@ class EditJobViewController: UIViewController, UITextFieldDelegate, UIPickerView
         if label == nil {
             label = UILabel()
         }
+        var cycleRow = ""
         cycleRow = cycle[row]
         let title = NSAttributedString(string: cycleRow, attributes: [NSFontAttributeName: UIFont.init(name: "Offside", size: 22.0)! , NSForegroundColorAttributeName: UIColor.black ])
         label?.attributedText = title

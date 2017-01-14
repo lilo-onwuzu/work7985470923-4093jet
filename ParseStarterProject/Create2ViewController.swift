@@ -93,7 +93,7 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         }
         var cycleRow = ""
         cycleRow = cycle[row]
-        let title = NSAttributedString(string: cycleRow, attributes: [NSFontAttributeName: UIFont.init(name: "Offside", size: 22.0)! ,          NSForegroundColorAttributeName: UIColor.white])
+        let title = NSAttributedString(string: cycleRow, attributes: [NSFontAttributeName: UIFont.init(name: "Offside", size: 22.0)! ,                                     NSForegroundColorAttributeName: UIColor.white])
         label?.attributedText = title
         label?.textAlignment = .center
         return label!

@@ -39,7 +39,7 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
                        usingSpringWithDamping: 0.6,
                        initialSpringVelocity: 0.0,
                        options: .transitionCrossDissolve,
-                       animations: { swipeIcon.center.y += 5 },
+                       animations: { swipeIcon.center.y += 15 },
                        completion: nil)
     
     }
@@ -61,11 +61,11 @@ class SelectViewController: UIViewController , UITableViewDelegate, UITableViewD
         // if selectedUser id matches row of user, animate and toss swipeIcon up +30 then toss back down -30
         if selected == users[index] {
             UIView.animate(withDuration: 0.1,
-                           delay: 1,
+                           delay: 0,
                            usingSpringWithDamping: 0.6,
                            initialSpringVelocity: 0.0,
                            options: .transitionCrossDissolve,
-                           animations: { swipeButton.center.y -= 5 },
+                           animations: { swipeButton.center.y -= 15 },
                            completion: { (success) in
                             self.tossDownIcon(swipeIcon: swipeButton)
                             

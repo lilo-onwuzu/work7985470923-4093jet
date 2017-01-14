@@ -22,7 +22,7 @@ class MessageTableViewCell: UITableViewCell {
     @IBOutlet weak var connectLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var imageFrame: UIButton!
-    @IBOutlet weak var notification: UILabel!
+    @IBOutlet weak var noticeLabel: UILabel!
     
     func recenter () {
         UIView.animate(withDuration: 0.5,
@@ -103,6 +103,7 @@ class MessageTableViewCell: UITableViewCell {
                     if let i0 = self.selectedJob.object(forKey: "userSaveForReq") as? Int {
                         // get number of messages from user and req now
                         var i = 0
+                        self.noticeLabel.text = "0 new messages from " + selectedName
                         for message in messages {
                             // if user message to req exists
                             if (message.object(forKey: "user") as? String) != nil {
@@ -110,18 +111,12 @@ class MessageTableViewCell: UITableViewCell {
                                 self.newUserCount = i - i0
                                 // if there is only one new message, use singlular "message"
                                 if self.newUserCount == 1 {
-                                    self.notification.text = String(self.newUserCount) + " new message from " + selectedName
-                                  
+                                    self.noticeLabel.text = String(self.newUserCount) + " new message from " + selectedName
                                 // if there are zero or more than one new messages, use plural "messages"
                                 } else if self.newUserCount == 0 || self.newUserCount > 1 {
-                                    self.notification.text = String(self.newUserCount) + " new messages from " + selectedName
-                                
+                                    self.noticeLabel.text = String(self.newUserCount) + " new messages from " + selectedName
+
                                 }
-                            // else if "user" message does not yet exist for message
-                            } else {
-                                self.newUserCount = 0
-                                self.notification.text = String(self.newUserCount) + " new messages from " + selectedName
-                                
                             }
                         }
                     // if no previous data has been saved from getCount(), userSaveForReq is still undefined, but there may still be unread messages
@@ -130,6 +125,7 @@ class MessageTableViewCell: UITableViewCell {
                         let i0 = 0
                         // get number of messages from user and req now
                         var i = 0
+                        self.noticeLabel.text = "0 new messages from " + selectedName
                         for message in messages {
                             // if user message to req exists
                             if (message.object(forKey: "user") as? String) != nil {
@@ -137,18 +133,13 @@ class MessageTableViewCell: UITableViewCell {
                                 self.newUserCount = i - i0
                                 // if there is only one new message, use singlular "message"
                                 if self.newUserCount == 1 {
-                                    self.notification.text = String(self.newUserCount) + " new message from " + selectedName
+                                    self.noticeLabel.text = String(self.newUserCount) + " new message from " + selectedName
                                     
                                     // if there are zero or more than one new messages, use plural "messages"
                                 } else if self.newUserCount == 0 || self.newUserCount > 1 {
-                                    self.notification.text = String(self.newUserCount) + " new messages from " + selectedName
+                                    self.noticeLabel.text = String(self.newUserCount) + " new messages from " + selectedName
                                     
                                 }
-                                // else if "user" message does not yet exist for message
-                            } else {
-                                self.newUserCount = 0
-                                self.notification.text = String(self.newUserCount) + " new messages from " + selectedName
-                                
                             }
                         }
                     }
@@ -168,22 +159,18 @@ class MessageTableViewCell: UITableViewCell {
                     // get number of messages from user and req previously stored the last time viewDidLoad for user
                     if let i0 = self.selectedJob.object(forKey: "reqSaveForUser") as? Int {
                         var i = 0
+                        self.noticeLabel.text = "0 new messages from " + reqName
                         for message in messages {
                             if (message.object(forKey: "req") as? String) != nil {
                                 i += 1
                                 self.newReqCount = i - i0
                                 if self.newReqCount == 1 {
-                                    self.notification.text = String(self.newReqCount) + " new message from " + reqName
+                                    self.noticeLabel.text = String(self.newReqCount) + " new message from " + reqName
                                     
                                 } else if self.newReqCount == 0 || self.newReqCount > 1 {
-                                    self.notification.text = String(self.newReqCount) + " new messages from " + reqName
+                                    self.noticeLabel.text = String(self.newReqCount) + " new messages from " + reqName
                                     
                                 }
-                            // if no messages by "req" exists yet
-                            } else {
-                                self.newReqCount = 0
-                                self.notification.text = String(self.newReqCount) + " new messages from " + reqName
-                                
                             }
                         }
                     // if no previous data has been saved from getCount(), reqSaveForUser is still undefined, but there may still be unread messages
@@ -192,6 +179,7 @@ class MessageTableViewCell: UITableViewCell {
                         let i0 = 0
                         // get number of messages from user and req now
                         var i = 0
+                        self.noticeLabel.text = "0 new messages from " + reqName
                         for message in messages {
                             // if user message to req exists
                             if (message.object(forKey: "req") as? String) != nil {
@@ -199,21 +187,15 @@ class MessageTableViewCell: UITableViewCell {
                                 self.newReqCount = i - i0
                                 // if there is only one new message, use singlular "message"
                                 if self.newReqCount == 1 {
-                                    self.notification.text = String(self.newReqCount) + " new message from " + reqName
+                                    self.noticeLabel.text = String(self.newReqCount) + " new message from " + reqName
                                     
                                     // if there are zero or more than one new messages, use plural "messages"
                                 } else if self.newReqCount == 0 || self.newReqCount > 1 {
-                                    self.notification.text = String(self.newReqCount) + " new messages from " + reqName
+                                    self.noticeLabel.text = String(self.newReqCount) + " new messages from " + reqName
                                     
                                 }
-                                // else if "user" message does not yet exist for message
-                            } else {
-                                self.newReqCount = 0
-                                self.notification.text = String(self.newReqCount) + " new messages from " + reqName
-                                
                             }
                         }
-                        
                     }
                 }
             }

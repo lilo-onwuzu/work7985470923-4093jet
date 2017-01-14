@@ -213,10 +213,16 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     
     // called on editing did begin
     @IBAction func beginEdit(_ sender: Any) {
+        scrollView.contentInset.bottom += CGFloat(300)
         if let story = user.object(forKey: "story") {
             editStory.text = String(describing: story)
             
         }
+    }
+    
+    @IBAction func endEditing(_ sender: Any) {
+        scrollView.contentInset.bottom -= CGFloat(300)
+        
     }
     
     // edit action executes "after editing ends" or return button is tapped
@@ -252,7 +258,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UINavigation
     }
 
     // tap anywhere to escape keyboard. showMenu prevents the need for a double tap before menuView can be displayed again
-
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
         hideMenu()
