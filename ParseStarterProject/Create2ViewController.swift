@@ -50,6 +50,12 @@ class Create2ViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         cyclePicker.layer.masksToBounds = true
         cyclePicker.layer.cornerRadius = 7
         
+        // change view for smaller screen sizes (iPad, iPhone5 & iPhone5s)
+        if UIScreen.main.bounds.height <= 650 {
+            self.view.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+            
+        }
+        
     }
     
     @IBAction func createButton(_ sender: AnyObject) {

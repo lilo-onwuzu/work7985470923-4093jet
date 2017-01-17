@@ -115,6 +115,12 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             }
         }
         
+        // change view for smaller screen sizes (iPad, iPhone5 & iPhone5s)
+        if UIScreen.main.bounds.height <= 650 {
+            self.view.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+            
+        }
+        
     }
     
     // hide menuView on viewDidAppear so if user presses back to return to thois view, menuView is hidden

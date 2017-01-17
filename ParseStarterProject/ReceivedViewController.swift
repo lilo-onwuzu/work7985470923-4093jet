@@ -82,7 +82,13 @@ class ReceivedViewController: UIViewController, UITableViewDataSource, UITableVi
         refresher.attributedTitle = NSAttributedString(string: "Refreshing...")
         refresher.addTarget(self, action: #selector(PostedViewController.refresh), for: UIControlEvents.valueChanged)
         self.tableView.addSubview(refresher)
-
+        
+        // change view for smaller screen sizes (iPad, iPhone5 & iPhone5s)
+        if UIScreen.main.bounds.height <= 650 {
+            self.view.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+            
+        }
+        
     }
 
     override func viewDidAppear(_ animated: Bool) {

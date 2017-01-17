@@ -146,6 +146,12 @@ class HomeViewController: UIViewController {
         profileIcon.alpha = 0
         settingsIcon.alpha = 0
         logOut.alpha = 0
+        
+        // change view for smaller screen sizes (iPad, iPhone5 & iPhone5s)
+        if UIScreen.main.bounds.height <= 650 {
+            self.view.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+            
+        }
 
     }
 

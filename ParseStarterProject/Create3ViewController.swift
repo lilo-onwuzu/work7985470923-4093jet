@@ -49,6 +49,12 @@ class Create3ViewController: UIViewController, UITextFieldDelegate {
         logo.layer.masksToBounds = true
         logo.layer.cornerRadius = 3
         
+        // change view for smaller screen sizes (iPad, iPhone5 & iPhone5s)
+        if UIScreen.main.bounds.height <= 650 {
+            self.view.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+            
+        }
+        
     }
     
     // called on touch up inside. checks to see if rateField has a value that can be converted into a Double

@@ -425,7 +425,13 @@ class SearchViewController: UIViewController {
 		self.locationIcon.alpha = 0
 		self.flagIcon.alpha = 0
         jobDetails.textContainerInset.left = 40
-        
+		
+		// change view for smaller screen sizes (iPad, iPhone5 & iPhone5s)
+		if UIScreen.main.bounds.height <= 600 {
+			self.view.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+			
+		}
+		
 	}
 	
 	// hide menuView on viewDidAppear so if user presses back to return to this view, menuView is hidden. showMenu prevents the need for a double tap before menuView can be displayed again

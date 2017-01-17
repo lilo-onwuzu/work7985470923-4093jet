@@ -14,7 +14,7 @@ class MainViewController: UIViewController {
     // make font, fontSize and countBySeconds global functions so they dont initialize whenever raiseTime is called
     var countBySeconds = 0
     var font = UIFont()
-    var fontSize = 70.0
+    var fontSize = 60.0
     
     @IBOutlet weak var mainImage: UIImageView!
     @IBOutlet weak var appLabel: UILabel!
@@ -44,6 +44,12 @@ class MainViewController: UIViewController {
         registeredLabel.alpha = 0.0
         mainImage.alpha = 0.0
 
+        // change view for smaller screen sizes (iPad, iPhone5 & iPhone5s)
+        if UIScreen.main.bounds.height <= 600 {
+            self.view.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+            
+        }
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
