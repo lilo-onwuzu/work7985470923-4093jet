@@ -15,7 +15,9 @@ class SearchViewController: UIViewController {
 	var keepId = String()
 	let user = PFUser.current()!
 	var currentJob = PFObject(className: "Job")
-
+	var secondQuery = false
+	var ignoredJobs = [String]()
+	
 	@IBOutlet weak var jobTitle: UILabel!
 	@IBOutlet weak var jobCycle: UILabel!
 	@IBOutlet weak var jobRate: UILabel!
@@ -173,152 +175,209 @@ class SearchViewController: UIViewController {
 		
 	}
 	
-    func getNewJob() {
-		let query = PFQuery(className: "Job")
-		query.limit = 1
-		// query with PFUser's location
-		let location = PFUser.current()?["job_location"] as? PFGeoPoint
-		if let latitude = location?.latitude{
-			if let longitude = location?.longitude {
-				query.whereKey("location", withinGeoBoxFromSouthwest: PFGeoPoint(latitude: latitude - 1, longitude: longitude - 1), toNortheast:PFGeoPoint(latitude:latitude + 1, longitude: longitude + 1))
-
+	func getJobDetails(job: PFObject) {
+		
+		// get job details and save this job id to viewedJobId
+		self.viewedJobId = job.objectId!
+		let jobTitle = job.object(forKey: "title") as! String
+		self.jobTitle.text = jobTitle
+		let jobRate = job.object(forKey: "rate") as! String
+		self.jobRate.text = "$" + jobRate
+		let jobCycle = job.object(forKey: "cycle") as! String
+		self.jobCycle.text = jobCycle
+		let jobDetails = job.object(forKey: "details") as! String
+		self.jobDetails.text = jobDetails
+		
+		// get requester's photo
+		let reqId = job.object(forKey: "requesterId") as! String
+		// keep requester id for segue
+		self.keepId = reqId
+		var requester = PFObject(className: "User")
+		let query: PFQuery = PFUser.query()!
+		query.whereKey("objectId", equalTo: reqId)
+		query.findObjectsInBackground { (users, error) in
+			if let users = users {
+				requester = users[0]
+				let imageFile = requester.object(forKey: "image") as! PFFile
+				imageFile.getDataInBackground { (data, error) in
+					if let data = data {
+						let imageData = NSData(data: data)
+						self.reqImage.image = UIImage(data: imageData as Data)
+						
+					}
+				}
+				// enable viewProfile and infoLabel
+				self.viewProfile.isHidden = false
+				self.infoLabel.isHidden = false
+				
 			}
 		}
 		
-		// ignored Jobs is initialized when ever getNewJob is called
-		var ignoredJobs = [String]()
-        // job id of user's accepted and rejected jobs during this session is added to acceptedJobs to make list of a full viewed Jobs
-		if let acceptedJobs = PFUser.current()?["accepted"] {
-			ignoredJobs += acceptedJobs as! Array
-			
-		}
-		if let rejectedJobs = PFUser.current()?["rejected"] {
-			ignoredJobs += rejectedJobs as! Array
-			
-		}
-		
-        // get a new job that is not contained in user's accepted or rejected jobs
-		query.whereKey("objectId", notContainedIn: ignoredJobs)
-		query.findObjectsInBackground { (jobs, error) in
-			if let jobs = jobs {
-				if jobs.count > 0 {
-					for job in jobs {
-						self.currentJob = job
-						// get job details and save this job id to viewedJobId
-						self.viewedJobId = job.objectId!
-						let jobTitle = job.object(forKey: "title") as! String
-						self.jobTitle.text = jobTitle
-						let jobRate = job.object(forKey: "rate") as! String
-						self.jobRate.text = "$" + jobRate
-						let jobCycle = job.object(forKey: "cycle") as! String
-						self.jobCycle.text = jobCycle
-						let jobDetails = job.object(forKey: "details") as! String
-						self.jobDetails.text = jobDetails
+		// get job location
+		let geopoint = job.object(forKey: "location") as! PFGeoPoint
+		let lat = geopoint.latitude
+		let long = geopoint.longitude
+		let location = CLLocation(latitude: lat, longitude: long)
+		// use function to get physics address and location from PFGeoPoint
+		CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+			if let placemarks = placemarks {
+				let placemark = placemarks[0]
+				if let city = placemark.locality {
+					if let countryCode = placemark.isoCountryCode {
+						self.jobLocation.text = String(city) + ", " + String(countryCode)
 						
-						// get requester's photo
-						let reqId = job.object(forKey: "requesterId") as! String
-						// keep requester id for segue
-						self.keepId = reqId
-						var requester = PFObject(className: "User")
-						let query: PFQuery = PFUser.query()!
-						query.whereKey("objectId", equalTo: reqId)
-						query.findObjectsInBackground { (users, error) in
-							if let users = users {
-								requester = users[0]
-								let imageFile = requester.object(forKey: "image") as! PFFile
-								imageFile.getDataInBackground { (data, error) in
-									if let data = data {
-										let imageData = NSData(data: data)
-										self.reqImage.image = UIImage(data: imageData as Data)
-										
-									}
-								}
-								// enable viewProfile and infoLabel
-								self.viewProfile.isHidden = false
-								self.infoLabel.isHidden = false
-								
-							}
-						}
-						
-						// get job location
-						let geopoint = job.object(forKey: "location") as! PFGeoPoint
-						let lat = geopoint.latitude
-						let long = geopoint.longitude
-						let location = CLLocation(latitude: lat, longitude: long)
-                        // use function to get physics address and location from PFGeoPoint
-						CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
-							if let placemarks = placemarks {
-								let placemark = placemarks[0]
-								if let city = placemark.locality {
-									if let countryCode = placemark.isoCountryCode {
-										self.jobLocation.text = String(city) + ", " + String(countryCode)
-										
-									}
-								}
-							}
-						})
 					}
-				} else {
-                    // show alert that there are no more jobs to be viewed and segue to home on action
-					self.alertWithSegue(title: "There are no more jobs around your area", message: "Please check again later")
-					
+				}
+			}
+		})
+		
+		// prepare for UI Animation
+		UIView.animate(withDuration: 0,
+					   delay: 0,
+					   usingSpringWithDamping: 60,
+					   initialSpringVelocity: 0.0,
+					   options: [],
+					   animations: {
+						self.reqImage.center.x -= 70
+						self.viewProfile.center.x -= 70
+						self.jobTitle.center.x += 70
+						self.titleIcon.center.x += 70
+						self.jobCycle.center.x -= 70
+						self.cycleIcon.center.x -= 70
+						self.jobRate.center.x += 70
+						self.rateIcon.center.x += 70
+						self.jobDetails.center.y += 30
+						self.detailsIcon.center.y += 30
+						self.jobLocation.center.y += 30
+						self.locationIcon.center.y += 30
+		}, completion: nil)
+		// animate UI elements on getNewJob() to slide in from the edges
+		UIView.animate(withDuration: 2,
+					   delay: 0,
+					   usingSpringWithDamping: 60,
+					   initialSpringVelocity: 0.0,
+					   options: .transitionCrossDissolve,
+					   animations: {
+						self.reqImage.alpha = 1
+						self.reqImage.center.x += 70
+						self.viewProfile.alpha = 1
+						self.viewProfile.center.x += 70
+						self.jobTitle.alpha = 1
+						self.jobTitle.center.x -= 70
+						self.titleIcon.alpha = 1
+						self.titleIcon.center.x -= 70
+						self.jobCycle.alpha = 1
+						self.jobCycle.center.x += 70
+						self.cycleIcon.alpha = 1
+						self.cycleIcon.center.x += 70
+						self.jobRate.alpha = 1
+						self.jobRate.center.x -= 70
+						self.rateIcon.alpha = 1
+						self.rateIcon.center.x -= 70
+						self.jobDetails.alpha = 1
+						self.jobDetails.center.y -= 30
+						self.detailsIcon.alpha = 1
+						self.detailsIcon.center.y -= 30
+						self.jobLocation.alpha = 1
+						self.jobLocation.center.y -= 30
+						self.locationIcon.alpha = 1
+						self.locationIcon.center.y -= 30
+						self.flagIcon.alpha = 1
+		}, completion: nil)
+
+	}
+	
+    func getNewJob() {
+
+		// fetch with second query condition (geolocation)
+		if secondQuery {
+
+			let newQuery = PFQuery(className: "Job")
+			newQuery.limit = 1
+
+			// job id of user's accepted and rejected jobs during this session is added to acceptedJobs to make list of a full viewed Jobs
+			if let acceptedJobs = PFUser.current()?["accepted"] {
+				ignoredJobs += acceptedJobs as! Array
+				
+			}
+			if let rejectedJobs = PFUser.current()?["rejected"] {
+				ignoredJobs += rejectedJobs as! Array
+				
+			}
+			newQuery.whereKey("objectId", notContainedIn: ignoredJobs)
+
+			// query with PFUser's location
+			let location = user.object(forKey: "location") as? PFGeoPoint
+			if let latitude = location?.latitude {
+				if let longitude = location?.longitude {
+					newQuery.whereKey("location", withinGeoBoxFromSouthwest: PFGeoPoint(latitude: latitude - 1, longitude: longitude - 1), toNortheast:PFGeoPoint(latitude:latitude + 1, longitude: longitude + 1))
+
 				}
 			}
 			
-			// prepare for UI Animation
-			UIView.animate(withDuration: 0,
-			               delay: 0,
-			               usingSpringWithDamping: 60,
-			               initialSpringVelocity: 0.0,
-			               options: [],
-			               animations: {
-							self.reqImage.center.x -= 70
-							self.viewProfile.center.x -= 70
-							self.jobTitle.center.x += 70
-							self.titleIcon.center.x += 70
-							self.jobCycle.center.x -= 70
-							self.cycleIcon.center.x -= 70
-							self.jobRate.center.x += 70
-							self.rateIcon.center.x += 70
-							self.jobDetails.center.y += 30
-							self.detailsIcon.center.y += 30
-							self.jobLocation.center.y += 30
-							self.locationIcon.center.y += 30
-			}, completion: nil)
-			// animate UI elements on getNewJob() to slide in from the edges
-			UIView.animate(withDuration: 2,
-			               delay: 0,
-			               usingSpringWithDamping: 60,
-			               initialSpringVelocity: 0.0,
-			               options: .transitionCrossDissolve,
-			               animations: {
-							self.reqImage.alpha = 1
-							self.reqImage.center.x += 70
-							self.viewProfile.alpha = 1
-							self.viewProfile.center.x += 70
-							self.jobTitle.alpha = 1
-							self.jobTitle.center.x -= 70
-							self.titleIcon.alpha = 1
-							self.titleIcon.center.x -= 70
-							self.jobCycle.alpha = 1
-							self.jobCycle.center.x += 70
-							self.cycleIcon.alpha = 1
-							self.cycleIcon.center.x += 70
-							self.jobRate.alpha = 1
-							self.jobRate.center.x -= 70
-							self.rateIcon.alpha = 1
-							self.rateIcon.center.x -= 70
-							self.jobDetails.alpha = 1
-							self.jobDetails.center.y -= 30
-							self.detailsIcon.alpha = 1
-							self.detailsIcon.center.y -= 30
-							self.jobLocation.alpha = 1
-							self.jobLocation.center.y -= 30
-							self.locationIcon.alpha = 1
-							self.locationIcon.center.y -= 30
-							self.flagIcon.alpha = 1
-			}, completion: nil)
+			newQuery.findObjectsInBackground { (jobs, error) in
+				if let jobs = jobs {
+					if jobs.count > 0 {
+						for job in jobs {
+							// use second query condition to get job details
+							self.getJobDetails(job: job)
+							self.currentJob = job
+							
+						}
+					} else {
+						// show alert that there are no more jobs to be viewed and segue to home on action
+						self.alertWithSegue(title: "There are no more jobs around your area", message: "Please check again later")
+						
+					}
+				}
+			}
+
+		// if secondQuery is false, fetch with first Query (friends list)
+		} else {
+			
+			let query = PFQuery(className: "Job")
+			query.limit = 1
+			
+			// job id of user's accepted and rejected jobs during this session is added to acceptedJobs to make list of a full viewed Jobs
+			if let acceptedJobs = PFUser.current()?["accepted"] {
+				ignoredJobs += acceptedJobs as! Array
+				
+			}
+			if let rejectedJobs = PFUser.current()?["rejected"] {
+				ignoredJobs += rejectedJobs as! Array
+				
+			}
+			query.whereKey("objectId", notContainedIn: ignoredJobs)
+			
+			// query with users's fb_friends
+			if let friends = user.object(forKey: "fb_friends") as? [String] {
+				for friend in friends {
+					query.whereKey("requesterFid", equalTo: friend)
+		
+				}
+			}
+			query.findObjectsInBackground { (jobs, error) in
+				if let jobs = jobs {
+					if jobs.count > 0 {
+						for job in jobs {
+							// use first query condition to get job details
+							self.getJobDetails(job: job)
+							self.currentJob = job
+
+						}
+					} else {
+						// set bool to true to show that firstQuery came up empty
+						self.secondQuery = true
+						// call self again to fetch with second query if first query comes up empty
+						PFQuery.cancelPreviousPerformRequests(withTarget: self)
+						self.getNewJob()
+		
+					}
+				}
+			}
+		
 		}
+			
 	}
 	
     func drag(gesture: UIPanGestureRecognizer) {

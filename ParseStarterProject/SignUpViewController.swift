@@ -17,7 +17,6 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     @IBOutlet weak var logo: UILabel!
     @IBOutlet weak var bar: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
-    @IBOutlet weak var enterPassword: UITextField!
     @IBOutlet weak var mainImage: UIImageView!
     @IBOutlet weak var facebookIcon: UIButton!
     
@@ -27,8 +26,8 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     // initialize new boolean to verify successful login and facebook user detail collection
     var loggedIn: Bool = Bool()
     // initialize facebook login delegate button (permissions the delegate to get info in [] array
-    let facebookButton = LoginButton(readPermissions: [ .publicProfile , .email ])
-    
+    let facebookButton = LoginButton(readPermissions: [ .publicProfile , .email , .userFriends ])
+
     func activity() {
         // position rect to receive activity indicator
         let rect: CGRect = CGRect(x: 0, y: 0, width: 100, height: 100)
@@ -66,39 +65,38 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     }
     
     func signInAlert(title: String, message: String) {
+    
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         
         // add alert action
         alert.addAction(UIAlertAction(title: "Yes, I agree", style: .default, handler: { (action) in
+            
             // signup allowed only when password is valid and FB login is successful else show error alert
-            if self.password.text != "" {
-                self.activity()
-                self.user.password = self.password.text
-                // check if facebook login was successful and details retrieved
-                if self.loggedIn {
-                    // save PFUser object to Parse. Save will happen only if all the keys are present else display error
-                    self.user.signUpInBackground(block: { (success, error) in
-                        self.restore()
-                        if success {
-                            self.signedUpAlert(title: "Successful!", message: "Thanks for signing up.")
-                            
-                        } else {
-                            if let error = error?.localizedDescription {
-                                // display sign up error message
-                                self.errorAlert(title: "Failed Sign Up", message: error)
-                                
-                            }
-                        }
-                    })
-                } else {
+            self.activity()
+            // signup allowed only when password is valid and FB login is successful else show error alert
+            // check if facebook login was successful and details retrieved
+            if self.loggedIn {
+                // save PFUser object to Parse. Save will happen only if all the keys are present else display error
+                self.user.signUpInBackground(block: { (success, error) in
                     self.restore()
-                    self.errorAlert(title: "Invalid Facebook Login", message: "You need to log in with Facebook to sign up with WorkJet")
-                    
-                }
+                    if success {
+                        self.signedUpAlert(title: "Successful!", message: "Thanks for signing up.")
+                        
+                        
+                    } else {
+                        if let error = error?.localizedDescription {
+                            // display sign up error message
+                            self.errorAlert(title: "Failed Sign Up", message: error)
+                            
+                        }
+                    }
+                })
             } else {
-                self.errorAlert(title: "Invalid Password", message: "Please enter a valid password")
+                self.restore()
+                self.errorAlert(title: "Invalid Facebook Login", message: "You need to log in with Facebook to sign up with WorkJet")
                 
             }
+            
             alert.dismiss(animated: true, completion: nil)
             
         }))
@@ -158,7 +156,7 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
         // hide UI elements to prepare for animation
         bar.alpha = 0
         signUpButton.alpha = 0
-        enterPassword.alpha = 0
+        password.alpha = 0
         mainImage.alpha = 0
         facebookButton.alpha = 0
         facebookIcon.alpha = 0
@@ -181,14 +179,14 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
         UIView.animate(withDuration: 2, delay: 0.5, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.signUpButton.alpha = 1.0
             self.signUpButton.center.y -= 30
-            self.enterPassword.alpha = 1.0
-            self.enterPassword.center.y -= 30
+            self.password.alpha = 1.0
+            self.password.center.y -= 30
         }, completion: nil)
         UIView.animate(withDuration: 1, delay: 0.75, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: [], animations: {
             self.facebookIcon.alpha = 1
             self.facebookButton.alpha = 0.05
         }, completion: nil)
-        
+
     }
     
     // FBSDKLoginDelegate method
@@ -196,7 +194,7 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         activity()
         let parameters = ["fields": "email, first_name, last_name"]
-        
+
         // facebook graph request
         FBSDKGraphRequest(graphPath: "me", parameters: parameters).start { (connection, result, error) in
             // be careful with "let" statement. Only use them for certainly controllable events
@@ -230,6 +228,24 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
                                     self.user["image"] = imageFile
                                     
                                 }
+                                
+                                // get user's friends list
+                                FBSDKGraphRequest(graphPath:"me/friends", parameters: nil).start(completionHandler: { (connection, list, error) in
+                                    if let list = list as? NSDictionary {
+                                        if let friends = list.object(forKey: "data") as? [NSDictionary] {
+                                            var arr = [String]()
+                                            for friend in friends {
+                                                let str = friend.object(forKey: "id") as! String
+                                                arr.append(str)
+                                            
+                                            }
+                                            // add to PFUser object
+                                            self.user.setValue(arr, forKey: "fb_friends")
+
+                                        }
+                                    }
+                                })
+                                
                             }
                         }
                     }
@@ -246,9 +262,15 @@ class SignUpViewController: UIViewController, LoginButtonDelegate, UITextFieldDe
     }
     
     @IBAction func signUp(_ sender: AnyObject) {
-        // agree to terms of use
-        signInAlert(title: "Terms of Use", message: "You may not post content that is violent, discriminatory, abusive, illegal or sexually explicit. WorkJet retains the right to delete a violating user account or at a minimum the violating content itself")
-    
+        if self.password.text != "" {
+            self.user.password = self.password.text
+            // agree to terms of use
+            signInAlert(title: "Terms of Use", message: "You may not post content that is violent, discriminatory, abusive, illegal or sexually explicit. WorkJet retains the right to delete a violating user account or at a minimum the violating content itself")
+        
+        } else {
+             self.errorAlert(title: "Invalid Password", message: "Please enter a valid password")
+            
+        }
     }
   
     @IBAction func back(_ sender: UIButton) {

@@ -49,7 +49,7 @@ class MainViewController: UIViewController {
             self.view.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
             
         }
-        
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
