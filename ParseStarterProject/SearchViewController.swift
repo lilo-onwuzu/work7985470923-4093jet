@@ -111,7 +111,7 @@ class SearchViewController: UIViewController {
 						// delete the job
 						self.currentJob.deleteInBackground()
 						
-						// strike one against user
+						// strike one against requester
 						let reqId = self.currentJob.object(forKey: "requesterId") as! String
 						var requester = PFObject(className: "User")
 						let query: PFQuery = PFUser.query()!
@@ -289,21 +289,22 @@ class SearchViewController: UIViewController {
 	
     func getNewJob() {
 
+		// job id of user's accepted and rejected jobs during this session is added to acceptedJobs to make list of a full viewed Jobs
+		if let acceptedJobs = PFUser.current()?["accepted"] {
+			ignoredJobs += acceptedJobs as! Array
+			
+		}
+		if let rejectedJobs = PFUser.current()?["rejected"] {
+			ignoredJobs += rejectedJobs as! Array
+			
+		}
+		
 		// fetch with second query condition (geolocation)
 		if secondQuery {
 
 			let newQuery = PFQuery(className: "Job")
 			newQuery.limit = 1
 
-			// job id of user's accepted and rejected jobs during this session is added to acceptedJobs to make list of a full viewed Jobs
-			if let acceptedJobs = PFUser.current()?["accepted"] {
-				ignoredJobs += acceptedJobs as! Array
-				
-			}
-			if let rejectedJobs = PFUser.current()?["rejected"] {
-				ignoredJobs += rejectedJobs as! Array
-				
-			}
 			newQuery.whereKey("objectId", notContainedIn: ignoredJobs)
 
 			// query with PFUser's location
@@ -334,28 +335,23 @@ class SearchViewController: UIViewController {
 
 		// if secondQuery is false, fetch with first Query (friends list)
 		} else {
-			
+
 			let query = PFQuery(className: "Job")
 			query.limit = 1
 			
-			// job id of user's accepted and rejected jobs during this session is added to acceptedJobs to make list of a full viewed Jobs
-			if let acceptedJobs = PFUser.current()?["accepted"] {
-				ignoredJobs += acceptedJobs as! Array
-				
-			}
-			if let rejectedJobs = PFUser.current()?["rejected"] {
-				ignoredJobs += rejectedJobs as! Array
-				
-			}
 			query.whereKey("objectId", notContainedIn: ignoredJobs)
-			
-			// query with users's fb_friends
-			if let friends = user.object(forKey: "fb_friends") as? [String] {
-				for friend in friends {
-					query.whereKey("requesterFid", equalTo: friend)
-		
+
+			// query with PFUser's user's friends that are within their location
+			let friends = user.object(forKey: "fb_friends") as! [String]
+			query.whereKey("requesterFid", containedIn: friends)
+			let location = user.object(forKey: "location") as? PFGeoPoint
+			if let latitude = location?.latitude {
+				if let longitude = location?.longitude {
+					query.whereKey("location", withinGeoBoxFromSouthwest: PFGeoPoint(latitude: latitude - 1, longitude: longitude - 1), toNortheast:PFGeoPoint(latitude:latitude + 1, longitude: longitude + 1))
+					
 				}
 			}
+
 			query.findObjectsInBackground { (jobs, error) in
 				if let jobs = jobs {
 					if jobs.count > 0 {
@@ -369,7 +365,6 @@ class SearchViewController: UIViewController {
 						// set bool to true to show that firstQuery came up empty
 						self.secondQuery = true
 						// call self again to fetch with second query if first query comes up empty
-						PFQuery.cancelPreviousPerformRequests(withTarget: self)
 						self.getNewJob()
 		
 					}
@@ -426,7 +421,7 @@ class SearchViewController: UIViewController {
             }
 			// enable so user only sees one job once during a log in session
             if acceptedOrRejected != "" {
-                PFUser.current()?.addUniqueObjects(from: [viewedJobId], forKey:acceptedOrRejected)
+                PFUser.current()?.addUniqueObject(viewedJobId, forKey:acceptedOrRejected)
                 PFUser.current()?.saveInBackground()
                 
             }
